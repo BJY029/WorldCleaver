@@ -6,6 +6,15 @@ public class TreeController : MonoBehaviour
 {
     private float Health = 1000.0f;
 
+    //나무의 체력을 반환해주는 함수
+    public float treeHealth
+    {
+        get
+        {
+            return Health;
+        }
+    }
+
     private int HitDamage;
 
 	private void Awake()
