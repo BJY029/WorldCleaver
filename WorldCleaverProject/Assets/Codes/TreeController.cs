@@ -33,8 +33,12 @@ public class TreeController : MonoBehaviour
         }
         else
         {
-            //Lose!!
-        }
+            //만약 Tree의 체력이 다 떨어진 경우
+			Debug.Log(GameManager.Instance.Turn + " Lose!");
+            Health = 0.0f;
+            //Turn 44를 반환한다.
+			GameManager.Instance.Turn = 44;
+		}
     }
 
     private int RandHitDamage() //랜덤 데미지 생성
