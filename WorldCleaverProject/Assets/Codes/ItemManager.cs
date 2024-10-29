@@ -29,6 +29,18 @@ public class ItemManager : SingleTon<ItemManager>
 
     //적용할 스프라이트 아이콘들
     public Sprite potionIcon;
+    public Sprite deerIcon;
+    public Sprite eagleIcon;
+    public Sprite fightIcon;
+    public Sprite flareIcon;
+    public Sprite ginsengIcon;
+    public Sprite honeyIcon;
+    public Sprite OilIcon;
+    public Sprite sapIcon;
+    public Sprite smokeIcon;
+    public Sprite squidIcon;
+    public Sprite treeShildIcon;
+    public Sprite velvetIcon;
 
     //아이템 초기화
     void Start()

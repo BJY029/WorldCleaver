@@ -257,6 +257,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potionIcon: {fileID: 21300000, guid: 59e1cb1c51862b54c8a3cc2f9d56a93e, type: 3}
+  deerIcon: {fileID: 21300000, guid: 27796b0fff7efb64bba1fa77a08e8a45, type: 3}
+  eagleIcon: {fileID: 21300000, guid: 2d529637b09d88c428f236feb7898666, type: 3}
+  fightIcon: {fileID: 21300000, guid: df4ade9ee5998ad44969557e12edce7e, type: 3}
+  flareIcon: {fileID: 21300000, guid: 105e0777d9b372b4489d9b5714435303, type: 3}
+  ginsengIcon: {fileID: 21300000, guid: d5cc007fa5e16e8488c5fb6ad3c3f34e, type: 3}
+  honeyIcon: {fileID: 21300000, guid: cb01ef83878487d49826b9a5549ec683, type: 3}
+  OilIcon: {fileID: 21300000, guid: 4ab88807cdc6147459c5d64f6c424864, type: 3}
+  sapIcon: {fileID: 21300000, guid: acbda70c8c3d37e42851e94cc2d6e2e7, type: 3}
+  smokeIcon: {fileID: 21300000, guid: 889678dce82f0e7498953ad801c2cb5d, type: 3}
+  squidIcon: {fileID: 21300000, guid: c9155c63a598ce145aa9f26e1a0d8636, type: 3}
+  treeShildIcon: {fileID: 21300000, guid: a45b701c34838cc4f82efb4e79dfd403, type: 3}
+  velvetIcon: {fileID: 21300000, guid: 46b6588d0b9e385498eb744d6ad0f74c, type: 3}
 --- !u!1 &261607366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,7 +1434,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000074095583, y: 0.000000009549629, z: -7.075853e-17, w: 1}
-  m_LocalPosition: {x: 4.0153823, y: -4.0651236, z: -10.051194}
+  m_LocalPosition: {x: 0.2532308, y: -4.042243, z: -10.051194}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
