@@ -26,7 +26,7 @@ public class ItemManager : SingleTon<ItemManager>
 	//모든 아이템을 저장하는 리스트
 	public List<Item> allItems;
     //플레이어가 지니고 있는 아이템 리스트
-    public List<Item> playerItems;
+    //public List<Item> playerItems;
     //적 플레이어가 지니고 있는 아이템 리스트
     public List<Item> enemyItems;
 
@@ -67,7 +67,7 @@ public class ItemManager : SingleTon<ItemManager>
         };
 
         //플레이어의 아이템들을 저장하는 리스트
-        playerItems = new List<Item>();
+        //playerItems = new List<Item>();
         //적의 아이템들을 저장하는 리스트
         enemyItems = new List<Item>();
 
@@ -111,7 +111,9 @@ public class ItemManager : SingleTon<ItemManager>
     //플레이어가 선택한 아이템을 플레이어 리스트에 추가하는 함수
     public void AddItemToPlayerInventory(Item item)
     {
-        playerItems.Add(item);
+        //playerItems.Add(item);
+        //리스트에 저장하지 않고 해당 아이템 정보를 플레이어 아이템 관련 함수로 바로 옮긴다.
+        DisplayPlayerItems.Instance.insertItem(item);
         Debug.Log($"{item.itemName} 아이템을 인벤토리에 추가했습니다!");
     }
 }
