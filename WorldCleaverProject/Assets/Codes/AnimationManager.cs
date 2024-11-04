@@ -41,6 +41,7 @@ public class AnimationManager : MonoBehaviour
 		else if(Turn == 1) //적 턴이면, 적의 애니메이션을 초기화 한다.
 		{
 			EnemyAnim.SetBool("isHit", false);
+			ItemManager.Instance.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
 		}
 		//애니메이션이 모두 실행된 후, 카메라 교체가 이루어진다.
 		CameraManager.Instance.changeCamera();

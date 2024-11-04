@@ -48,22 +48,23 @@ public class ItemManager : SingleTon<ItemManager>
     //아이템 초기화
     void Start()
     {
-        allItems = new List<Item>
+        DisplayItems.Instance.ClosePanel();
+		allItems = new List<Item>
         {
             //해당 아이템 정보들을 생성
-            new Item("Potion", "Heals 100 pw", potionIcon),
-            new Item("Deer", "Give random damage", deerIcon),
-            new Item("Eagel", "Take one Item from enemy", eagleIcon),
-            new Item("Fight", "Play minigame to charge mana", fightIcon),
-            new Item("Flare", "Acquire additional items", flareIcon),
-            new Item("Ginseng", "Recovery mana", ginsengIcon),
-            new Item("Honey", "Restores the health of the villagers", honeyIcon),
-            new Item("Oil", "Lower my attack damage", OilIcon),
-            new Item("Sap", "Heals tree Health", sapIcon),
-            new Item("Smoke", "Invisible tree's health", sapIcon),
-            new Item("Squid", "Lower one's opponent's attack damage", squidIcon),
-            new Item("TreeShild", "Lower one's opponent's attack damage", treeShildIcon),
-            new Item("Velvet", "Significant increase in damage to trees", velvetIcon)
+            new Item("이상한 포션", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon),
+            new Item("사슴", "사슴이 박치기 공격을 한다. 데미지는 0% - 200% 사이 랜덤 값이다.", deerIcon),
+            new Item("독수리", "독수리가 상대방으로부터 아이템을 빼앗아 온다.", eagleIcon),
+            new Item("결투 신청", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon),
+            new Item("플레어 건", "추가 아이템을 획득한다.", flareIcon),
+            new Item("홍삼", "기력을 일정 부분 회복한다.", ginsengIcon),
+            new Item("워그드라실 꿀", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon),
+            new Item("기름", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon),
+            new Item("수액", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon),
+            new Item("연막탄", "나무의 체력을 일정 턴 동안 보이지 않게 한다.", sapIcon),
+            new Item("오징어 먹물", "상대방에게 던져서, 상대방이 주는 데미지를 대폭 하락시킨다.", squidIcon),
+            new Item("나무 방패", "나무에게 방패를 씌워, 상대방의 데미지를 감소시킨다.", treeShildIcon),
+            new Item("녹용", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon)
         };
 
         //플레이어의 아이템들을 저장하는 리스트
@@ -86,8 +87,10 @@ public class ItemManager : SingleTon<ItemManager>
     //아이템버튼 리스트를 중복없게 할당하는 함수
     public void SetRandomItemsOnButtons()
     {
-        //버튼 아이템 리스트
-        List<Item> choseanItems = new List<Item>();
+		DisplayItems.Instance.DisplayPanel();
+
+		//버튼 아이템 리스트
+		List<Item> choseanItems = new List<Item>();
 
         //아이템 버튼 개수 만큼 반복한다(3번)
         for(int i = 0; i < itemButtons.Count; i++)

@@ -27,9 +27,24 @@ public class DisplayItems : SingleTon<DisplayItems>
     {
         ItemManager.Instance.AddItemToPlayerInventory(assignedItem);
 
-        if (transform.parent != null && transform.parent.parent != null)
-        {
-            transform.parent.parent.localScale = Vector3.zero;
-        }
+        ClosePanel();
     }
+
+    //아이템 선택 창을 띄우는 함수
+    public void DisplayPanel()
+    {
+		if (transform.parent != null && transform.parent.parent != null)
+		{
+			transform.parent.parent.localScale = Vector3.one;
+		}
+	}
+
+    //아이템 선택 창을 끄는 함수
+    public void ClosePanel()
+    {
+		if (transform.parent != null && transform.parent.parent != null)
+		{
+			transform.parent.parent.localScale = Vector3.zero;
+		}
+	}
 }
