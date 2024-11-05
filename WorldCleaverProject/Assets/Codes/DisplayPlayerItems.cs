@@ -22,6 +22,20 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		}
 	}
 
+	//플레이어 아이템이 꽉 차게 되면, true를 반환하는 함수
+	public bool isFull()
+	{
+		for (int i = 0; i < playerItems.Count; i++)
+		{
+			//만약 버튼들 중 하나가 비활성화 된 상태라면, 즉 빈 상태면
+			if (!playerItems[i].enabled)
+			{
+				return false;				
+			}
+		}
+		return true;
+	}
+
 	//아이템이 선택되었을 때 호출되는 함수
 	public void insertItem(Item item)
 	{

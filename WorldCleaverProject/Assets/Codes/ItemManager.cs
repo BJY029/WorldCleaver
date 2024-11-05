@@ -49,6 +49,7 @@ public class ItemManager : SingleTon<ItemManager>
     void Start()
     {
         DisplayItems.Instance.ClosePanel();
+        DisplayWarningMessage.Instance.closeWarningPanel();
 		allItems = new List<Item>
         {
             //해당 아이템 정보들을 생성
