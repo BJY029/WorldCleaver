@@ -15,6 +15,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void setMana(float mana)
+    {
+        //만약 입력받은 마나 값과의 합이 100을 넘으면, 그냥 100으로 초기화한다.
+        if (playerMana + mana > 100) playerMana = 100;
+        //만약 0 혹은 음수가 되면, 그냥 1로 초기화한다.
+        else if (playerMana + mana <= 0)
+        {
+            playerMana = 1;
+        }
+        //그 외는 그냥 합산한 값을 저장한다.
+        else playerMana += mana;
+    }
+
     private float HitMana = 5f;
 
 	private void Awake()

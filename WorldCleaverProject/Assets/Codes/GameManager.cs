@@ -50,12 +50,14 @@ public class GameManager : SingleTon<GameManager>
         {
             //적으로 턴을 초기화한다.
             Turn = 1;
+            DisplayPlayerItems.Instance.disableButtons();
         }
         //현재 Turn이 1이면
         else if (Turn == 1)
         {
             //플레이어로 턴을 초기화한다.
             Turn = 0;
+            DisplayPlayerItems.Instance.beableButtons();
         }
         //현재 Trun이 44이면
         else if (Turn == 44)
@@ -65,5 +67,4 @@ public class GameManager : SingleTon<GameManager>
             return;
         }
 	}
-
 }

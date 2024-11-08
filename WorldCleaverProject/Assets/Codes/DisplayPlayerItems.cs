@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 {
@@ -34,6 +35,27 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 			}
 		}
 		return true;
+	}
+
+	//모든 버튼을 비활성화 하는 함수
+	public void disableButtons()
+	{
+		//그리고 모든 버튼을 비활성화 시킨다.
+		for (int i = 0; i < playerItems.Count; i++)
+		{
+			playerItems[i].enabled = false;
+		}
+	}
+
+	//해당 버튼의 이미지 오브젝트가 존재하는 경우에만 버튼을 활성화 시키는 함수
+	public void beableButtons()
+	{
+		//그리고 모든 버튼을 활성화 시킨다.
+		for (int i = 0; i < playerItems.Count; i++)
+		{
+			Sprite sprite = playerItems[i].GetComponent<Image>().sprite;
+			if (sprite != null) playerItems[i].enabled = true;
+		}
 	}
 
 	//아이템이 선택되었을 때 호출되는 함수
@@ -76,5 +98,34 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		script.itemName = item.itemName;
 		//그 다음 버튼을 활성화 시킨다.
 		playerItems[flag].enabled = true;
+	}
+
+	//아이템이 선택되었을 때, 삭제 및 기능 수행 함수
+	public void removeItem(int idx)
+	{
+		//해당 버튼의 아이콘을 따로 저장하고, 삭제한다.
+		//저장한 아이콘은 밑에서, 해당 아이템의 플레그를 찾을 때 사용된다.
+		Sprite sprite = playerItems[idx].GetComponent<Image>().sprite;
+		//아이템의 설명 또한 삭제한다.
+		playerItems[idx].GetComponentInChildren<Image>().sprite = null;
+		ToolTipsManager script = playerItems[idx].GetComponentInChildren<ToolTipsManager>();
+		script.itemDesc = null;
+		script.itemName = null;
+		playerItems[idx].enabled = false;
+
+		//플래그 초기화
+		int flag = -1;
+		for(int i = 0; i < ItemManager.Instance.allItems.Count;i++)
+		{
+			//같은 이미지가 나오면 해당 인덱스를 플래그에 저장
+			if (ItemManager.Instance.allItems[i].icon == sprite)
+			{
+				flag = i;
+				break;
+			}
+		}
+
+		//ItemManager에 플래그 값을 넘겨서 기능 수행
+		ItemManager.Instance.ItemFunction(flag);
 	}
 }

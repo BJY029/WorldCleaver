@@ -55,19 +55,28 @@ public class UIManager : SingleTon<UIManager>
 		//따라서, 기존 Turn을 저장한 myTurn 값을 불러와서 해당 값을 통해 현재 플레이어를 판단한다.
 		int Turn = GameManager.Instance.myTurn;
 
-		//플레이어 턴이면
-		if (Turn == 0)
-		{
-			//현재 플레이어 기력 받아오기
-			float curPower = GameManager.Instance.PlayerController.Mana;
-			//플레이어 기력 슬리이더 업데이트
-			playerSlider.value = curPower / InitPlayerPower;
-		}
-		else if (Turn == 1) //적 턴이면
-		{
-			float curPower = GameManager.Instance.EnemeyController.Mana;
-			EnemySlider.value = curPower / InitEnemyPower;
-		}
+		//그냥 상시에 업데이트 할 수 있도록 설정
+		//현재 플레이어 기력 받아오기
+		float curPower_p = GameManager.Instance.PlayerController.Mana;
+		//플레이어 기력 슬리이더 업데이트
+		playerSlider.value = curPower_p / InitPlayerPower;
+
+		float curPower_e = GameManager.Instance.EnemeyController.Mana;
+		EnemySlider.value = curPower_e / InitEnemyPower;
+
+		////플레이어 턴이면
+		//if (Turn == 0)
+		//{
+		//	//현재 플레이어 기력 받아오기
+		//	float curPower = GameManager.Instance.PlayerController.Mana;
+		//	//플레이어 기력 슬리이더 업데이트
+		//	playerSlider.value = curPower / InitPlayerPower;
+		//}
+		//else if (Turn == 1) //적 턴이면
+		//{
+		//	float curPower = GameManager.Instance.EnemeyController.Mana;
+		//	EnemySlider.value = curPower / InitEnemyPower;
+		//}
 
 		//만약 플래그가 1이면 밑의 연산은 재끼고 바로 리턴한다.
 		if (flag == 1) return;
