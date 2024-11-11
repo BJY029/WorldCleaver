@@ -32,6 +32,8 @@ public class ItemManager : SingleTon<ItemManager>
     //적 플레이어가 지니고 있는 아이템 리스트
     public List<Item> enemyItems;
 
+    public int Flag;
+
     //적용할 스프라이트 아이콘들
     public Sprite potionIcon;
     public Sprite deerIcon;
@@ -55,19 +57,19 @@ public class ItemManager : SingleTon<ItemManager>
         allItems = new List<Item>
         {
             //해당 아이템 정보들을 생성
-            new Item(0, "이상한 포션", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon),
+            new Item(0, "이상한 포션", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon),//완
             new Item(1, "사슴", "사슴이 박치기 공격을 한다. 데미지는 0% - 200% 사이 랜덤 값이다.", deerIcon),
             new Item(2, "독수리", "독수리가 상대방으로부터 아이템을 빼앗아 온다.", eagleIcon),
             new Item(3, "결투 신청", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon),
-            new Item(4, "플레어 건", "추가 아이템을 획득한다.", flareIcon),
-            new Item(5, "홍삼", "기력을 일정 부분 회복한다.", ginsengIcon),
+            new Item(4, "플레어 건", "추가 아이템을 획득한다.", flareIcon),//완
+            new Item(5, "홍삼", "기력을 일정 부분 회복한다.", ginsengIcon), //완
             new Item(6, "워그드라실 꿀", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon),
-            new Item(7, "기름", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon),
-            new Item(8, "수액", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon),
+            new Item(7, "기름", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon),//완
+            new Item(8, "수액", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon),//완
             new Item(9, "연막탄", "나무의 체력을 일정 턴 동안 보이지 않게 한다.", smokeIcon),
             new Item(10, "오징어 먹물", "상대방에게 던져서, 상대방이 주는 데미지를 대폭 하락시킨다.", squidIcon),
             new Item(11, "나무 방패", "나무에게 방패를 씌워, 상대방의 데미지를 감소시킨다.", treeShildIcon),
-            new Item(12, "녹용", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon)
+            new Item(12, "녹용", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon)//완
         };
 
         //플레이어의 아이템들을 저장하는 리스트
@@ -125,8 +127,9 @@ public class ItemManager : SingleTon<ItemManager>
 
     public void ItemFunction(int flag)
     {
-        if (flag == 0)
-        {
+        Flag = flag; 
+        if (flag == 0)//내 기력을 일점 부분 회복시키거나 감소시킨다.
+		{
             int randomValue = Random.Range(-10, 30);
             Debug.Log("Random mana charge value is " + randomValue);
             GameManager.Instance.PlayerController.setMana(randomValue);
@@ -140,20 +143,29 @@ public class ItemManager : SingleTon<ItemManager>
         else if (flag == 3)
         {
         }
-        else if (flag == 4)
-        {
+        else if (flag == 4)//추가 아이템을 획득한다
+		{
+            SetRandomItemsOnButtons();
+            
         }
-        else if (flag == 5)
-        {
-        }
+        else if (flag == 5)//기력을 일정 부분 회복한다.(확정적으로 회복)
+		{
+			int randomValue = Random.Range(3, 10);
+			Debug.Log("Random mana charge value is " + randomValue);
+			GameManager.Instance.PlayerController.setMana(randomValue);
+		}
         else if (flag == 6)
         {
         }
-        else if (flag == 7)
-        {
+        else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
+		{
+            //Do job at TreeController
         }
-        else if (flag == 8)
-        {
+        else if (flag == 8)//나무에게 사용하여 나무의 체력을 회복시킨다.
+		{
+            int randomValue = Random.Range(200, 350);
+            Debug.Log("Random tree health charge value is " + randomValue);
+            GameManager.Instance.TreeController.setTreeHealth(randomValue);
         }
         else if (flag == 9)
         {
@@ -164,8 +176,9 @@ public class ItemManager : SingleTon<ItemManager>
         else if (flag == 11)
         {
         }
-        else if (flag == 12)
-        {
+        else if (flag == 12)//나무에게 주는 대미지를 대폭 상승시킨다.
+		{
+            //Do job at TreeController
         }
     }
 }

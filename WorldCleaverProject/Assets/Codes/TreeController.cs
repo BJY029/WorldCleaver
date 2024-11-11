@@ -15,6 +15,19 @@ public class TreeController : MonoBehaviour
         }
     }
 
+    public void setTreeHealth(float health)
+    {
+		//만약 입력받은 마나 값과의 합이 100을 넘으면, 그냥 100으로 초기화한다.
+		if (Health + health > 1000) Health = 1000;
+		//만약 0 혹은 음수가 되면, 그냥 1로 초기화한다.
+		else if (Health + health <= 0)
+		{
+			Health = 1;
+		}
+		//그 외는 그냥 합산한 값을 저장한다.
+		else Health += health;
+	}
+
     private int HitDamage;
 
 	private void Awake()
@@ -25,11 +38,24 @@ public class TreeController : MonoBehaviour
 
 	public void DamageHit()
     {
-        HitDamage = RandHitDamage();
+        if(ItemManager.Instance.Flag == 7)
+        {
+            HitDamage = RanHitDamageForOil(); //데미지 감소
+        }
+        else if(ItemManager.Instance.Flag == 12)
+        {
+            HitDamage = RanHitDamageForVelvet();//데미지 증가
+        }
+        else
+        {
+			HitDamage = RandHitDamage();
+		}
+        
         if (HitDamage < Health)
         {
             Health -= HitDamage;
             Debug.Log("TreeHealth :" + Health);
+            Debug.Log("My Hit Damage : " + HitDamage);
         }
         else
         {
@@ -43,7 +69,19 @@ public class TreeController : MonoBehaviour
 
     private int RandHitDamage() //랜덤 데미지 생성
     {
-        HitDamage = Random.Range(40, 60);
-        return HitDamage;
+        int randomValue = Random.Range(40, 60);
+        return randomValue;
     }
+
+    private int RanHitDamageForOil()
+    {
+		int randomValue = Random.Range(5, 15);
+        return randomValue;
+    }
+
+	private int RanHitDamageForVelvet()
+	{
+		int randomValue = Random.Range(150, 250);
+		return randomValue;
+	}
 }
