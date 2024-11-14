@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
 {
+    public int WarningFlag;
     public float waitingTime = 2.0f;
     void Start()
     {
 		transform.localScale = Vector3.zero;
+        WarningFlag = 0;
 	}
 
     //경고 창을 닫는 함수
@@ -25,8 +27,10 @@ public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
     //경고문을 일정 시간동안 노출시킨 후, 닫는 함수
     IEnumerator displayWarning()
     {
+        WarningFlag = 1;
         transform.localScale = Vector3.one;
         yield return new WaitForSeconds(waitingTime);
 		transform.localScale = Vector3.zero;
+        WarningFlag = 0;
 	}
 }

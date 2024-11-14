@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 //전반적인 UI를 관리하는 스크립트
 //싱글톤이기에 GameManager에 바로 접근 가능하다.
 public class UIManager : SingleTon<UIManager>
@@ -11,6 +12,10 @@ public class UIManager : SingleTon<UIManager>
 	public Slider playerSlider; //플레이어 기력을 나타내주는 슬라이더 UI
 	public Slider EnemySlider; //적 기력을 나타내주는 슬라이더 UI
 	public Button HitButton; //HIT 버튼 UI
+
+	public Canvas VillageCanvas;
+	public Button ToVillageButton;
+	public GameObject ItemListPanel;
 
 	private float InitHealth; //나무 체력의 초기 값을 저장하기 위한 변수 
 	private float InitPlayerPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
@@ -26,6 +31,8 @@ public class UIManager : SingleTon<UIManager>
 		InitPlayerPower = GameManager.Instance.PlayerController.Mana;
 		InitEnemyPower = GameManager.Instance.EnemeyController.Mana;
 
+		VillageCanvas.enabled = false;
+
 		playerSlider.value = InitPlayerPower;
 		EnemySlider.value = InitEnemyPower;
 		treeSlider.value = InitHealth;
@@ -38,6 +45,8 @@ public class UIManager : SingleTon<UIManager>
 		{
 			//Hit 버튼을 비활성화 한다.
 			HitButton.interactable = false;
+			//마을 전용 Canvas 비활성화
+			ToVillageButton.interactable = false;
 			//그리고 현재 플래그가 1이면 이미 기력 바가 초기화된 상태이므로 그대로 return한다.
 			if (flag == 1) return;
 			//현재 플래그가 0이면, 기력 바의 연산이 아직 이루어지기 전이다. 
@@ -78,12 +87,42 @@ public class UIManager : SingleTon<UIManager>
 		//	EnemySlider.value = curPower / InitEnemyPower;
 		//}
 
+		//만약 적 턴이면 버튼을 비활성화 시킨다.
+		if(GameManager.Instance.Turn == 1) ToVillageButton.interactable = false;
+		else if(GameManager.Instance.Turn == 0) //만약 내 턴이면
+		{
+			//만약 현재 아이템 Full 경고문이 뜨고 있는 상태면
+			if(DisplayWarningMessage.Instance.WarningFlag == 1)
+			{
+				//비활성화
+				ToVillageButton.interactable = false;
+			}
+			else
+			{
+				ToVillageButton.interactable = true;
+			}
+
+			//만약 현재 아이템 선택 창이 떠 있는 경우
+			if (ItemListPanel.transform.localScale == Vector3.one)
+			{
+				//버튼 비활성화
+				ToVillageButton.interactable = false;
+			}
+			else
+			{
+				//아니면 다시 활성화
+				ToVillageButton.interactable = true;
+			}
+		}
+
 		//만약 플래그가 1이면 밑의 연산은 재끼고 바로 리턴한다.
 		if (flag == 1) return;
 		//만약 Hit 명령을 수행중이면 버튼을 비활성화 시킨다.
 		if (GameManager.Instance.AnimationManager.isHitingTree == 1)
 		{
 			HitButton.interactable = false;
+			//마을 버튼 또한 비활성화시킨다.
+			ToVillageButton.interactable = false;
 		}
 		else
 		{
