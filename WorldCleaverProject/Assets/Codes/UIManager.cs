@@ -15,27 +15,37 @@ public class UIManager : SingleTon<UIManager>
 
 	public Canvas VillageCanvas;
 	public Button ToVillageButton;
+	public Slider VillageSlider;
 	public GameObject ItemListPanel;
+
+	public GameObject YouWinPanel;
+	public GameObject YouLosePanel;
 
 	private float InitHealth; //나무 체력의 초기 값을 저장하기 위한 변수 
 	private float InitPlayerPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
 	private float InitEnemyPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
+	private float InitVillageHealth;//마을 체력의 초깃값을 저장하기 위한 변수
 
 	//마지막 연산을 위한 플래그 설정
 	private int flag = 0;
 
 	private void Start()
 	{
+		YouLosePanel.SetActive(false);
+		YouWinPanel.SetActive(false);
+
 		//초기화
 		InitHealth = GameManager.Instance.TreeController.treeHealth;
 		InitPlayerPower = GameManager.Instance.PlayerController.Mana;
 		InitEnemyPower = GameManager.Instance.EnemeyController.Mana;
+		InitVillageHealth = VillageManager.Instance.VilageHelath;
 
 		VillageCanvas.enabled = false;
 
 		playerSlider.value = InitPlayerPower;
 		EnemySlider.value = InitEnemyPower;
 		treeSlider.value = InitHealth;
+		VillageSlider.value = InitVillageHealth;
 	}
 
 	private void Update()
@@ -43,10 +53,23 @@ public class UIManager : SingleTon<UIManager>
 		//중요! 만약 게임이 종료된 경우
 		if (GameManager.Instance.Turn == 44)
 		{
+			//게임이 누구에 의해 종료되었는지 확인한다.
+			GameManager.Instance.WhoLoseGame();
 			//Hit 버튼을 비활성화 한다.
 			HitButton.interactable = false;
 			//마을 전용 Canvas 비활성화
 			ToVillageButton.interactable = false;
+
+			//게임 승리자를 띄우는 UI를 활성화한다.
+			if(GameManager.Instance.WhoLose == 0)
+			{
+				YouLosePanel.SetActive(true);
+			}
+			else
+			{
+				YouWinPanel.SetActive(true);
+			}
+
 			//그리고 현재 플래그가 1이면 이미 기력 바가 초기화된 상태이므로 그대로 return한다.
 			if (flag == 1) return;
 			//현재 플래그가 0이면, 기력 바의 연산이 아직 이루어지기 전이다. 
@@ -72,6 +95,11 @@ public class UIManager : SingleTon<UIManager>
 
 		float curPower_e = GameManager.Instance.EnemeyController.Mana;
 		EnemySlider.value = curPower_e / InitEnemyPower;
+
+		//마을 체력 슬라이더 설정
+		float VillageHealth = VillageManager.Instance.VilageHelath;
+		VillageSlider.value = VillageHealth / InitVillageHealth;
+
 
 		////플레이어 턴이면
 		//if (Turn == 0)
