@@ -154,9 +154,12 @@ public class ItemManager : SingleTon<ItemManager>
 			Debug.Log("Random mana charge value is " + randomValue);
 			GameManager.Instance.PlayerController.setMana(randomValue);
 		}
-        else if (flag == 6)
+        else if (flag == 6) //마을 체력을 회복시키는 아이템
         {
-        }
+			int randomValue = Random.Range(50, 100);
+            Debug.Log("Random Village charge value is " + randomValue);
+            VillageManager.Instance.VilageHelath = randomValue; 
+		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
 		{
             //Do job at TreeController

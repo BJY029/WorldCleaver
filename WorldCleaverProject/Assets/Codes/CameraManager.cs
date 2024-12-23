@@ -9,11 +9,14 @@ public class CameraManager : SingleTon<CameraManager>
     public CinemachineVirtualCamera playerCamera;
 	public CinemachineVirtualCamera EnemyCamera;
 	public CinemachineVirtualCamera VillageCamera;
+	public CinemachineVirtualCamera OppositeVillageCamera;
 
 	//메인 맵 캔버스
 	public Canvas MainCanvas;
 	//마을 맵 캔버스
 	public Canvas VillageCanvers;
+	//적 마을 맵 캔버스
+	public Canvas OppositeVillageCanvers;
 
 	//카메라 우선순위를 바꾸는 함수
 	//해당 함수는 Hit 애니메이션 코루틴이 끝난 후 호출된다.
@@ -50,5 +53,21 @@ public class CameraManager : SingleTon<CameraManager>
 		//해당 맵에 맞는 Canvas를 활성화 시켜 준다.
 		MainCanvas.enabled = true;
 		VillageCanvers.enabled = false;
+	}
+
+	public void goToOppositeVillage()
+	{
+		playerCamera.Priority = 0;
+		OppositeVillageCamera.Priority = 10;
+		MainCanvas.enabled = false;
+		OppositeVillageCanvers.enabled = true;
+	}
+
+	public void backToGameFromOppositeViilage()
+	{
+		playerCamera.Priority = 10;
+		OppositeVillageCamera.Priority = 0;
+		MainCanvas.enabled = true;
+		OppositeVillageCanvers.enabled = false;
 	}
 }

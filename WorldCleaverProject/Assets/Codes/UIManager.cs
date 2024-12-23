@@ -14,8 +14,11 @@ public class UIManager : SingleTon<UIManager>
 	public Button HitButton; //HIT 버튼 UI
 
 	public Canvas VillageCanvas;
+	public Canvas OppositeVillageCanvas;
 	public Button ToVillageButton;
+	public Button ToOppositeVillageButton;
 	public Slider VillageSlider;
+	public Slider OppositeVillageSlider;
 	public GameObject ItemListPanel;
 
 	public GameObject YouWinPanel;
@@ -25,6 +28,7 @@ public class UIManager : SingleTon<UIManager>
 	private float InitPlayerPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
 	private float InitEnemyPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
 	private float InitVillageHealth;//마을 체력의 초깃값을 저장하기 위한 변수
+	private float InitOppositeVillageHealth;
 
 	//마지막 연산을 위한 플래그 설정
 	private int flag = 0;
@@ -39,13 +43,16 @@ public class UIManager : SingleTon<UIManager>
 		InitPlayerPower = GameManager.Instance.PlayerController.Mana;
 		InitEnemyPower = GameManager.Instance.EnemeyController.Mana;
 		InitVillageHealth = VillageManager.Instance.VilageHelath;
+		InitOppositeVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
 
 		VillageCanvas.enabled = false;
+		OppositeVillageCanvas.enabled = false;
 
 		playerSlider.value = InitPlayerPower;
 		EnemySlider.value = InitEnemyPower;
 		treeSlider.value = InitHealth;
 		VillageSlider.value = InitVillageHealth;
+		OppositeVillageSlider.value = InitOppositeVillageHealth;
 	}
 
 	private void Update()
@@ -59,6 +66,7 @@ public class UIManager : SingleTon<UIManager>
 			HitButton.interactable = false;
 			//마을 전용 Canvas 비활성화
 			ToVillageButton.interactable = false;
+			ToOppositeVillageButton.interactable = false;
 
 			//게임 승리자를 띄우는 UI를 활성화한다.
 			if(GameManager.Instance.WhoLose == 0)
@@ -100,6 +108,9 @@ public class UIManager : SingleTon<UIManager>
 		float VillageHealth = VillageManager.Instance.VilageHelath;
 		VillageSlider.value = VillageHealth / InitVillageHealth;
 
+		float OppositeVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
+		OppositeVillageSlider.value = OppositeVillageHealth / InitOppositeVillageHealth;
+
 
 		////플레이어 턴이면
 		//if (Turn == 0)
@@ -124,10 +135,12 @@ public class UIManager : SingleTon<UIManager>
 			{
 				//비활성화
 				ToVillageButton.interactable = false;
+				ToOppositeVillageButton.interactable = false;
 			}
 			else
 			{
 				ToVillageButton.interactable = true;
+				ToOppositeVillageButton.interactable = true;
 			}
 
 			//만약 현재 아이템 선택 창이 떠 있는 경우
@@ -135,11 +148,13 @@ public class UIManager : SingleTon<UIManager>
 			{
 				//버튼 비활성화
 				ToVillageButton.interactable = false;
+				ToOppositeVillageButton.interactable = false;
 			}
 			else
 			{
 				//아니면 다시 활성화
 				ToVillageButton.interactable = true;
+				ToOppositeVillageButton.interactable = true;
 			}
 		}
 
@@ -151,6 +166,7 @@ public class UIManager : SingleTon<UIManager>
 			HitButton.interactable = false;
 			//마을 버튼 또한 비활성화시킨다.
 			ToVillageButton.interactable = false;
+			ToOppositeVillageButton.interactable = false;
 		}
 		else
 		{

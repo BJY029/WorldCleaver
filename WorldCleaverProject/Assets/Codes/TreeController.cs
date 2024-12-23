@@ -28,7 +28,8 @@ public class TreeController : MonoBehaviour
 		else Health += health;
 	}
 
-    private int HitDamage;
+    public int HitDamage;
+    public int HitDamageFromOp;
 
 	private void Awake()
 	{
@@ -36,8 +37,9 @@ public class TreeController : MonoBehaviour
 		Debug.Log("TreeHealth :" + Health);
 	}
 
-	public void DamageHit()
+	public void DamageHitPlayer()
     {
+        Debug.Log("Damage Player");
         if(ItemManager.Instance.Flag == 7)
         {
             HitDamage = RanHitDamageForOil(); //데미지 감소
@@ -63,6 +65,29 @@ public class TreeController : MonoBehaviour
 			Debug.Log(GameManager.Instance.Turn + " Lose!");
             Health = 0.0f;
             //Turn 44를 반환한다.
+			GameManager.Instance.Turn = 44;
+		}
+    }
+
+    public void DamageHitOppositePlayer()
+    {
+		Debug.Log("Damage Opposite Player");
+		//아직 아이템 구현이 안됨
+
+		HitDamageFromOp = RandHitDamage();
+
+        if(HitDamageFromOp < Health)
+        {
+			Health -= HitDamageFromOp;
+			Debug.Log("TreeHealth :" + Health);
+			Debug.Log("Opposite Hit Damage : " + HitDamageFromOp);
+		}
+        else
+        {
+			//만약 Tree의 체력이 다 떨어진 경우
+			Debug.Log(GameManager.Instance.Turn + " Win!");
+			Health = 0.0f;
+			//Turn 44를 반환한다.
 			GameManager.Instance.Turn = 44;
 		}
     }

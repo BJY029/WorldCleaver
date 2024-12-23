@@ -21,6 +21,8 @@ public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
     //아이템이 꽉 찼을 때, 경고문을 띄우는 코루틴을 실행하는 드라이브 함수
     public void itemIsFull()
     {
+        //만약 게임이 끝난 경우, 표시하지 않는다.
+        if (GameManager.Instance.Turn == 44) return;
         StartCoroutine(displayWarning());
     }
 

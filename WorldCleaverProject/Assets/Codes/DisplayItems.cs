@@ -33,6 +33,9 @@ public class DisplayItems : SingleTon<DisplayItems>
     //아이템 선택 창을 띄우는 함수
     public void DisplayPanel()
     {
+        //게임이 종료된 경우, 아이템 선택 창을 띄우지 않는다.
+        if (GameManager.Instance.Turn == 44) return;
+
 		if (transform.parent != null && transform.parent.parent != null)
 		{
 			transform.parent.parent.localScale = Vector3.one;
