@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -13,10 +14,12 @@ public class GameManager : SingleTon<GameManager>
     public int Turn;
     public int myTurn;
     public int WhoLose;
+    //사슴이 막타 친 경우 해당 플래그로 승패여부를 판별한다.
+    public int DeerLastHit;
 
     public int MyVillageWeight;
     public int OppositeVillageWeight;
-    private int MyDamageTotalCnt;
+    public int MyDamageTotalCnt;
     private int OppositeDamageTotalCnt;
 
 	private void Awake()
@@ -25,12 +28,17 @@ public class GameManager : SingleTon<GameManager>
         //0은 플레이어, 1은 적으로 하며, 일단 플레이어부터 턴을 시작하도록 한다.
         Turn = 0;
         WhoLose = -1;
+        DeerLastHit = -1;
 
         MyVillageWeight = 1;
         OppositeVillageWeight = 1;
 
         MyDamageTotalCnt = 0;
         OppositeDamageTotalCnt = 0;
+
+        //사슴 아이템 비활성화
+        DeerController.Instance.DeerActivated = false;
+        DeerController.Instance.Deer.SetActive(false);
 	}
 
     //현재 Turn에 따라 실행하는 Hit의 함수가 다르다.
@@ -64,12 +72,14 @@ public class GameManager : SingleTon<GameManager>
             GameManager.Instance.TreeController.DamageHitPlayer();
             //그리고 Hit한 데미지들이 비교적 적은 경우, 마을에 가하는 데미지를 증가시킨다.
             checkingMyTotalDamage();
+            GameManager.Instance.TreeController.MyDamageCoef = 1.0f;
         }
         else if (myTurn == 1)
         {
             GameManager.Instance.TreeController.DamageHitOppositePlayer();
             checkingOppositeTotalDamage();
-        }
+			GameManager.Instance.TreeController.OppositeDamageCoef = 1.0f;
+		}
 
 		//플래그 초기화
 		ItemManager.Instance.Flag = -1;
@@ -145,6 +155,18 @@ public class GameManager : SingleTon<GameManager>
         //누가 막타 쳐서 게임이 종료된 경우
 		if (GameManager.Instance.TreeController.treeHealth == 0)
 		{
+            //사슴이 막타를 친 경우
+            //해당 플래그는 TreeController에서 부여된다.
+            if(DeerLastHit == 0)
+            {
+                WhoLose = 0;
+                return;
+            }
+            else if(DeerLastHit == 1)
+            {
+                WhoLose = 1;
+                return;
+            }
             //내가 막타 친 경우
             if (myTurn == 0)
             {
