@@ -168,6 +168,11 @@ public class UIManager : SingleTon<UIManager>
 			ToVillageButton.interactable = false;
 			ToOppositeVillageButton.interactable = false;
 		}
+		//적 턴인 경우 Hit 버튼을 비활성화 시킨다.
+		else if(GameManager.Instance.Turn == 1)
+		{
+			HitButton.interactable = false;
+		}
 		else
 		{
 			HitButton.interactable= true;

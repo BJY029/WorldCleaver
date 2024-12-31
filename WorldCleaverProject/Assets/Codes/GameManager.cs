@@ -96,6 +96,8 @@ public class GameManager : SingleTon<GameManager>
             //적으로 턴을 초기화한다.
             Turn = 1;
             DisplayPlayerItems.Instance.disableButtons();
+            //적으로 턴을 변경 후, 함수를 호출한다.
+            EnemyAI.Instance.EnemyTurnBehavior();
         }
         //현재 Turn이 1이면
         else if (Turn == 1)
