@@ -10,14 +10,18 @@ public class Item
     public string itemName;
     public string description;
     public Sprite icon;
+    public string Type; //"Hit", "Charge", "Defense", "Heal", "Gimmick"
+    public int Mana;
 
-    //생성자
-    public Item(int id, string itemName, string description, Sprite icon)
+	//생성자
+	public Item(int id, string itemName, string description, Sprite icon, string type, int mana)
 	{
         this.id = id;
 		this.itemName = itemName;
 		this.description = description;
 		this.icon = icon;
+        this.Type = type;
+        this.Mana = mana;
 	}
 }
 
@@ -57,25 +61,21 @@ public class ItemManager : SingleTon<ItemManager>
         allItems = new List<Item>
         {
             //해당 아이템 정보들을 생성
-            new Item(0, "이상한 포션", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon),//완
-            new Item(1, "사슴", "사슴이 박치기 공격을 한다. 데미지는 0% - 200% 사이 랜덤 값이다.", deerIcon), //완
-            new Item(2, "독수리", "독수리가 상대방으로부터 아이템을 빼앗아 온다.", eagleIcon),
-            new Item(3, "결투 신청", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon),
-            new Item(4, "플레어 건", "추가 아이템을 획득한다.", flareIcon),//완
-            new Item(5, "홍삼", "기력을 일정 부분 회복한다.", ginsengIcon), //완
-            new Item(6, "워그드라실 꿀", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon), //완
-            new Item(7, "기름", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon),//완
-            new Item(8, "수액", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon),//완
-            new Item(9, "연막탄", "나무의 체력을 일정 턴 동안 보이지 않게 한다.", smokeIcon),
-            new Item(10, "오징어 먹물", "상대방에게 던져서, 상대방이 다음 턴에 주는 모든 데미지를 대폭 하락시킨다.", squidIcon),//완
-            new Item(11, "나무 방패", "나무에게 방패를 씌워, 한 사이클동안 나무에게 주는 데미지를 감소시킨다.", treeShildIcon),//완
-            new Item(12, "녹용", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon)//완
+            new Item(0, "이상한 포션(0)", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon, "Charge", 0),//완
+            new Item(1, "사슴(15)", "사슴이 박치기 공격을 하여 큰 데미지를 입힌다.", deerIcon, "Hit", 15), //완
+            new Item(2, "독수리(8)", "독수리가 상대방으로부터 아이템을 빼앗아 온다.", eagleIcon, "Gimmick", 8),
+            new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10),
+            new Item(4, "플레어 건(8)", "추가 아이템을 획득한다.", flareIcon, "Gimmick", 8),//완
+            new Item(5, "홍삼(0)", "기력을 일정 부분 회복한다.", ginsengIcon, "Charge", 0), //완
+            new Item(6, "워그드라실 꿀(5)", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon, "Defense", 5), //완
+            new Item(7, "기름(5)", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon, "Defense", 5),//완
+            new Item(8, "수액(10)", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon, "Heal", 10),//완
+            new Item(9, "연막탄(9)", "나무의 체력을 일정 턴 동안 보이지 않게 한다.", smokeIcon, "Gimmick", 9),
+            new Item(10, "오징어 먹물(12)", "상대방에게 던져서, 상대방이 다음 턴에 주는 모든 데미지를 대폭 하락시킨다.", squidIcon, "Hit", 12),//완
+            new Item(11, "나무 방패(10)", "나무에게 방패를 씌워, 한 사이클동안 나무에게 주는 데미지를 감소시킨다.", treeShildIcon, "Defense", 10),//완
+            new Item(12, "녹용(8)", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon, "Hit", 8)//완
         };
 
-        //플레이어의 아이템들을 저장하는 리스트
-        //playerItems = new List<Item>();
-        //적의 아이템들을 저장하는 리스트
-        enemyItems = new List<Item>();
 
         //게임 시작시, 해당 버튼 선택 창의 버튼 리스트를 랜덤 아이템으로 초기화 할 수 있도록 함수를 호출한다.
         SetRandomItemsOnButtons();
@@ -130,64 +130,155 @@ public class ItemManager : SingleTon<ItemManager>
         Flag = flag; 
         if (flag == 0)//내 기력을 일점 부분 회복시키거나 감소시킨다.
 		{
-            int randomValue = Random.Range(-10, 30);
+            int randomValue = Random.Range(-10, 40);
             Debug.Log("Random mana charge value is " + randomValue);
             GameManager.Instance.PlayerController.setMana(randomValue);
         }
         else if (flag == 1)
         {
+            if(GameManager.Instance.Turn == 0)
+            {
+                GameManager.Instance.PlayerController.setMana(-15);
+            }
+            else if(GameManager.Instance.Turn == 1)
+            {
+                GameManager.Instance.EnemeyController.setMana(-15);
+            }
             DeerController.Instance.Deer.SetActive(true);
             DeerController.Instance.DeerActivated = true;
         }
         else if (flag == 2)
         {
-        }
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-8);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-8);
+			}
+
+
+		}
         else if (flag == 3)
         {
-        }
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-10);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-10);
+			}
+
+		}
         else if (flag == 4)//추가 아이템을 획득한다
 		{
-            SetRandomItemsOnButtons();
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-8);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-8);
+			}
+			SetRandomItemsOnButtons();
             
         }
         else if (flag == 5)//기력을 일정 부분 회복한다.(확정적으로 회복)
 		{
-			int randomValue = Random.Range(3, 10);
+			int randomValue = Random.Range(10, 20);
 			Debug.Log("Random mana charge value is " + randomValue);
 			GameManager.Instance.PlayerController.setMana(randomValue);
 		}
         else if (flag == 6) //마을 체력을 회복시키는 아이템
         {
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-5);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-5);
+			}
 			int randomValue = Random.Range(50, 100);
             Debug.Log("Random Village charge value is " + randomValue);
             VillageManager.Instance.VilageHelath = randomValue; 
 		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
 		{
-            //Do job at TreeController
-        }
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-5);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-5);
+			}
+			//Do job at TreeController
+		}
         else if (flag == 8)//나무에게 사용하여 나무의 체력을 회복시킨다.
 		{
-            int randomValue = Random.Range(200, 350);
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-10);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-10);
+			}
+			int randomValue = Random.Range(200, 350);
             Debug.Log("Random tree health charge value is " + randomValue);
             GameManager.Instance.TreeController.setTreeHealth(randomValue);
         }
         else if (flag == 9)
         {
-        }
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-9);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-9);
+			}
+		}
         //아래 두 아이템은 최종 데미지 계산에서 가하는 계수를 조정한다.
         else if (flag == 10) //오징어 먹물
         {
-            GameManager.Instance.TreeController.OppositeDamageCoef = 0.3f;
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-12);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-12);
+			}
+			GameManager.Instance.TreeController.OppositeDamageCoef = 0.3f;
         }
         else if (flag == 11) //나무 방패
         {
-            GameManager.Instance.TreeController.MyDamageCoef = 0.6f;
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-10);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-10);
+			}
+			GameManager.Instance.TreeController.MyDamageCoef = 0.6f;
 			GameManager.Instance.TreeController.OppositeDamageCoef = 0.6f;
 		}
         else if (flag == 12)//나무에게 주는 대미지를 대폭 상승시킨다.
 		{
-            //Do job at TreeController
-        }
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(-8);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(-8);
+			}
+			//Do job at TreeController
+		}
     }
 }

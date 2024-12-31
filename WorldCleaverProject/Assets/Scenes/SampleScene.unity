@@ -5164,7 +5164,7 @@ MonoBehaviour:
   Deer: {fileID: 597159167}
   DeerActivated: 0
   Hit: 0
-  speed: 3.12
+  speed: 2.8
 --- !u!50 &597159169
 Rigidbody2D:
   serializedVersion: 4

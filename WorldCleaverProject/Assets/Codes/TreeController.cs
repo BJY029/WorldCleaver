@@ -26,7 +26,8 @@ public class TreeController : MonoBehaviour
 		//만약 0 혹은 음수가 되면, 그냥 1로 초기화한다.
 		else if (Health + health <= 0)
 		{
-			Health = 1;
+			Health = 0;
+            GameManager.Instance.Turn = 44;
 		}
 		//그 외는 그냥 합산한 값을 저장한다.
 		else Health += health;
