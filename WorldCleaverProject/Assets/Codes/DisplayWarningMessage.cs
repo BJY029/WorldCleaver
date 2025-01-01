@@ -34,5 +34,6 @@ public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
         yield return new WaitForSeconds(waitingTime);
 		transform.localScale = Vector3.zero;
         WarningFlag = 0;
+		DisplayPlayerItems.Instance.beableButtons();
 	}
 }

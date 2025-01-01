@@ -20,7 +20,7 @@ public class GameManager : SingleTon<GameManager>
     public int MyVillageWeight;
     public int OppositeVillageWeight;
     public int MyDamageTotalCnt;
-    private int OppositeDamageTotalCnt;
+    public int OppositeDamageTotalCnt;
 
 	private void Awake()
 	{
@@ -39,9 +39,12 @@ public class GameManager : SingleTon<GameManager>
         //사슴 아이템 비활성화
         DeerController.Instance.DeerActivated = false;
         DeerController.Instance.Deer.SetActive(false);
+        EnemyDeerController.Instance.DeerActivated = false;
+        EnemyDeerController.Instance.Deer.SetActive(false) ;
 	}
 
-    //현재 Turn에 따라 실행하는 Hit의 함수가 다르다.
+    //현재 Turn에 따라 실행하는 Hit의
+    //함수가 다르다.
     //이를 통제하는 게임 메니져 함수이다.
     public void Hit()
     {
@@ -104,7 +107,7 @@ public class GameManager : SingleTon<GameManager>
         {
             //플레이어로 턴을 초기화한다.
             Turn = 0;
-            DisplayPlayerItems.Instance.beableButtons();
+            //DisplayPlayerItems.Instance.beableButtons();
         }
         //현재 Trun이 44이면
         else if (Turn == 44)

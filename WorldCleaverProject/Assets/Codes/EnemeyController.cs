@@ -44,13 +44,13 @@ public class EnemeyController : MonoBehaviour
 		if (enemyMana > HitMana)
 		{
 			enemyMana -= HitMana;
-			Debug.Log("Enemy Mana: " + enemyMana);
+			//Debug.Log("Enemy Mana: " + enemyMana);
 		}
 		else
 		{
 			//만약 기력이 다 떨어지면, Turn을 44로 변환
 			enemyMana = 0;
-			Debug.Log("Enemy Lose!");
+			//Debug.Log("Enemy Lose!");
 			GameManager.Instance.Turn = 44;
 		}
 		//Hit 버튼을 누른 후, 턴이 교체된다.

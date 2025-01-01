@@ -135,20 +135,30 @@ public class ItemManager : SingleTon<ItemManager>
 		{
             int randomValue = Random.Range(-10, 40);
             Debug.Log("Random mana charge value is " + randomValue);
-            GameManager.Instance.PlayerController.setMana(randomValue);
+            if(GameManager.Instance.Turn == 0)
+            {
+				GameManager.Instance.PlayerController.setMana(randomValue);
+			}
+            else if(GameManager.Instance.Turn == 1)
+            {
+                GameManager.Instance.EnemeyController.setMana(randomValue);
+            }
         }
         else if (flag == 1)
         {
             if(GameManager.Instance.Turn == 0)
             {
                 GameManager.Instance.PlayerController.setMana(-15);
-            }
+				DeerController.Instance.Deer.SetActive(true);
+				DeerController.Instance.DeerActivated = true;
+			}
             else if(GameManager.Instance.Turn == 1)
             {
                 GameManager.Instance.EnemeyController.setMana(-15);
+                EnemyDeerController.Instance.Deer.SetActive(true);
+                EnemyDeerController.Instance.DeerActivated = true;
             }
-            DeerController.Instance.Deer.SetActive(true);
-            DeerController.Instance.DeerActivated = true;
+            
         }
         else if (flag == 2)
         {
@@ -180,33 +190,41 @@ public class ItemManager : SingleTon<ItemManager>
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-8);
+				SetRandomItemsOnButtons();
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-8);
+                EnemyAI.Instance.ChooseEnemyItem();
 			}
-			SetRandomItemsOnButtons();
-            
         }
         else if (flag == 5)//기력을 일정 부분 회복한다.(확정적으로 회복)
 		{
 			int randomValue = Random.Range(10, 20);
 			Debug.Log("Random mana charge value is " + randomValue);
-			GameManager.Instance.PlayerController.setMana(randomValue);
+			if (GameManager.Instance.Turn == 0)
+			{
+				GameManager.Instance.PlayerController.setMana(randomValue);
+			}
+			else if (GameManager.Instance.Turn == 1)
+			{
+				GameManager.Instance.EnemeyController.setMana(randomValue);
+			}
 		}
         else if (flag == 6) //마을 체력을 회복시키는 아이템
         {
+			int randomValue = Random.Range(50, 100);
+			Debug.Log("Random Village charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
+				VillageManager.Instance.VilageHelath = randomValue;
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-5);
+                OppositeVillageManager.Instance.OppositeVillageHealth = randomValue;
 			}
-			int randomValue = Random.Range(50, 100);
-            Debug.Log("Random Village charge value is " + randomValue);
-            VillageManager.Instance.VilageHelath = randomValue; 
 		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
 		{
@@ -222,6 +240,8 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 8)//나무에게 사용하여 나무의 체력을 회복시킨다.
 		{
+			int randomValue = Random.Range(200, 350);
+			Debug.Log("Random tree health charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-10);
@@ -230,8 +250,7 @@ public class ItemManager : SingleTon<ItemManager>
 			{
 				GameManager.Instance.EnemeyController.setMana(-10);
 			}
-			int randomValue = Random.Range(200, 350);
-            Debug.Log("Random tree health charge value is " + randomValue);
+			
             GameManager.Instance.TreeController.setTreeHealth(randomValue);
         }
         else if (flag == 9)
@@ -251,12 +270,14 @@ public class ItemManager : SingleTon<ItemManager>
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-12);
+				GameManager.Instance.TreeController.OppositeDamageCoef = 0.3f;
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-12);
+                GameManager.Instance.TreeController.MyDamageCoef = 0.3f;
 			}
-			GameManager.Instance.TreeController.OppositeDamageCoef = 0.3f;
+			
         }
         else if (flag == 11) //나무 방패
         {

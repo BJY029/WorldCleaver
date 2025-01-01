@@ -20,6 +20,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		for (int i = 0; i < playerItems.Count; i++)
 		{
 			playerItems[i].enabled = false;
+			playerItems[i].interactable = false;
 		}
 	}
 
@@ -43,7 +44,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		//그리고 모든 버튼을 비활성화 시킨다.
 		for (int i = 0; i < playerItems.Count; i++)
 		{
-			playerItems[i].enabled = false;
+			playerItems[i].interactable = false;
 		}
 	}
 
@@ -54,7 +55,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		for (int i = 0; i < playerItems.Count; i++)
 		{
 			Sprite sprite = playerItems[i].GetComponent<Image>().sprite;
-			if (sprite != null) playerItems[i].enabled = true;
+			if (sprite != null) playerItems[i].interactable = true;
 		}
 	}
 
@@ -98,6 +99,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		script.itemName = item.itemName;
 		//그 다음 버튼을 활성화 시킨다.
 		playerItems[flag].enabled = true;
+		playerItems[flag].interactable = true;
 	}
 
 	//아이템이 선택되었을 때, 삭제 및 기능 수행 함수
@@ -112,6 +114,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		script.itemDesc = null;
 		script.itemName = null;
 		playerItems[idx].enabled = false;
+		playerItems[idx].interactable = false;
 
 		//플래그 초기화
 		int flag = -1;

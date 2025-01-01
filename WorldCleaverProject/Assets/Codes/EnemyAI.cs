@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,26 +33,26 @@ public class EnemyAI : SingleTon<EnemyAI>
     private float Coef;
     private float ManaCoef;
 
+    private Dictionary<string, Dictionary<AIState, float>> itemCoff;
+
     void Start()
     {
         CurrentState = AIState.Neutral;
 		EnemyItems = new List<Item> {null, null, null, null, null};
 		chooseanItems = new List<Item> { null, null, null, null, null };
-	}
 
-	public void EnemyTurnBehavior()
-	{
-		if (GameManager.Instance.Turn != 1) return;
-        ChooseEnemyItem();
-		StartCoroutine("EnemyTurn");
-	}
+        itemCoff = new Dictionary<string, Dictionary<AIState, float>>()
+        {
+            {"Hit", new Dictionary<AIState, float>{{AIState.Aggressive, 5.0f}, {AIState.Neutral, 3.0f}, {AIState.Defensive, 1.0f } } },
+            {"Charge", new Dictionary<AIState, float>{ {AIState.Aggressive, 1.0f }, { AIState.Neutral, 3.0f}, {AIState.Defensive, 5.0f } } },
+			{"Defense", new Dictionary<AIState, float>{ {AIState.Aggressive, 1.0f }, { AIState.Neutral, 3.0f}, {AIState.Defensive, 5.0f } } },
+			{"Heal", new Dictionary<AIState, float>{ {AIState.Aggressive, 1.0f }, { AIState.Neutral, 3.0f}, {AIState.Defensive, 5.0f } } },
+			{"Village", new Dictionary<AIState, float>{ {AIState.Aggressive, 1.0f }, { AIState.Neutral, 3.0f}, {AIState.Defensive, 5.0f } } },
+			{"Gimmick", new Dictionary<AIState, float>{ {AIState.Aggressive, 1.0f }, { AIState.Neutral, 5.0f}, {AIState.Defensive, 3.0f } } },
+		};
+    }
 
-	IEnumerator EnemyTurn()
-	{
-		yield return new WaitForSeconds(waitSecond);
-		GameManager.Instance.AnimationManager.Hit();
-		GameManager.Instance.Hit();
-	}
+
 
 
 	public void ChooseEnemyItem()
@@ -82,6 +83,7 @@ public class EnemyAI : SingleTon<EnemyAI>
         checkState();
        
         //각 아이템의 우선순위 계수를 부여한다.
+        /*
         foreach (Item item in chooseanItems)
         {
             if(item.Type == "Hit")
@@ -127,6 +129,22 @@ public class EnemyAI : SingleTon<EnemyAI>
             else if (CurrentState == AIState.Aggressive) item.priority = AggressiveCoef * ManaCoef * item.Coef;
             else if(CurrentState == AIState.Defensive) item.priority = DefensiveCoef * ManaCoef * item.Coef;
 		}
+        */
+
+        foreach(Item item in chooseanItems)
+        {
+            //딕셔너리를 활용하여 최적화 진행
+            //TryGetValue 함수는 itemCoff 딕셔너리에서 item.Type을 키로하여 내부 딕셔너리를 가져온다.
+            //성공적으로 가져올 시, 상태별 계수(stateCoff)을 out 변수로 반환한다.
+            if(itemCoff.TryGetValue(item.Type, out var stateCoff))
+            {
+                //coef에 가져온 딕셔너리의 현재 상태 값을 키로 하여서, 해당 값에 연결된 계수 값을 가져온다.
+                float coef = stateCoff[CurrentState];
+                ManaCoef = CalcManaCoef(item.Mana);
+                item.priority = coef * ManaCoef * item.Coef;
+            }
+        }
+
 
         //아이템 중 우선순위가 가장 큰 아이템을 선정한다.
         Item chooseItem = null;
@@ -147,9 +165,59 @@ public class EnemyAI : SingleTon<EnemyAI>
 		{
 			EnemyItems[emptySlotIndex] = chooseItem;
 		}
-
+        DisplayEnemyItems.Instance.insertItem(chooseItem);
 		Debug.Log("Enemy choose " + chooseItem.itemName);
     }
+
+    public void UseEnemyItem()
+    {
+        //현재 보유한 아이템이 없는 경우 아이템을 사용하지 않는다.
+        if(isEnemyItemisEmpty()) return;
+
+        //가장 큰 우선순위를 지닌 아이템을 저장할 변수
+        Item useItem = null;
+        float maxPriority = -1.0f;
+
+        //현재 상태 체크
+		checkState();
+
+		for(int i = 0; i < 5; i++)
+        {
+            Item item = EnemyItems[i];
+            //만약 저장된 아이템 리스트 중 아무것도 저장되지 않은 경우 그냥 넘어간다.
+            if(item == null) continue;
+
+            //딕셔너리 연산을 통해 우선순위 연산을 진행한다.
+			if (itemCoff.TryGetValue(item.Type, out var stateCoff))
+			{
+				//coef에 가져온 딕셔너리의 현재 상태 값을 키로 하여서, 해당 값에 연결된 계수 값을 가져온다.
+				float coef = stateCoff[CurrentState];
+				ManaCoef = CalcManaCoef(item.Mana);
+				item.priority = coef * ManaCoef * item.Coef;
+			}
+            //계산한 아이템의 우선순위가 가장 큰 경우, 해당 아이템을 저장한다.
+            if(maxPriority < item.priority)
+            {
+                maxPriority = item.priority;
+                useItem = item;
+            }
+		}
+
+        //만약 선택된 아이템의 마나 사용량이 나의 마나 보유량보다 큰 경우, 아이템을 사용하지 않는다.
+        //Hit Mana 까지 고려하기위해 5를 더한다.
+        if (useItem.Mana + 5 >= GameManager.Instance.EnemeyController.Mana) return;
+
+        //해당 아이템을 사용한다.
+		Debug.Log("Enemy use " + useItem.itemName);
+        //우선 적 아이템 리스트에서 해당 아이템을 null 처리 하고
+        EnemyItems[EnemyItems.IndexOf(useItem)] = null;
+        //UI 상에서의 버튼 리스트에서도 제거한다.
+		DisplayEnemyItems.Instance.removeItem(useItem.icon);
+        //그리고 해당 아이템의 효과를 ItemFunciton 함수를 통해 수행한다.
+        ItemManager.Instance.ItemFunction(useItem.id);
+    }
+
+
 
 	public bool isEnemyItemisFull()
 	{
@@ -157,6 +225,10 @@ public class EnemyAI : SingleTon<EnemyAI>
 		return EnemyItems.Count(item => item != null) >= 5;
 	}
 
+    public bool isEnemyItemisEmpty()
+    {
+        return EnemyItems.Count(item => item == null) >= 5;
+    }
 
 	public void checkState()
     {
@@ -190,4 +262,21 @@ public class EnemyAI : SingleTon<EnemyAI>
     {
         return 1 + (mana / 15);
     }
+
+
+	public void EnemyTurnBehavior()
+	{
+		if (GameManager.Instance.Turn != 1) return;
+		ChooseEnemyItem();
+		StartCoroutine("EnemyTurn");
+	}
+
+	IEnumerator EnemyTurn()
+	{
+		yield return new WaitForSeconds(waitSecond);
+        UseEnemyItem();
+		yield return new WaitForSeconds(waitSecond);
+		GameManager.Instance.AnimationManager.Hit();
+		GameManager.Instance.Hit();
+	}
 }

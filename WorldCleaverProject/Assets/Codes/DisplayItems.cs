@@ -28,7 +28,10 @@ public class DisplayItems : SingleTon<DisplayItems>
         ItemManager.Instance.AddItemToPlayerInventory(assignedItem);
 
         ClosePanel();
-    }
+
+        //아이템이 선택된 후에 버튼을 활성화 한다.
+		DisplayPlayerItems.Instance.beableButtons();
+	}
 
     //아이템 선택 창을 띄우는 함수
     public void DisplayPanel()

@@ -48,7 +48,7 @@ public class TreeController : MonoBehaviour
 
 	public void DamageHitPlayer()
     {
-        Debug.Log("Damage Player");
+        //Debug.Log("Damage Player");
         if(ItemManager.Instance.Flag == 7)
         {
             HitDamage = RanHitDamageForOil(); //데미지 감소
@@ -69,18 +69,18 @@ public class TreeController : MonoBehaviour
 
         //아이템 여부에 따른 데미지 계수 조정
         HitDamage = (int)(HitDamage * MyDamageCoef);
-        Debug.Log("데미지 계수 : " + MyDamageCoef);
+        //Debug.Log("데미지 계수 : " + MyDamageCoef);
 
         if (HitDamage < Health)
         {
             Health -= HitDamage;
-            Debug.Log("TreeHealth :" + Health);
-            Debug.Log("My Hit Damage : " + HitDamage);
+            //Debug.Log("TreeHealth :" + Health);
+            //Debug.Log("My Hit Damage : " + HitDamage);
         }
         else
         {
             //만약 Tree의 체력이 다 떨어진 경우
-			Debug.Log(GameManager.Instance.Turn + " Lose!");
+			//Debug.Log(GameManager.Instance.Turn + " Lose!");
             //사슴 박치기로 인해 체력이 다 떨어진 경우
             if(ItemManager.Instance.Flag == 1)
             {
@@ -96,25 +96,41 @@ public class TreeController : MonoBehaviour
 
     public void DamageHitOppositePlayer()
     {
-		Debug.Log("Damage Opposite Player");
-		//아직 아이템 구현이 안됨
+		//Debug.Log("Damage Player");
+		if (ItemManager.Instance.Flag == 7)
+		{
+			HitDamageFromOp = RanHitDamageForOil(); //데미지 감소
+		}
+		else if (ItemManager.Instance.Flag == 12)
+		{
+			HitDamageFromOp = RanHitDamageForVelvet();//데미지 증가
+		}
+		else if (ItemManager.Instance.Flag == 1)//사슴 박치기인 경우
+		{
+			HitDamageFromOp = RanHitDamageForDeer();
+			GameManager.Instance.OppositeDamageTotalCnt = 0; //마을 데미지 스택을 0으로 초기화 시켜준다.
+		}
+		else
+		{
+            Debug.Log("imin");
+			HitDamageFromOp = RandHitDamage();
+		}
 
-		HitDamageFromOp = RandHitDamage();
 
         //아이템 여부에 따른 데미지 계수 조정
         HitDamageFromOp = (int)(HitDamageFromOp * OppositeDamageCoef);
-		Debug.Log("적 데미지 계수 : " + OppositeDamageCoef);
+		//Debug.Log("적 데미지 계수 : " + OppositeDamageCoef);
 
 		if (HitDamageFromOp < Health)
         {
 			Health -= HitDamageFromOp;
-			Debug.Log("TreeHealth :" + Health);
+			//Debug.Log("TreeHealth :" + Health);
 			Debug.Log("Opposite Hit Damage : " + HitDamageFromOp);
 		}
         else
         {
 			//만약 Tree의 체력이 다 떨어진 경우
-			Debug.Log(GameManager.Instance.Turn + " Win!");
+			//Debug.Log(GameManager.Instance.Turn + " Win!");
 			//사슴 박치기로 인해 체력이 다 떨어진 경우
 			if (ItemManager.Instance.Flag == 1)
 			{

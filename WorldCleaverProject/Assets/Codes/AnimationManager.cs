@@ -41,7 +41,7 @@ public class AnimationManager : MonoBehaviour
 		else if(Turn == 1) //적 턴이면, 적의 애니메이션을 초기화 한다.
 		{
 			EnemyAnim.SetBool("isHit", false);
-			DisplayPlayerItems.Instance.beableButtons();
+			//DisplayPlayerItems.Instance.beableButtons();
 			//만약 플레이어의 아이템이 아직 다 꽉 차지 않은 경우
 			if (DisplayPlayerItems.Instance.isFull() == false)
 			{
