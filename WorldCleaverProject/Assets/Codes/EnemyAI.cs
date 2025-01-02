@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 //AI state machine
 public enum AIState
@@ -73,8 +74,7 @@ public class EnemyAI : SingleTon<EnemyAI>
 
 
             chooseanItems.Add(randomItem);
-
-        }
+		}
 
         //해당 선택지 중 현재 상황에 맞게 아이템 선택
 
@@ -142,7 +142,20 @@ public class EnemyAI : SingleTon<EnemyAI>
                 float coef = stateCoff[CurrentState];
                 ManaCoef = CalcManaCoef(item.Mana);
                 item.priority = coef * ManaCoef * item.Coef;
-            }
+
+				//Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
+				//마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				if (item.Type == "Charge")
+					item.priority *= CalcEnemyManaCoef();
+				//나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Heal")
+					item.priority *= CalcTreeHealthCoef();
+				//마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Village")
+					item.priority *= CalcVillageHealthCoef();
+
+				Debug.Log(item.itemName + " priority is " + item.priority);
+			}
         }
 
 
@@ -194,6 +207,19 @@ public class EnemyAI : SingleTon<EnemyAI>
 				float coef = stateCoff[CurrentState];
 				ManaCoef = CalcManaCoef(item.Mana);
 				item.priority = coef * ManaCoef * item.Coef;
+
+                //Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
+                //마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				if (item.Type == "Charge")
+					item.priority *= CalcEnemyManaCoef();
+                //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Heal")
+					item.priority *= CalcTreeHealthCoef();
+                //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Village")
+					item.priority *= CalcVillageHealthCoef();
+
+				Debug.Log(i+1 + "'s item priority is " + item.priority);
 			}
             //계산한 아이템의 우선순위가 가장 큰 경우, 해당 아이템을 저장한다.
             if(maxPriority < item.priority)
@@ -203,11 +229,84 @@ public class EnemyAI : SingleTon<EnemyAI>
             }
 		}
 
-        //만약 선택된 아이템의 마나 사용량이 나의 마나 보유량보다 큰 경우, 아이템을 사용하지 않는다.
-        //Hit Mana 까지 고려하기위해 5를 더한다.
-        if (useItem.Mana + 5 >= GameManager.Instance.EnemeyController.Mana) return;
+        //가장 높은 우선순위의 아이템을 최종적으로 사용할 지 안할지를 정한다.
+        //만약 현재 상태가 Aggressive이면
+        if(CurrentState == AIState.Aggressive)
+        {
+            //방어적 아이템이 선정된 경우, 해당 아이템을 사용하지 않는다.
+            if (useItem.Type == "Charge" || useItem.Type == "Defense" || useItem.Type == "Heal" || useItem.Type == "Village")
+                return;
+        }
+        //만약 현재 상태가 Defenseive이면
+        else if(CurrentState == AIState.Defensive)
+        {
+			string dangerFlag = ReturnCurrentDanger();
+			Debug.Log("DangerFlag is " + dangerFlag);
 
-        //해당 아이템을 사용한다.
+            //공격적, 기믹 아이템이 선정된 경우 사용하지 않는데
+            if (useItem.Type == "Hit" || useItem.Type == "Gimmick")
+            {
+                //만약 모든 아이템이 꽉 찬 경우
+                if (isEnemyItemisFull())
+                {
+                    //보유 아이템 중 플레어 건 아이템이 있는지 확인한다.
+                    Item fgItem = ReturnFlareItem();
+                    //있으면 사용한다.
+                    if (fgItem != null) useItem = fgItem;
+                    //없으면 그냥 사용하지 않는다.
+                    else return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            //현재 위기 상황이 어떤 것인지를 파악하는 함수
+            else
+            {
+                int itemFlag = 0;
+                //각 위기상황에 따라서 사용할 아이템을 선정
+                if (dangerFlag == "100")
+                {
+                    if (useItem.Type != "Heal" && useItem.Type != "Defense") itemFlag = 1;
+                }
+                else if (dangerFlag == "010")
+                {
+                    if (useItem.Type != "Charge") itemFlag = 1;
+                }
+                else if (dangerFlag == "001")
+                {
+                    if (useItem.Type != "Village") itemFlag = 1;
+                }
+                else if (dangerFlag == "110")
+                {
+                    if (useItem.Type == "Village") itemFlag = 1;
+                }
+                else if (dangerFlag == "101")
+                {
+                    if (useItem.Type == "Charge") itemFlag = 1;
+                }
+                else if (dangerFlag == "011")
+                {
+                    if (useItem.Type == "Heal" && useItem.Type == "Defense") itemFlag = 1;
+                }
+                //만약 우선순위가 가장 높은 아이템이 현재 상황에 맞지 않은 아이템일 경우
+                if (itemFlag == 1)
+                {
+					//보유 아이템 중 플레어 건 아이템이 있는지 확인한다.
+					Item fgItem = ReturnFlareItem();
+					//있으면 사용한다.
+					if (fgItem != null) useItem = fgItem;
+					//없으면 그냥 사용하지 않는다.
+					else return;
+				}
+			}
+		}
+
+		//만약 선택된 아이템의 마나 사용량이 나의 마나 보유량보다 큰 경우, 아이템을 사용하지 않는다.
+		//Hit Mana 까지 고려하기위해 5를 더한다.
+		if (useItem.Mana + 5 >= GameManager.Instance.EnemeyController.Mana) return;
+		//해당 아이템을 사용한다.
 		Debug.Log("Enemy use " + useItem.itemName);
         //우선 적 아이템 리스트에서 해당 아이템을 null 처리 하고
         EnemyItems[EnemyItems.IndexOf(useItem)] = null;
@@ -218,6 +317,27 @@ public class EnemyAI : SingleTon<EnemyAI>
     }
 
 
+    //해당 함수는 나무의 체력, 플레이어의 마나, 마을의 체력을 확인하여 위기상황인 것을 1, 아닌것을 0으로 반환한다.
+    //즉 - - - 에서 첫번째는 나무의 체력, 두번째는 적의 마나량, 마지막은 적의 마을 체력을 뜻한다.
+    //예를 들어 101은 나무의 체력과 마을 체력이 현재 위기상황인것을 뜻한다.
+    public string ReturnCurrentDanger()
+    {
+        if (CurrentTreeHealth < 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth >= 300f)
+            return "100";
+        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
+            return "010";
+        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+            return "001";
+        else if (CurrentTreeHealth < 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
+            return "110";
+        else if (CurrentTreeHealth < 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+            return "101";
+        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
+            return "011";
+        else if (CurrentTreeHealth < 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
+            return "111";
+        return "000";
+    }
 
 	public bool isEnemyItemisFull()
 	{
@@ -237,11 +357,11 @@ public class EnemyAI : SingleTon<EnemyAI>
 		CurrentEnemyMana = GameManager.Instance.EnemeyController.Mana;
 		CurrentEnemyVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
 
-        if(CurrentTreeHealth < 300f || CurrentEnemyMana < 40f || CurrentEnemyVillageHealth < 300)
+        if(CurrentTreeHealth < 300f || CurrentEnemyMana < 40f || CurrentEnemyVillageHealth < 300f)
         {
             CurrentState = AIState.Defensive;
         }
-        else if (CurrentTreeHealth >= 600f && CurrentEnemyMana >= 60 && CurrentEnemyVillageHealth >= 500)
+        else if (CurrentTreeHealth >= 600f && CurrentEnemyMana >= 60f && CurrentEnemyVillageHealth >= 500f)
         {
             CurrentState = AIState.Aggressive;
         }
@@ -251,6 +371,19 @@ public class EnemyAI : SingleTon<EnemyAI>
         }
 	}
     
+    public Item ReturnFlareItem()
+    {
+        foreach(Item item in EnemyItems)
+        {
+            if(item == null) continue;
+            if(item.itemName == "플레어 건(8)")
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -260,9 +393,23 @@ public class EnemyAI : SingleTon<EnemyAI>
 
     float CalcManaCoef(float mana)
     {
-        return 1 + (mana / 15);
+        return (30 - mana) / 15;
     }
 
+    float CalcEnemyManaCoef()
+    {
+        return 1 + ((100 - CurrentEnemyMana) / 100);
+    }
+
+    float CalcTreeHealthCoef()
+    {
+        return 1 + ((1000 - CurrentTreeHealth) / 1000);
+    }
+
+    float CalcVillageHealthCoef()
+    {
+        return 1 + ((1000 - CurrentEnemyVillageHealth) / 1000); 
+    }
 
 	public void EnemyTurnBehavior()
 	{

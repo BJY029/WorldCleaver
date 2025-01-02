@@ -19,6 +19,8 @@ public class UIManager : SingleTon<UIManager>
 	public Button ToOppositeVillageButton;
 	public Slider VillageSlider;
 	public Slider OppositeVillageSlider;
+	public Slider MyVillageSliderInMain;
+	public Slider OppositeVillageSliderInMain;
 	public GameObject ItemListPanel;
 
 	public GameObject YouWinPanel;
@@ -53,6 +55,8 @@ public class UIManager : SingleTon<UIManager>
 		treeSlider.value = InitHealth;
 		VillageSlider.value = InitVillageHealth;
 		OppositeVillageSlider.value = InitOppositeVillageHealth;
+		MyVillageSliderInMain.value = InitVillageHealth;
+		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
 	}
 
 	private void Update()
@@ -107,9 +111,11 @@ public class UIManager : SingleTon<UIManager>
 		//마을 체력 슬라이더 설정
 		float VillageHealth = VillageManager.Instance.VilageHelath;
 		VillageSlider.value = VillageHealth / InitVillageHealth;
+		MyVillageSliderInMain.value = VillageSlider.value;
 
 		float OppositeVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
 		OppositeVillageSlider.value = OppositeVillageHealth / InitOppositeVillageHealth;
+		OppositeVillageSliderInMain.value = OppositeVillageSlider.value;
 
 
 		////플레이어 턴이면
