@@ -384,6 +384,21 @@ public class EnemyAI : SingleTon<EnemyAI>
         return null;
     }
 
+    //public void StealPlayerItem()
+    //{
+    //    if (DisplayPlayerItems.Instance.isEmpty())
+    //    {
+    //        //경고문 출력
+    //        return;
+    //    }
+
+    //    List<Item> items = new List<Item>();
+    //    for (int i = 0; i < DisplayPlayerItems.Instance.playerItems.Count; i++)
+    //    {
+
+    //    }
+    //}
+
     // Update is called once per frame
     void Update()
     {

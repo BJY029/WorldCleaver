@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 using static UnityEditor.Progress;
 
 public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
@@ -33,6 +34,19 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 			if (!playerItems[i].enabled)
 			{
 				return false;				
+			}
+		}
+		return true;
+	}
+
+	public bool isEmpty()
+	{
+		for (int i = 0; i < playerItems.Count; i++)
+		{
+			//만약 버튼들 중 하나가 활성화 된 상태라면, 즉 빈 상태가 아니면
+			if (playerItems[i].enabled)
+			{
+				return false;
 			}
 		}
 		return true;
@@ -130,5 +144,42 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
 		ItemManager.Instance.ItemFunction(flag);
+	}
+
+	//독수리 아이템용 함수
+	//적으로부터 아이템을 빼앗아온다.
+	public void StealEnemyItem()
+	{
+		if (EnemyAI.Instance.isEnemyItemisEmpty())
+		{
+			//경고문 출력
+			return;
+		}
+
+		//적 아이템 중 null이 아닌 아이템을 저장할 리스트
+		List<Item> idxArr = new List<Item>();
+
+		//LINQ를 이용한 필터링
+		//null이 아닌 아이템만 필터링한다.
+		idxArr = EnemyAI.Instance.EnemyItems.Where(item => item != null).ToList();
+
+		//유효한 아이템이 없으면 경고 출력
+		if(idxArr.Count == 0)
+		{
+			//경고문 출력
+			return;
+		}		
+
+		int maxRange = idxArr.Count;
+		int randIdx = Random.Range(0, maxRange);
+
+		//적으로부터 아이템을 선택한다.
+		Item ChooseItem = idxArr[randIdx];
+
+		//적 아이템 리스트에서 해당 아이템을 제거한다.
+		EnemyAI.Instance.EnemyItems[EnemyAI.Instance.EnemyItems.IndexOf(ChooseItem)] = null;
+		DisplayEnemyItems.Instance.removeItem(ChooseItem.icon);
+		//선택된 아이템을 플레이어 아이템 리스트에 배치한다.
+		insertItem(ChooseItem);
 	}
 }
