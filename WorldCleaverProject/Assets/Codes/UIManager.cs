@@ -31,6 +31,7 @@ public class UIManager : SingleTon<UIManager>
 	private float InitEnemyPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
 	private float InitVillageHealth;//마을 체력의 초깃값을 저장하기 위한 변수
 	private float InitOppositeVillageHealth;
+	private CanvasGroup SliderGroup;
 
 	//마지막 연산을 위한 플래그 설정
 	private int flag = 0;
@@ -49,6 +50,7 @@ public class UIManager : SingleTon<UIManager>
 
 		VillageCanvas.enabled = false;
 		OppositeVillageCanvas.enabled = false;
+		SliderGroup = treeSlider.GetComponent<CanvasGroup>();
 
 		playerSlider.value = InitPlayerPower;
 		EnemySlider.value = InitEnemyPower;
@@ -88,6 +90,26 @@ public class UIManager : SingleTon<UIManager>
 			//따라서, 기력 바의 연산을 끝낸 후, 예외 처리를 하기 위해 flag 도입
 			//이제 기력 바의 연산이 끝난 후에, flag 값이 1로 업데이트 되면서 return이 된다.
 			else flag = 1;
+		}
+
+		//만약 현재 연막탄 아이템이 실행중이면
+		if(ItemManager.Instance.smokeFlag != 0)
+		{
+			//게임이 끝난 경우
+			if (GameManager.Instance.Turn == 44)
+			{
+				//연막탄 효과를 해제한다.
+				SliderGroup.alpha = 1f;
+			}
+			else
+			{
+				//아니면 유지한다.
+				SliderGroup.alpha = 0f;
+			}
+		}
+		else
+		{
+			SliderGroup.alpha = 1f;
 		}
 
 		//현재 나무 체력 받아오기
@@ -136,8 +158,8 @@ public class UIManager : SingleTon<UIManager>
 		if(GameManager.Instance.Turn == 1) ToVillageButton.interactable = false;
 		else if(GameManager.Instance.Turn == 0) //만약 내 턴이면
 		{
-			//만약 현재 아이템 Full 경고문이 뜨고 있는 상태면
-			if(DisplayWarningMessage.Instance.WarningFlag == 1)
+			//만약 현재 아이템 Full 경고문 혹은 Empty 경고문이 뜨고 있는 상태면
+			if(DisplayWarningMessage.Instance.WarningFlag == 1 || DisplayEmptyMessage.Instance.WarningFlag == 1)
 			{
 				//비활성화
 				ToVillageButton.interactable = false;

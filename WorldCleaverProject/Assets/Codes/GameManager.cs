@@ -51,7 +51,10 @@ public class GameManager : SingleTon<GameManager>
         //마을 체력은 매 턴마다 깎이게 된다.
         VillageManager.Instance.VilageHelath = -20f * MyVillageWeight;
         OppositeVillageManager.Instance.OppositeVillageHealth = -20f * OppositeVillageWeight;
-        
+
+        //0이 아니면, 0이 될때까지 1씩 감소시킨다.
+        //0이 아닌경우, 체력 바를 숨긴다. 즉, 연막탄 아이템의 시전 시간이다.
+        if (ItemManager.Instance.smokeFlag != 0) ItemManager.Instance.smokeFlag -= 1;
 
         //현재 플레이어 턴이면
         if (Turn == 0)

@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 //AI state machine
@@ -53,7 +51,18 @@ public class EnemyAI : SingleTon<EnemyAI>
 		};
     }
 
-
+    public void insertItem(Item item)
+    {
+		//if (chooseItem.Mana > CurrentEnemyMana || chooseItem == null) return;
+		//선택된 아이템을 아이템 리스트에 삽입한다.
+		int emptySlotIndex = EnemyItems.IndexOf(null);
+		if (emptySlotIndex != -1) // 빈 슬롯이 있는 경우
+		{
+			EnemyItems[emptySlotIndex] = item;
+		}
+		DisplayEnemyItems.Instance.insertItem(item);
+		Debug.Log("Enemy choose " + item.itemName);
+	}
 
 
 	public void ChooseEnemyItem()
@@ -173,13 +182,7 @@ public class EnemyAI : SingleTon<EnemyAI>
 
 		//if (chooseItem.Mana > CurrentEnemyMana || chooseItem == null) return;
 		//선택된 아이템을 아이템 리스트에 삽입한다.
-		int emptySlotIndex = EnemyItems.IndexOf(null);
-		if (emptySlotIndex != -1) // 빈 슬롯이 있는 경우
-		{
-			EnemyItems[emptySlotIndex] = chooseItem;
-		}
-        DisplayEnemyItems.Instance.insertItem(chooseItem);
-		Debug.Log("Enemy choose " + chooseItem.itemName);
+		insertItem(chooseItem);
     }
 
     public void UseEnemyItem()
@@ -293,12 +296,29 @@ public class EnemyAI : SingleTon<EnemyAI>
                 //만약 우선순위가 가장 높은 아이템이 현재 상황에 맞지 않은 아이템일 경우
                 if (itemFlag == 1)
                 {
-					//보유 아이템 중 플레어 건 아이템이 있는지 확인한다.
+					//보유 아이템 중 플레어 건 아이템, 혹은 독수리 아이템이 있는지 확인한다.
 					Item fgItem = ReturnFlareItem();
-					//있으면 사용한다.
-					if (fgItem != null) useItem = fgItem;
-					//없으면 그냥 사용하지 않는다.
-					else return;
+                    Item egItem = ReturnEagleItem();
+                    //있으면 사용한다.
+                    if (fgItem != null || egItem != null)
+                    {
+                        if (fgItem != null && egItem != null)
+                        {
+							int RanIdx = Random.Range(0, 1);
+							if (RanIdx == 0) useItem = fgItem;
+							else if (RanIdx == 1) useItem = egItem;
+                        }
+                        else if(egItem != null)
+                        {
+                            useItem = egItem;
+                        }
+                        else
+                        {
+							useItem = fgItem;
+						}
+                    }
+                    //없으면 그냥 사용하지 않는다.
+                    else return;
 				}
 			}
 		}
@@ -356,6 +376,17 @@ public class EnemyAI : SingleTon<EnemyAI>
 		CurrentTreeHealth = GameManager.Instance.TreeController.treeHealth;
 		CurrentEnemyMana = GameManager.Instance.EnemeyController.Mana;
 		CurrentEnemyVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
+        
+        //연막탄이 펼처진 경우, 실제 값 기준 -300 ~ 300 사이의 값을 랜덤으로 받도록 설정한다.
+        if(ItemManager.Instance.smokeFlag != 0)
+        {
+            float minValue = CurrentTreeHealth - 300f;
+            if (minValue <= 0) minValue = 10f;
+            float maxValue = CurrentTreeHealth + 300f;
+            if (maxValue >= 1000) maxValue = 1000f;
+            CurrentTreeHealth = Random.Range(minValue, maxValue);
+        }
+
 
         if(CurrentTreeHealth < 300f || CurrentEnemyMana < 40f || CurrentEnemyVillageHealth < 300f)
         {
@@ -384,20 +415,83 @@ public class EnemyAI : SingleTon<EnemyAI>
         return null;
     }
 
-    //public void StealPlayerItem()
-    //{
-    //    if (DisplayPlayerItems.Instance.isEmpty())
-    //    {
-    //        //경고문 출력
-    //        return;
-    //    }
+	public Item ReturnEagleItem()
+	{
+		foreach (Item item in EnemyItems)
+		{
+			if (item == null) continue;
+			if (item.itemName == "독수리(8)")
+			{
+				return item;
+			}
+		}
+		return null;
+	}
 
-    //    List<Item> items = new List<Item>();
-    //    for (int i = 0; i < DisplayPlayerItems.Instance.playerItems.Count; i++)
-    //    {
+	public void StealPlayerItem()
+    {
+        //만약 플레이어가 가진 아이템이 없으면 아무것도 실행하지 않는다.
+        if (DisplayPlayerItems.Instance.isEmpty())
+        {
+            //경고문 출력
+            return;
+        }
 
-    //    }
-    //}
+        //플레이어 아이템 리스트는 버튼 리스트로 되어있다.ㅜㅜ
+        //플레이어가 가진 아이템들을 버튼으로 받아온다.
+        List<Button> items = new List<Button>();
+        for (int i = 0; i < DisplayPlayerItems.Instance.playerItems.Count; i++)
+        {
+            if (DisplayPlayerItems.Instance.playerItems[i].enabled == false)
+            {
+                continue;
+            }
+            items.Add(DisplayPlayerItems.Instance.playerItems[i]);
+        }
+
+        //만약 가진 아이템이 없으면 아무것도 하지 않는다.(오류 방지 2차검증)
+        if (items.Count == 0) return;
+
+        //가진 아이템 중 무작위 선출을 위한 설정 
+        int maxRange = items.Count;
+        int randIdx = Random.Range(0, maxRange);
+
+        //선정된 아이템을 버튼으로 저장
+        Button ChooseItem = DisplayPlayerItems.Instance.playerItems[randIdx];
+        //해당 인덱스를 저장한다.
+        int idx = DisplayPlayerItems.Instance.playerItems.IndexOf(ChooseItem);
+
+        //item 형식으로 변환하기 위한 작업, 이미지 스프라이트를 통해서 item을 가져온다.
+        Sprite sprite = DisplayPlayerItems.Instance.playerItems[idx].GetComponent<Image>().sprite;
+        //Linq를 사용한다.
+        var result = ItemManager.Instance.allItems.Select((item, index) => new { Item = item, Index = index }).FirstOrDefault(x => x.Item.icon == sprite);
+        //만약 아이템이 모두 null이면 오류를 반환한다.
+        if (result == null)
+        {
+            Debug.Log("Error");
+            return;
+        }
+
+        //아이템 삭제, 버튼 리스트에서 삭제를 하고
+        DisplayPlayerItems.Instance.playerItems[idx].GetComponentInChildren<Image>().sprite = null;
+        //따로 관리하는 아이템 리스트에서도 삭제한다.
+		if (!DisplayPlayerItems.Instance.PlayerItem.Contains(result.Item))
+		{
+			Debug.LogError("Item not found in PlayerItem list!");
+			return;
+		}
+		DisplayPlayerItems.Instance.PlayerItem.Remove(result.Item);
+        //또한 해당 버튼에 달린 설명 스크립트도 삭제한다.
+		ToolTipsManager script = DisplayPlayerItems.Instance.playerItems[idx].GetComponentInChildren<ToolTipsManager>();
+        script.itemDesc = null;
+        script.itemName = null;
+        //해당 버튼을 비활성화 시킨다.
+		DisplayPlayerItems.Instance.playerItems[idx].interactable = false;
+		DisplayPlayerItems.Instance.playerItems[idx].enabled = false;
+
+		//insert
+		insertItem(result.Item);
+	}
 
     // Update is called once per frame
     void Update()
@@ -418,12 +512,21 @@ public class EnemyAI : SingleTon<EnemyAI>
 
     float CalcTreeHealthCoef()
     {
-        return 1 + ((1000 - CurrentTreeHealth) / 1000);
+		if (ItemManager.Instance.smokeFlag != 0)
+		{
+			float minValue = CurrentTreeHealth - 300f;
+			if (minValue <= 0) minValue = 10f;
+			float maxValue = CurrentTreeHealth + 300f;
+			if (maxValue >= 1000) maxValue = 1000f;
+			CurrentTreeHealth = Random.Range(minValue, maxValue);
+		}
+
+		return 1 + ((1000 - CurrentTreeHealth) / 1000);
     }
 
     float CalcVillageHealthCoef()
     {
-        return 1 + ((1000 - CurrentEnemyVillageHealth) / 1000); 
+		return 1 + ((1000 - CurrentEnemyVillageHealth) / 1000); 
     }
 
 	public void EnemyTurnBehavior()

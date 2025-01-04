@@ -10,7 +10,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 {
 	//버튼 리스트 할당
     public List<Button> playerItems = new List<Button>();
-
+	public List<Item> PlayerItem = new List<Item>();
 
 	private void Start()
 	{
@@ -114,6 +114,8 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		//그 다음 버튼을 활성화 시킨다.
 		playerItems[flag].enabled = true;
 		playerItems[flag].interactable = true;
+
+		PlayerItem.Add(item);
 	}
 
 	//아이템이 선택되었을 때, 삭제 및 기능 수행 함수
@@ -132,15 +134,19 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 
 		//플래그 초기화
 		int flag = -1;
+		Item item = null;
 		for(int i = 0; i < ItemManager.Instance.allItems.Count;i++)
 		{
 			//같은 이미지가 나오면 해당 인덱스를 플래그에 저장
 			if (ItemManager.Instance.allItems[i].icon == sprite)
 			{
+				item = ItemManager.Instance.allItems[i];
 				flag = i;
 				break;
 			}
 		}
+
+		PlayerItem.Remove(item);
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
 		ItemManager.Instance.ItemFunction(flag);
@@ -153,6 +159,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		if (EnemyAI.Instance.isEnemyItemisEmpty())
 		{
 			//경고문 출력
+			DisplayEmptyMessage.Instance.ItemIsEmpty();
 			return;
 		}
 
