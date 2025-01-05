@@ -96,21 +96,33 @@ public class CameraManager : SingleTon<CameraManager>
 		//전환을 cut으로 강제 전환
 		brain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
 
-		playerCamera.Priority = 0;
+		if (GameManager.Instance.Turn == 0)
+			playerCamera.Priority = 0;
+		else if (GameManager.Instance.Turn == 1)
+			EnemyCamera.Priority = 0;
+
 		HorseCamera.Priority = 10;
 		MainCanvas.enabled = false;
 		HorseCanvers.enabled = true;
+
+		//카메라 전환 후, 다시 기본 설정으로 변경
+		StartCoroutine(RestoreBlend());
 	}
 
 	public void BackToGameFromHorse()
 	{
-		playerCamera.Priority = 10;
+		brain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+
+		if (GameManager.Instance.Turn == 0)
+			playerCamera.Priority = 10;
+		else if(GameManager.Instance.Turn == 1)
+			EnemyCamera.Priority = 10;
 		HorseCamera.Priority = 0;
 		MainCanvas.enabled = true;
 		HorseCanvers.enabled = false;
 
 		//카메라 전환 후, 다시 기본 설정으로 변경
-		RestoreBlend();
+		StartCoroutine( RestoreBlend());
 	}
 
 	private IEnumerator RestoreBlend()

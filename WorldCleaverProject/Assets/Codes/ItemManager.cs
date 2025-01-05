@@ -72,7 +72,7 @@ public class ItemManager : SingleTon<ItemManager>
             new Item(0, "이상한 포션(0)", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon, "Charge", 0, 1f),//완
             new Item(1, "사슴(15)", "사슴이 박치기 공격을 하여 큰 데미지를 입힌다.", deerIcon, "Hit", 15, 2f), //완
             new Item(2, "독수리(8)", "독수리가 상대방으로부터 아이템을 무작위로 빼앗아 온다.", eagleIcon, "Gimmick", 8, 1.7f), //완
-            new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10, 10.7f),
+            new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10, 1.7f),
             new Item(4, "플레어 건(8)", "추가 아이템을 획득한다.", flareIcon, "Gimmick", 8, 1.7f),//완
             new Item(5, "홍삼(0)", "기력을 일정 부분 회복한다.", ginsengIcon, "Charge", 0, 1f), //완
             new Item(6, "워그드라실 꿀(5)", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon, "Village", 5 ,1f), //완

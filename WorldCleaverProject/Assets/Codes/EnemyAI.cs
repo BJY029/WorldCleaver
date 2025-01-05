@@ -442,7 +442,7 @@ public class EnemyAI : SingleTon<EnemyAI>
         List<Button> items = new List<Button>();
         for (int i = 0; i < DisplayPlayerItems.Instance.playerItems.Count; i++)
         {
-            if (DisplayPlayerItems.Instance.playerItems[i].enabled == false)
+            if (DisplayPlayerItems.Instance.playerItems[i].enabled == false || DisplayPlayerItems.Instance.playerItems[i] == null)
             {
                 continue;
             }
@@ -454,19 +454,23 @@ public class EnemyAI : SingleTon<EnemyAI>
 
         //가진 아이템 중 무작위 선출을 위한 설정 
         int maxRange = items.Count;
+        Debug.Log("내 아이템 수 : " + maxRange);
         int randIdx = Random.Range(0, maxRange);
 
         //선정된 아이템을 버튼으로 저장
-        Button ChooseItem = DisplayPlayerItems.Instance.playerItems[randIdx];
+        Button ChooseItem = items[randIdx];
         //해당 인덱스를 저장한다.
         int idx = DisplayPlayerItems.Instance.playerItems.IndexOf(ChooseItem);
 
         //item 형식으로 변환하기 위한 작업, 이미지 스프라이트를 통해서 item을 가져온다.
         Sprite sprite = DisplayPlayerItems.Instance.playerItems[idx].GetComponent<Image>().sprite;
-        //Linq를 사용한다.
-        var result = ItemManager.Instance.allItems.Select((item, index) => new { Item = item, Index = index }).FirstOrDefault(x => x.Item.icon == sprite);
-        //만약 아이템이 모두 null이면 오류를 반환한다.
-        if (result == null)
+		//Linq를 사용한다.
+		var result = ItemManager.Instance.allItems
+	 .Where(item => item != null && item.icon != null) // null 값을 걸러냄
+	 .Select((item, index) => new { Item = item, Index = index })
+	 .FirstOrDefault(x => x.Item.icon == sprite);
+		//만약 아이템이 모두 null이면 오류를 반환한다.
+		if (result == null)
         {
             Debug.Log("Error");
             return;
