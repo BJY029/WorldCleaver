@@ -10,6 +10,10 @@ public class CameraManager : SingleTon<CameraManager>
 	public CinemachineVirtualCamera EnemyCamera;
 	public CinemachineVirtualCamera VillageCamera;
 	public CinemachineVirtualCamera OppositeVillageCamera;
+	public CinemachineVirtualCamera HorseCamera;
+
+	CinemachineBrain brain;
+	CinemachineBlendDefinition originalBlend;
 
 	//메인 맵 캔버스
 	public Canvas MainCanvas;
@@ -17,6 +21,22 @@ public class CameraManager : SingleTon<CameraManager>
 	public Canvas VillageCanvers;
 	//적 마을 맵 캔버스
 	public Canvas OppositeVillageCanvers;
+	//결투신청 맵 캔버스
+	public Canvas HorseCanvers;
+
+	private void Start()
+	{
+		//본래 카메라를 cut으로 움직이도록 설정했으나, Cinemachine이 기본적으로
+		//Blend 설정을 사용하여 카메라 간 전환을 부드럽게 처리한다.
+		//따라서 적 AI가 함수를 통해 카메라를 변경할 시, cut이 아닌 ease로 부드럽게 전환이 이루어지게 된다.
+		//그리하여, 카메라 전환이 발생시, Cinemachine의 Blend 설정을 cut로 변경하고, 다시 되돌리는 방식을 사용한다.
+
+		//Cinemachine Brain 참조
+		brain = Camera.main.GetComponent<CinemachineBrain>();
+
+		//Blend 설정 저장
+		originalBlend = brain.m_DefaultBlend;
+	}
 
 	//카메라 우선순위를 바꾸는 함수
 	//해당 함수는 Hit 애니메이션 코루틴이 끝난 후 호출된다.
@@ -69,5 +89,33 @@ public class CameraManager : SingleTon<CameraManager>
 		OppositeVillageCamera.Priority = 0;
 		MainCanvas.enabled = true;
 		OppositeVillageCanvers.enabled = false;
+	}
+
+	public void GoToHorse()
+	{
+		//전환을 cut으로 강제 전환
+		brain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+
+		playerCamera.Priority = 0;
+		HorseCamera.Priority = 10;
+		MainCanvas.enabled = false;
+		HorseCanvers.enabled = true;
+	}
+
+	public void BackToGameFromHorse()
+	{
+		playerCamera.Priority = 10;
+		HorseCamera.Priority = 0;
+		MainCanvas.enabled = true;
+		HorseCanvers.enabled = false;
+
+		//카메라 전환 후, 다시 기본 설정으로 변경
+		RestoreBlend();
+	}
+
+	private IEnumerator RestoreBlend()
+	{
+		yield return null;
+		brain.m_DefaultBlend = originalBlend;
 	}
 }

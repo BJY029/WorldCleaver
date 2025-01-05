@@ -540,7 +540,18 @@ public class EnemyAI : SingleTon<EnemyAI>
 	{
 		yield return new WaitForSeconds(waitSecond);
         UseEnemyItem();
-		yield return new WaitForSeconds(waitSecond);
+
+        //결투 신청 아이템의 경우, 해당 작업 수행 중에, HIT을 수행하지 못하도록
+        //코루틴의 시간 흐름을 잠시 멈춘다.
+        float elapsed = 0f;
+        while (elapsed < waitSecond)
+        {
+            if (!HorseManager.Instance.EnemyAIStop)
+            {
+                elapsed += Time.deltaTime;
+            }
+            yield return null;
+        }
 		GameManager.Instance.AnimationManager.Hit();
 		GameManager.Instance.Hit();
 	}

@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - tree
+  - Point1
+  - Point2
+  - Point3
+  - GoalLine
+  - StopLine
   layers:
   - Default
   - TransparentFX
