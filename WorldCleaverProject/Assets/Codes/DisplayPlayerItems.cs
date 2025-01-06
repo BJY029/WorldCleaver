@@ -12,8 +12,10 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
     public List<Button> playerItems = new List<Button>();
 	public List<Item> PlayerItem = new List<Item>();
 
+	public Item checkItem;
 	private void Start()
 	{
+		checkItem = null;
 		//해당 자식들의 버튼 수만큼 버튼을 할당한다.
 		playerItems.AddRange(GetComponentsInChildren<Button>());
 
@@ -115,12 +117,25 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		playerItems[flag].enabled = true;
 		playerItems[flag].interactable = true;
 
+		//만약 플레어건 혹은 독수리 아이템이 선택되었었다면, 버튼을 비활성화 하고, 아이템 플래그를 null로 초기화
+		if (checkItem != null)
+		{
+			disableButtons();
+			checkItem = null;
+		}
+		//아닌경우, 그냥 버튼들을 활성화 시킨다.
+		else
+		{
+			beableButtons();
+		}
+
 		PlayerItem.Add(item);
 	}
 
 	//아이템이 선택되었을 때, 삭제 및 기능 수행 함수
 	public void removeItem(int idx)
 	{
+		checkItem = null;
 		//해당 버튼의 아이콘을 따로 저장하고, 삭제한다.
 		//저장한 아이콘은 밑에서, 해당 아이템의 플레그를 찾을 때 사용된다.
 		Sprite sprite = playerItems[idx].GetComponent<Image>().sprite;
@@ -147,6 +162,10 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		}
 
 		PlayerItem.Remove(item);
+		//만약 사용 아이템이 독수리 아이템이거나, 플레어건 아이템이면 checkItem에 포함시킨다.
+		if(item.itemName == "독수리(8)" || item.itemName == "플레어 건(8)")
+			checkItem = item;
+		disableButtons();
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
 		ItemManager.Instance.ItemFunction(flag);
