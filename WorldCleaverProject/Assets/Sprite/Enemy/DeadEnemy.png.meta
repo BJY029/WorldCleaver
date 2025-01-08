@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a4b245ca3423df24ca9603acf15d1a3f
+guid: cefed970930f798499de33939f227422
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,190 +97,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WolrdTreeHeal_0
+      name: DeadEnemy_0
       rect:
         serializedVersion: 2
-        x: 141
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 12
+        y: 4
+        width: 23
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23d7b755998f6d34d8ffc45ff8365091
-      internalID: -1020064707
+      spriteID: 5659cdcb3e7a8754e90b9e8cc935f8bd
+      internalID: -1212418968
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_1
+      name: DeadEnemy_1
       rect:
         serializedVersion: 2
-        x: 2028
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 61
+        y: 4
+        width: 26
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3dbe0546b9625c44d9e45c7c4a6e9c60
-      internalID: 380752265
+      spriteID: 2c9e4c07076119d40b5c966295193b86
+      internalID: 426358707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_2
+      name: DeadEnemy_2
       rect:
         serializedVersion: 2
-        x: 4098
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 106
+        y: 5
+        width: 29
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e31abe88ffbed7c4c83a50243762bbb6
-      internalID: -927506298
+      spriteID: 1396272ee432eb64bbf01ee901c38f8b
+      internalID: 1966532396
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_3
+      name: DeadEnemy_3
       rect:
         serializedVersion: 2
-        x: 6129
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 144
+        y: 5
+        width: 36
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9b9c06665c7c2940bb295432dc83b4e
-      internalID: 986824037
+      spriteID: ea575a715dc135349ad1d850fe39d3af
+      internalID: -1718382759
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_4
+      name: DeadEnemy_4
       rect:
         serializedVersion: 2
-        x: 8033
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 185
+        y: 4
+        width: 36
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06cb5948d4795db419e85c1b6f921fa7
-      internalID: 1736538638
+      spriteID: 758e76b3d1057104b94daf79d39fec79
+      internalID: -731236580
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_5
+      name: DeadEnemy_5
       rect:
         serializedVersion: 2
-        x: 10328
-        y: 0
-        width: 1473
-        height: 636
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 237
+        y: 3
+        width: 34
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 957c67e7a24ea7e42ad8b7dcc5372cbf
-      internalID: 1455878033
+      spriteID: cff6126782219ac4aabd74bf453896f5
+      internalID: -1244472206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_6
+      name: DeadEnemy_6
       rect:
         serializedVersion: 2
-        x: 12535
-        y: 0
-        width: 1473
-        height: 635
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 286
+        y: 4
+        width: 44
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e2928ca96af20f49a29e0879d12279e
-      internalID: 1682386515
+      spriteID: 7760ae0279662e541adcad1a30dfe9ce
+      internalID: 1452259050
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WolrdTreeHeal_7
+      name: DeadEnemy_7
       rect:
         serializedVersion: 2
-        x: 15240
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 342
+        y: 1
+        width: 47
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 724676ba47db46e4d9c853cfc1d9c5c6
-      internalID: 1543309658
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: WolrdTreeHeal_8
-      rect:
-        serializedVersion: 2
-        x: 17369
-        y: 0
-        width: 1473
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7b09b677e27eacf4a860923ba260dd0a
-      internalID: 1830529029
+      spriteID: 45518bd7097549544971c913fe0e8ff2
+      internalID: -673952769
       vertices: []
       indices: 
       edges: []
@@ -296,15 +275,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WolrdTreeHeal_0: -1020064707
-      WolrdTreeHeal_1: 380752265
-      WolrdTreeHeal_2: -927506298
-      WolrdTreeHeal_3: 986824037
-      WolrdTreeHeal_4: 1736538638
-      WolrdTreeHeal_5: 1455878033
-      WolrdTreeHeal_6: 1682386515
-      WolrdTreeHeal_7: 1543309658
-      WolrdTreeHeal_8: 1830529029
+      DeadEnemy_0: -1212418968
+      DeadEnemy_1: 426358707
+      DeadEnemy_2: 1966532396
+      DeadEnemy_3: -1718382759
+      DeadEnemy_4: -731236580
+      DeadEnemy_5: -1244472206
+      DeadEnemy_6: 1452259050
+      DeadEnemy_7: -673952769
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
