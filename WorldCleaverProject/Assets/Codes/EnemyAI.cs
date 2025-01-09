@@ -53,22 +53,31 @@ public class EnemyAI : SingleTon<EnemyAI>
 
     public void insertItem(Item item)
     {
-		//if (chooseItem.Mana > CurrentEnemyMana || chooseItem == null) return;
-		//선택된 아이템을 아이템 리스트에 삽입한다.
-		int emptySlotIndex = EnemyItems.IndexOf(null);
-		if (emptySlotIndex != -1) // 빈 슬롯이 있는 경우
-		{
-			EnemyItems[emptySlotIndex] = item;
-		}
-		DisplayEnemyItems.Instance.insertItem(item);
-		Debug.Log("Enemy choose " + item.itemName);
+        StartCoroutine(InsertItem(item));
 	}
 
+    IEnumerator InsertItem(Item item)
+    {
+        yield return new WaitForSeconds(1f);
+        if (GameManager.Instance.Turn != 44)
+        {
+            //if (chooseItem.Mana > CurrentEnemyMana || chooseItem == null) return;
+            //선택된 아이템을 아이템 리스트에 삽입한다.
+            int emptySlotIndex = EnemyItems.IndexOf(null);
+            if (emptySlotIndex != -1) // 빈 슬롯이 있는 경우
+            {
+                EnemyItems[emptySlotIndex] = item;
+            }
+            DisplayEnemyItems.Instance.insertItem(item);
+            Debug.Log("Enemy choose " + item.itemName);
+        }
+	}
 
 	public void ChooseEnemyItem()
     {
-        //적 아이템이 꽉 찬 경우 선택하지 않는다.
-        if (isEnemyItemisFull()) return;
+		if (GameManager.Instance.Turn == 44) return;
+		//적 아이템이 꽉 찬 경우 선택하지 않는다.
+		if (isEnemyItemisFull()) return;
 
         //기존 아이템 선택 리스트 제거
         chooseanItems.Clear();
@@ -333,7 +342,7 @@ public class EnemyAI : SingleTon<EnemyAI>
         //UI 상에서의 버튼 리스트에서도 제거한다.
 		DisplayEnemyItems.Instance.removeItem(useItem.icon);
         //그리고 해당 아이템의 효과를 ItemFunciton 함수를 통해 수행한다.
-        ItemManager.Instance.ItemFunction(useItem.id);
+        StartCoroutine(ItemManager.Instance.ItemFunction(useItem.id));
     }
 
 

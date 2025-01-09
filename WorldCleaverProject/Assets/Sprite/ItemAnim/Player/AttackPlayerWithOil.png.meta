@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 36
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -95,7 +95,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 3
+        width: 40
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf7e9863394e9bb419df5c8dd50707d6
+      internalID: 1632784775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_1
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 3
+        width: 43
+        height: 49
+      alignment: 9
+      pivot: {x: 0.42114702, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7aadfdb01d660bd4681fc2046c8b3acf
+      internalID: -1817704302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_2
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 3
+        width: 43
+        height: 49
+      alignment: 9
+      pivot: {x: 0.43398356, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aca4395b6c6d6474a8939758d28468a5
+      internalID: 801920011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 3
+        width: 41
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f68e1d7efb14aa349becbf4d03a464a3
+      internalID: 1762735585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_4
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 3
+        width: 28
+        height: 56
+      alignment: 9
+      pivot: {x: 0.54224235, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1a18714d895f1541ba457794fed36bd
+      internalID: -1218396353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_5
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 3
+        width: 28
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5422429, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c53c5dc85d4e8f745b589696b46a46e3
+      internalID: 1466054555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AttackPlayerWithOil_6
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 5
+        width: 66
+        height: 53
+      alignment: 9
+      pivot: {x: 0.28, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4898c72cff931f14e97409c2927fd85f
+      internalID: 230941748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +253,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      AttackPlayerWithOil_0: 1632784775
+      AttackPlayerWithOil_1: -1817704302
+      AttackPlayerWithOil_2: 801920011
+      AttackPlayerWithOil_3: 1762735585
+      AttackPlayerWithOil_4: -1218396353
+      AttackPlayerWithOil_5: 1466054555
+      AttackPlayerWithOil_6: 230941748
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

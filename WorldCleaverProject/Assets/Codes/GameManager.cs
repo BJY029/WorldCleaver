@@ -73,23 +73,46 @@ public class GameManager : SingleTon<GameManager>
         }
 
         //각 Hit한 사람에 맞게 데미지를 부여한다.
-        if (myTurn == 0)
+        StartCoroutine(DamageTree(myTurn));
+        //      if (myTurn == 0)
+        //      {
+        //          GameManager.Instance.TreeController.DamageHitPlayer();
+        //          //그리고 Hit한 데미지들이 비교적 적은 경우, 마을에 가하는 데미지를 증가시킨다.
+        //          checkingMyTotalDamage();
+        //          GameManager.Instance.TreeController.MyDamageCoef = 1.0f;
+        //      }
+        //      else if (myTurn == 1)
+        //      {
+        //          GameManager.Instance.TreeController.DamageHitOppositePlayer();
+        //          checkingOppositeTotalDamage();
+        //	GameManager.Instance.TreeController.OppositeDamageCoef = 1.0f;
+        //}
+
+        
+        Debug.Log("Turn : " + Turn);
+	}
+
+    IEnumerator DamageTree(int turn)
+    {
+        yield return new WaitForSeconds(Instance.AnimationManager.WaitHitTime);
+        if(turn == 0)
         {
-            GameManager.Instance.TreeController.DamageHitPlayer();
-            //그리고 Hit한 데미지들이 비교적 적은 경우, 마을에 가하는 데미지를 증가시킨다.
-            checkingMyTotalDamage();
-            GameManager.Instance.TreeController.MyDamageCoef = 1.0f;
-        }
-        else if (myTurn == 1)
+			GameManager.Instance.TreeController.DamageHitPlayer();
+			//그리고 Hit한 데미지들이 비교적 적은 경우, 마을에 가하는 데미지를 증가시킨다.
+			checkingMyTotalDamage();
+			GameManager.Instance.TreeController.MyDamageCoef = 1.0f;
+		}
+        else if(turn == 1)
         {
-            GameManager.Instance.TreeController.DamageHitOppositePlayer();
-            checkingOppositeTotalDamage();
+			GameManager.Instance.TreeController.DamageHitOppositePlayer();
+			checkingOppositeTotalDamage();
 			GameManager.Instance.TreeController.OppositeDamageCoef = 1.0f;
 		}
-
+        Debug.Log("Turn : " + Turn);
+        
+		//Instance.AnimationManager.Hit();
 		//플래그 초기화
 		ItemManager.Instance.Flag = -1;
-        Debug.Log("MyTurn : " + myTurn);
 	}
 
     //Turn을 교체하는 함수이다.

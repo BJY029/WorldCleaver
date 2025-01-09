@@ -168,7 +168,8 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		disableButtons();
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
-		ItemManager.Instance.ItemFunction(flag);
+		StartCoroutine(ItemManager.Instance.ItemFunction(flag));
+		
 	}
 
 	//독수리 아이템용 함수

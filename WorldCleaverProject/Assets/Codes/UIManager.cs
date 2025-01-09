@@ -68,6 +68,7 @@ public class UIManager : SingleTon<UIManager>
 		{
 			//게임이 누구에 의해 종료되었는지 확인한다.
 			GameManager.Instance.WhoLoseGame();
+			GameManager.Instance.AnimationManager.Dead();
 			//Hit 버튼을 비활성화 한다.
 			HitButton.interactable = false;
 			//마을 전용 Canvas 비활성화
@@ -198,6 +199,10 @@ public class UIManager : SingleTon<UIManager>
 		}
 		//적 턴인 경우 Hit 버튼을 비활성화 시킨다.
 		else if(GameManager.Instance.Turn == 1)
+		{
+			HitButton.interactable = false;
+		}
+		else if(ItemManager.Instance.FuncFlag == true)
 		{
 			HitButton.interactable = false;
 		}

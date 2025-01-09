@@ -41,6 +41,7 @@ public class ItemManager : SingleTon<ItemManager>
 
     public int Flag;
     public int smokeFlag;
+    public bool FuncFlag;
 
     //적용할 스프라이트 아이콘들
     public Sprite potionIcon;
@@ -133,11 +134,15 @@ public class ItemManager : SingleTon<ItemManager>
         Debug.Log($"{item.itemName} 아이템을 인벤토리에 추가했습니다!");
     }
 
-    public void ItemFunction(int flag)
+   
+    public IEnumerator ItemFunction(int flag)
     {
+        FuncFlag = true;
         Flag = flag; 
         if (flag == 0)//내 기력을 일점 부분 회복시키거나 감소시킨다.
 		{
+            GameManager.Instance.AnimationManager.DrinkRed();
+            yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitDrinkTime);
             int randomValue = Random.Range(-10, 40);
             Debug.Log("Random mana charge value is " + randomValue);
             if(GameManager.Instance.Turn == 0)
@@ -195,6 +200,8 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 4)//추가 아이템을 획득한다
 		{
+            GameManager.Instance.AnimationManager.FireFlare();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitFireTime);
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-8);
@@ -208,6 +215,8 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 5)//기력을 일정 부분 회복한다.(확정적으로 회복)
 		{
+            GameManager.Instance.AnimationManager.EatGin();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitDrinkTime);
 			int randomValue = Random.Range(10, 20);
 			Debug.Log("Random mana charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
@@ -221,6 +230,8 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 6) //마을 체력을 회복시키는 아이템
         {
+            GameManager.Instance.AnimationManager.DrinkHoney();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitDrinkTime);
 			int randomValue = Random.Range(50, 100);
 			Debug.Log("Random Village charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
@@ -239,15 +250,20 @@ public class ItemManager : SingleTon<ItemManager>
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
+                GameManager.Instance.AnimationManager.PlayerAnim.SetBool("Oil", true);
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-5);
+                GameManager.Instance.AnimationManager.EnemyAnim.SetBool("Oil", true);
 			}
 			//Do job at TreeController
 		}
         else if (flag == 8)//나무에게 사용하여 나무의 체력을 회복시킨다.
 		{
+            GameManager.Instance.AnimationManager.Sap();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitSapTime);
+
 			int randomValue = Random.Range(200, 350);
 			Debug.Log("Random tree health charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
@@ -263,8 +279,11 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 9)
         {
-            //두 싸이클 동안 나무의 체력 바를 숨긴다.
-            smokeFlag += 4;
+            GameManager.Instance.AnimationManager.ThrowSmoke();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitThrowTime);
+
+			//두 싸이클 동안 나무의 체력 바를 숨긴다.
+			smokeFlag += 4;
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-9);
@@ -291,6 +310,7 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 11) //나무 방패
         {
+            GameManager.Instance.AnimationManager.Shild();
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-10);
@@ -304,6 +324,8 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 12)//나무에게 주는 대미지를 대폭 상승시킨다.
 		{
+            GameManager.Instance.AnimationManager.EatDeer();
+			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitDrinkTime);
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-8);
@@ -314,5 +336,8 @@ public class ItemManager : SingleTon<ItemManager>
 			}
 			//Do job at TreeController
 		}
-    }
+        yield return null;
+
+        FuncFlag = false;
+	}
 }

@@ -38,7 +38,7 @@ public class TreeController : MonoBehaviour
 
 	private void Awake()
 	{
-        Health = 1000.0f;
+        Health = 10.0f;
 
         MyDamageCoef = 1.0f;
         OppositeDamageCoef = 1.0f;
@@ -90,8 +90,10 @@ public class TreeController : MonoBehaviour
             Health = 0.0f;
             //Turn 44를 반환한다.
 			GameManager.Instance.Turn = 44;
+            Debug.Log("ImIn, Turn == " + GameManager.Instance.Turn);
 		}
         ItemManager.Instance.Flag = -1;
+        GameManager.Instance.AnimationManager.offShild();
     }
 
     public void DamageHitOppositePlayer()
@@ -142,6 +144,7 @@ public class TreeController : MonoBehaviour
 			GameManager.Instance.Turn = 44;
 		}
 		ItemManager.Instance.Flag = -1;
+		GameManager.Instance.AnimationManager.offShild();
 	}
 
     private int RandHitDamage() //랜덤 데미지 생성
