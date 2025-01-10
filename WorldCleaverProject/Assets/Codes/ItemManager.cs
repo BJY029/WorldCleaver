@@ -41,6 +41,7 @@ public class ItemManager : SingleTon<ItemManager>
 
     public int Flag;
     public int smokeFlag;
+    public int ShildFlag;
     public bool FuncFlag;
 
     //적용할 스프라이트 아이콘들
@@ -66,11 +67,12 @@ public class ItemManager : SingleTon<ItemManager>
         DisplayEmptyMessage.Instance.closeWarningPanel();
 
         smokeFlag = 0;
+        ShildFlag = 0;
 
         allItems = new List<Item>
         {
             //해당 아이템 정보들을 생성
-            new Item(0, "이상한 포션(0)", "내 기력을 일점 부분 회복시키거나 감소시킨다.", potionIcon, "Charge", 0, 1f),//완
+            new Item(0, "이상한 포션(0)", "내 기력을 일정 부분 회복시키거나 감소시킨다.", potionIcon, "Charge", 0, 1f),//완
             new Item(1, "사슴(15)", "사슴이 박치기 공격을 하여 큰 데미지를 입힌다.", deerIcon, "Hit", 15, 2f), //완
             new Item(2, "독수리(8)", "독수리가 상대방으로부터 아이템을 무작위로 빼앗아 온다.", eagleIcon, "Gimmick", 8, 1.7f), //완
             new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10, 1.7f),
@@ -319,6 +321,7 @@ public class ItemManager : SingleTon<ItemManager>
 			{
 				GameManager.Instance.EnemeyController.setMana(-10);
 			}
+            ShildFlag += 2;
 			GameManager.Instance.TreeController.MyDamageCoef = 0.6f;
 			GameManager.Instance.TreeController.OppositeDamageCoef = 0.6f;
 		}

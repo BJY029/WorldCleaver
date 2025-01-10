@@ -246,7 +246,7 @@ public class HorseManager : SingleTon<HorseManager>
         Horse2Controller.Instance.initAll();
 
         //게임 결과 적용
-        GameManager.Instance.PlayerController.setMana(20);
+        GameManager.Instance.PlayerController.setMana(30);
         GameManager.Instance.EnemeyController.setMana(-10);
 	}
 
@@ -289,7 +289,7 @@ public class HorseManager : SingleTon<HorseManager>
 
 		//게임 결과 적용
 		GameManager.Instance.PlayerController.setMana(-10);
-		GameManager.Instance.EnemeyController.setMana(20);
+		GameManager.Instance.EnemeyController.setMana(30);
 	}
 
     //모든 패널을 닫는 함수

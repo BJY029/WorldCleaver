@@ -212,28 +212,33 @@ public class GameManager : SingleTon<GameManager>
 		if (GameManager.Instance.TreeController.treeHealth == 0)
 		{
             ReasonFlag = 0;
+            Debug.Log("나무의 체력이 다 되었으며,");
             //사슴이 막타를 친 경우
             //해당 플래그는 TreeController에서 부여된다.
             if(DeerLastHit == 0)
             {
+                Debug.Log("플레이어가 막타를 쳤습니다.");
                 WhoLose = 0;
                 return;
             }
             else if(DeerLastHit == 1)
             {
-                WhoLose = 1;
+				Debug.Log("적이 막타를 쳤습니다.");
+				WhoLose = 1;
                 return;
             }
             //내가 막타 친 경우
             if (myTurn == 0)
             {
-                //패자는 나
-                WhoLose = 0;
+				Debug.Log("플레이어가 막타를 쳤습니다.");
+				//패자는 나
+				WhoLose = 0;
             }
             else if(myTurn == 1)
             {
-                //패자는 상대
-                WhoLose = 1;
+				Debug.Log("적이 막타를 쳤습니다.");
+				//패자는 상대
+				WhoLose = 1;
             }
             return;
 		}
@@ -242,7 +247,8 @@ public class GameManager : SingleTon<GameManager>
         //내 마나가 다 떨어진 경우
 		if (GameManager.Instance.PlayerController.Mana == 0)
         {
-            ReasonFlag = 1;
+			Debug.Log("나의 마나가 다 떨어져서 게임을 졌습니다.");
+			ReasonFlag = 1;
             //패배는 나
             WhoLose = 0;
             return;
@@ -250,7 +256,8 @@ public class GameManager : SingleTon<GameManager>
         //상대 마나가 다 떨어진 경우
         else if(GameManager.Instance.EnemeyController.Mana == 0)
         {
-            ReasonFlag = 1;
+			Debug.Log("적의 마나가 다 떨어져서 게임을 졌습니다.");
+			ReasonFlag = 1;
             //패자는 상대편
             WhoLose = 1;
             return;
@@ -259,13 +266,15 @@ public class GameManager : SingleTon<GameManager>
         //각 마을의 체력이 다 닳아서 게임이 끝난된 경우
 		if (VillageManager.Instance.VilageHelath == 0)
 		{
-            ReasonFlag = 2;
+			Debug.Log("나의 마을 체력이 모두 소진되어 게임을 졌습니다..");
+			ReasonFlag = 2;
 			WhoLose = 0;
 			return;
 		}
         else if(OppositeVillageManager.Instance.OppositeVillageHealth == 0)
         {
-            ReasonFlag = 2;
+			Debug.Log("적의 마을 체력이 모두 소진되어 게임을 졌습니다..");
+			ReasonFlag = 2;
             WhoLose = 1;
             return;
         }

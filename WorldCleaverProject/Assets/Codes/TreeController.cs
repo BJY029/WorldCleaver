@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TreeController : MonoBehaviour
@@ -92,9 +93,23 @@ public class TreeController : MonoBehaviour
 			GameManager.Instance.Turn = 44;
             Debug.Log("ImIn, Turn == " + GameManager.Instance.Turn);
 		}
-        ItemManager.Instance.Flag = -1;
-        GameManager.Instance.AnimationManager.offShild();
-    }
+
+		//사슴아이템도 해당 함수를 사용하기 때문에, 잘못된 턴 계산을 막기위해, 사슴 아이템이 해당 함수를 사용하는 경우
+		//아래 로직을 수행하지 않는다.
+		if (ItemManager.Instance.Flag != 1)
+		{
+			//만약 ShilFlag가 0이 아니면, 1씩 뺀다.
+			if (ItemManager.Instance.ShildFlag != 0)
+				ItemManager.Instance.ShildFlag--;
+			//만약 ShilfFlag가 0이면, Shild 애니메이션을 끈다.
+			if (ItemManager.Instance.ShildFlag == 0)
+			{
+				GameManager.Instance.AnimationManager.offShild();
+			}
+		}
+
+		ItemManager.Instance.Flag = -1;
+	}
 
     public void DamageHitOppositePlayer()
     {
@@ -143,8 +158,23 @@ public class TreeController : MonoBehaviour
 			//Turn 44를 반환한다.
 			GameManager.Instance.Turn = 44;
 		}
+
+
+		//사슴아이템도 해당 함수를 사용하기 때문에, 잘못된 턴 계산을 막기위해, 사슴 아이템이 해당 함수를 사용하는 경우
+		//아래 로직을 수행하지 않는다.
+		if (ItemManager.Instance.Flag != 1)
+		{
+			//만약 ShilFlag가 0이 아니면, 1씩 뺀다.
+			if (ItemManager.Instance.ShildFlag != 0)
+				ItemManager.Instance.ShildFlag--;
+			//만약 ShilfFlag가 0이면, Shild 애니메이션을 끈다.
+			if (ItemManager.Instance.ShildFlag == 0)
+			{
+				GameManager.Instance.AnimationManager.offShild();
+			}
+		}
+
 		ItemManager.Instance.Flag = -1;
-		GameManager.Instance.AnimationManager.offShild();
 	}
 
     private int RandHitDamage() //랜덤 데미지 생성
