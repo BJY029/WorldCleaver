@@ -16,6 +16,8 @@ public class GameManager : SingleTon<GameManager>
     public int WhoLose;
     //사슴이 막타 친 경우 해당 플래그로 승패여부를 판별한다.
     public int DeerLastHit;
+    public int ReasonFlag; //무슨 이유로 게임을 졌는지 저장하는 플래그
+    //0 : 막타, 1 : 마나가 다 떨어짐, 2 : 마을 체력이 다 떨어짐
 
     public int MyVillageWeight;
     public int OppositeVillageWeight;
@@ -109,10 +111,33 @@ public class GameManager : SingleTon<GameManager>
 			GameManager.Instance.TreeController.OppositeDamageCoef = 1.0f;
 		}
         Debug.Log("Turn : " + Turn);
-        
+
+        //만약 막타로 게임이 끝나버린 경우
+        if (Turn != 44)
+        {
+            CameraManager.Instance.changeCamera();
+
+            //이전 턴이 내 차례였다면, 적으로 턴을 넘긴다.
+            if (turn == 0)
+            {
+                EnemyAI.Instance.EnemyTurnBehavior();
+            }
+            else if (turn == 1)
+            {
+                if (DisplayPlayerItems.Instance.isFull() == false)
+                {
+                    ItemManager.Instance.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
+                }
+                else //아이템이 꽉 찬 경우
+                {
+                    DisplayWarningMessage.Instance.itemIsFull(); //경고 메시지 출력
+                }
+            }
+        }
 		//Instance.AnimationManager.Hit();
 		//플래그 초기화
 		ItemManager.Instance.Flag = -1;
+
 	}
 
     //Turn을 교체하는 함수이다.
@@ -126,7 +151,7 @@ public class GameManager : SingleTon<GameManager>
             Turn = 1;
             DisplayPlayerItems.Instance.disableButtons();
             //적으로 턴을 변경 후, 함수를 호출한다.
-            EnemyAI.Instance.EnemyTurnBehavior();
+            //EnemyAI.Instance.EnemyTurnBehavior();
         }
         //현재 Turn이 1이면
         else if (Turn == 1)
@@ -186,6 +211,7 @@ public class GameManager : SingleTon<GameManager>
         //누가 막타 쳐서 게임이 종료된 경우
 		if (GameManager.Instance.TreeController.treeHealth == 0)
 		{
+            ReasonFlag = 0;
             //사슴이 막타를 친 경우
             //해당 플래그는 TreeController에서 부여된다.
             if(DeerLastHit == 0)
@@ -216,6 +242,7 @@ public class GameManager : SingleTon<GameManager>
         //내 마나가 다 떨어진 경우
 		if (GameManager.Instance.PlayerController.Mana == 0)
         {
+            ReasonFlag = 1;
             //패배는 나
             WhoLose = 0;
             return;
@@ -223,6 +250,7 @@ public class GameManager : SingleTon<GameManager>
         //상대 마나가 다 떨어진 경우
         else if(GameManager.Instance.EnemeyController.Mana == 0)
         {
+            ReasonFlag = 1;
             //패자는 상대편
             WhoLose = 1;
             return;
@@ -231,11 +259,13 @@ public class GameManager : SingleTon<GameManager>
         //각 마을의 체력이 다 닳아서 게임이 끝난된 경우
 		if (VillageManager.Instance.VilageHelath == 0)
 		{
+            ReasonFlag = 2;
 			WhoLose = 0;
 			return;
 		}
         else if(OppositeVillageManager.Instance.OppositeVillageHealth == 0)
         {
+            ReasonFlag = 2;
             WhoLose = 1;
             return;
         }

@@ -53,6 +53,16 @@ public class AnimationManager : MonoBehaviour
 	public void Dead()
 	{
 		int Turn = GameManager.Instance.WhoLose;
+		StartCoroutine(Dead(Turn));
+	}
+
+	IEnumerator Dead(int Turn)
+	{
+		if(GameManager.Instance.ReasonFlag == 0)
+			yield return new WaitForEndOfFrame();
+		else
+			yield return new WaitForSeconds(WaitHitTime);
+
 		if (Turn == 0)
 		{
 			PlayerAnim.SetBool("Dead", true);
@@ -280,14 +290,14 @@ public class AnimationManager : MonoBehaviour
 			EnemyAnim.SetBool("Oil", false);
 			//DisplayPlayerItems.Instance.beableButtons();
 			//만약 플레이어의 아이템이 아직 다 꽉 차지 않은 경우
-			if (DisplayPlayerItems.Instance.isFull() == false)
-			{
-				ItemManager.Instance.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
-			}
-			else //아이템이 꽉 찬 경우
-			{
-				DisplayWarningMessage.Instance.itemIsFull(); //경고 메시지 출력
-			}
+			//if (DisplayPlayerItems.Instance.isFull() == false)
+			//{
+			//	ItemManager.Instance.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
+			//}
+			//else //아이템이 꽉 찬 경우
+			//{
+			//	DisplayWarningMessage.Instance.itemIsFull(); //경고 메시지 출력
+			//}
 		}
 		//else
 		//{
@@ -295,10 +305,10 @@ public class AnimationManager : MonoBehaviour
 		//	Dead();
 		//}
 		//애니메이션이 모두 실행된 후, 카메라 교체가 이루어진다.
-		if (GameManager.Instance.Turn != 44)
-		{
-			CameraManager.Instance.changeCamera();
-		}
+		//if (GameManager.Instance.Turn != 44)
+		//{
+		//	CameraManager.Instance.changeCamera();
+		//}
 		isHitingTree = 0;
 	}
 }
