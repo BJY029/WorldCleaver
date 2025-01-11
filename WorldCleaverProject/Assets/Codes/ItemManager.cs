@@ -286,6 +286,7 @@ public class ItemManager : SingleTon<ItemManager>
         {
             GameManager.Instance.AnimationManager.ThrowSmoke();
 			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitThrowTime);
+            SmokeEffect.Instance.PlaySmoke();
 
 			//두 싸이클 동안 나무의 체력 바를 숨긴다.
 			smokeFlag += 4;

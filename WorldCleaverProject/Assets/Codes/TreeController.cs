@@ -100,7 +100,9 @@ public class TreeController : MonoBehaviour
 		{
 			//만약 ShilFlag가 0이 아니면, 1씩 뺀다.
 			if (ItemManager.Instance.ShildFlag != 0)
+			{
 				ItemManager.Instance.ShildFlag--;
+			}
 			//만약 ShilfFlag가 0이면, Shild 애니메이션을 끈다.
 			if (ItemManager.Instance.ShildFlag == 0)
 			{
