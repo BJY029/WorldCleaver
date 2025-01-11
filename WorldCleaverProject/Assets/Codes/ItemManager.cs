@@ -176,15 +176,18 @@ public class ItemManager : SingleTon<ItemManager>
         {
 			if (GameManager.Instance.Turn == 0)
 			{
+                PlayerEagleController.Instance.EagleActive = true;
+				yield return new WaitForSeconds(3.0f);
 				GameManager.Instance.PlayerController.setMana(-8);
                 DisplayPlayerItems.Instance.StealEnemyItem();
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
+                EnemyEagleController.Instance.EagleActive = true;
+                yield return new WaitForSeconds(3.0f);
 				GameManager.Instance.EnemeyController.setMana(-8);
                 EnemyAI.Instance.StealPlayerItem();
 			}
-
 
 		}
         else if (flag == 3)
@@ -305,10 +308,11 @@ public class ItemManager : SingleTon<ItemManager>
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
+				GameManager.Instance.AnimationManager.Squid();
+				yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitSquidTime);
 				GameManager.Instance.EnemeyController.setMana(-12);
                 GameManager.Instance.TreeController.MyDamageCoef = 0.3f;
 			}
-			
         }
         else if (flag == 11) //나무 방패
         {

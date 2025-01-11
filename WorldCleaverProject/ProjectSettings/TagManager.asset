@@ -10,6 +10,8 @@ TagManager:
   - Point3
   - GoalLine
   - StopLine
+  - Enemy
+  - Target
   layers:
   - Default
   - TransparentFX
