@@ -13,6 +13,10 @@ public class EnemyDeerController : SingleTon<EnemyDeerController>
 	public Boolean Hit;
 	public float speed;
 
+
+	public float RunSoundInterval = 0.5f;
+	private float RunSoundTimer;
+
 	private Vector2 InitPosition;
 
 	// Start is called before the first frame update
@@ -25,6 +29,24 @@ public class EnemyDeerController : SingleTon<EnemyDeerController>
 
 		//맨 처음 위치를 따로 저장해둔다.
 		InitPosition = Deer.transform.position;
+	}
+
+	private void Update()
+	{
+		if (DeerActivated)
+		{
+			RunSoundTimer -= Time.deltaTime;
+			if (RunSoundTimer <= 0f)
+			{
+				EffectAudioManager.Instance.PlayDeerGalloping();
+				RunSoundTimer = RunSoundInterval;
+			}
+		}
+		else
+		{
+			RunSoundTimer = 0f;
+		}
+
 	}
 
 	private void FixedUpdate()
@@ -55,6 +77,7 @@ public class EnemyDeerController : SingleTon<EnemyDeerController>
 		//tree와 충돌시, Hit 플래그를 활성화시킨다.
 		if (collision.CompareTag("tree"))
 		{
+			EffectAudioManager.Instance.PlayPunch();
 			Hit = true;
 			Debug.Log("collision");
 		}

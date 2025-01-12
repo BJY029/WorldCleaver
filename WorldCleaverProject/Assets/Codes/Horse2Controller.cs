@@ -8,6 +8,9 @@ public class Horse2Controller : SingleTon<Horse2Controller>
 	private float Speed;
 	Animator animator;
 
+	public float RunSoundInterval = 0.5f;
+	private float RunSoundTimer;
+
 	private void Start()
 	{
 		Speed = speed;
@@ -29,6 +32,23 @@ public class Horse2Controller : SingleTon<Horse2Controller>
 
 		Vector3 nextVec = Speed * new Vector3(1f, 0f) * Time.fixedDeltaTime;
 		HorseManager.Instance.Horse2_rb.MovePosition(HorseManager.Instance.Horse2_rbPrefab.transform.position + nextVec);
+	}
+
+	private void Update()
+	{
+		if (HorseManager.Instance.Horse1_Run)
+		{
+			RunSoundTimer -= Time.deltaTime;
+			if (RunSoundTimer <= 0f)
+			{
+				EffectAudioManager.Instance.PlayHorseGalloping2();
+				RunSoundTimer = RunSoundInterval;
+			}
+		}
+		else
+		{
+			RunSoundTimer = 0f;
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

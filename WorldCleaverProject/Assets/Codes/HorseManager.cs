@@ -239,6 +239,8 @@ public class HorseManager : SingleTon<HorseManager>
 
         //카메라를 다시 Main으로 돌리고
         CameraManager.Instance.BackToGameFromHorse();
+        BGMManager.Instance.BackToMain();
+
         //AI 정지 해제
         EnemyAIStop = false;
         //말의 위치 및 정보 초기화
@@ -281,6 +283,7 @@ public class HorseManager : SingleTon<HorseManager>
 
 		//카메라를 다시 Main으로 돌리고
 		CameraManager.Instance.BackToGameFromHorse();
+		BGMManager.Instance.BackToMain();
 		//AI 정지 해제
 		EnemyAIStop = false;
 		//말의 위치 및 정보 초기화

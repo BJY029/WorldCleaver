@@ -10,6 +10,8 @@ public class PlayerEagleController : SingleTon<PlayerEagleController>
 
 	private Transform Target;
 
+	public float EagIeInterval = 1.0f;
+	private float EagleTimer;
 
 	private Vector3 InitPosition;
 
@@ -24,8 +26,25 @@ public class PlayerEagleController : SingleTon<PlayerEagleController>
 		Target = target1;
 	}
 
+	private void Update()
+	{
+		if (EagleActive)
+		{
+			EagleTimer -= Time.deltaTime;
+			if(EagleTimer <= 0f)
+			{
+				EffectAudioManager.Instance.PlayEagleWing();
+				EagleTimer = EagIeInterval;
+			}
+		}
+		else
+		{
+			EagleTimer = 0f;
+		}
+	}
+
 	// Update is called once per frame
-	void Update()
+	void FixedUpdate()
 	{
 		if (EagleActive == false) return;
 

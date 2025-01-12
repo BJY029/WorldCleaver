@@ -10,6 +10,9 @@ public class Horse1Controller : SingleTon<Horse1Controller>
 	private float Speed;
 	Animator animator;
 
+	public float RunSoundInterval = 0.5f;
+	private float RunSoundTimer;
+
 	//변수 초기화 및 할당
 	private void Start()
 	{
@@ -34,6 +37,23 @@ public class Horse1Controller : SingleTon<Horse1Controller>
 
 		Vector3 nextVec = Speed * new Vector3(1f, 0f) * Time.fixedDeltaTime;
 		HorseManager.Instance.Horse1_rb.MovePosition(HorseManager.Instance.Horse1_rbPrefab.transform.position + nextVec);
+	}
+
+	private void Update()
+	{
+		if (HorseManager.Instance.Horse1_Run)
+		{
+			RunSoundTimer -= Time.deltaTime;
+			if(RunSoundTimer <= 0f)
+			{
+				EffectAudioManager.Instance.PlayHorseGalloping1();
+				RunSoundTimer = RunSoundInterval;
+			}
+		}
+		else
+		{
+			RunSoundTimer = 0f;
+		}
 	}
 
 	//각 포인트에 도달할 때, 적용되는 기능

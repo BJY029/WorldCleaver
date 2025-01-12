@@ -174,6 +174,7 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 2)
         {
+            EffectAudioManager.Instance.PlayEagle();
 			if (GameManager.Instance.Turn == 0)
 			{
                 PlayerEagleController.Instance.EagleActive = true;
@@ -192,6 +193,8 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 3)
         {
+            EffectAudioManager.Instance.PlayFight();
+            BGMManager.Instance.MoveToFight();
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-10);
@@ -252,6 +255,7 @@ public class ItemManager : SingleTon<ItemManager>
 		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
 		{
+            EffectAudioManager.Instance.PlayOil();
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
@@ -317,6 +321,7 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 11) //나무 방패
         {
+            EffectAudioManager.Instance.PlayShild();
             GameManager.Instance.AnimationManager.Shild();
 			if (GameManager.Instance.Turn == 0)
 			{
@@ -345,7 +350,7 @@ public class ItemManager : SingleTon<ItemManager>
 			//Do job at TreeController
 		}
         yield return null;
-
+        BGMManager.Instance.CheckState();
         FuncFlag = false;
 	}
 }

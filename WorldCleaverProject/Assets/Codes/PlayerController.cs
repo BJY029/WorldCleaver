@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public readonly float PlayerMana = 100.0f;
     private float playerMana;
 
     //플레이어의 기력 값을 반환해주는 함수
@@ -30,6 +31,26 @@ public class PlayerController : MonoBehaviour
     }
 
     private float HitMana = 5f;
+
+	public int ReturnCurrentDanger()
+	{
+        float MaxTreeHealth = GameManager.Instance.TreeController.Treehealth;
+		float CurrentTreeHealth = GameManager.Instance.TreeController.treeHealth;
+        float CurrentPlayerMana = Mana;
+        float MaxVillageHealth = VillageManager.Instance.H;
+        float CurrentPlayerVillageHealth = VillageManager.Instance.VilageHelath;
+
+        float TreeHealthW = CurrentTreeHealth / MaxTreeHealth;
+        float PlayerManaW = CurrentPlayerMana / PlayerMana;
+        float VillageHealthW = CurrentPlayerVillageHealth / MaxVillageHealth;
+
+        float TotalWeight = (TreeHealthW * 0.7f) + PlayerManaW + VillageHealthW;
+
+        if (TotalWeight > 1.3f) return 0;
+        else if (TotalWeight > 0.9) return 1;
+        else if (TotalWeight > 0.5) return 2;
+        else return 3;
+	}
 
 	private void Awake()
 	{

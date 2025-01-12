@@ -14,7 +14,10 @@ public class DeerController : SingleTon<DeerController>
     public Boolean Hit;
     public float speed;
 
-    private Vector2 InitPosition;
+	public float RunSoundInterval = 0.5f;
+	private float RunSoundTimer;
+
+	private Vector2 InitPosition;
 
 	// Start is called before the first frame update
 	void Start()
@@ -28,7 +31,25 @@ public class DeerController : SingleTon<DeerController>
         InitPosition = Deer.transform.position;
     }
 
-	private void FixedUpdate()
+    private void Update()
+    {
+        if (DeerActivated)
+        {
+            RunSoundTimer -= Time.deltaTime;
+            if (RunSoundTimer <= 0f)
+            {
+                EffectAudioManager.Instance.PlayDeerGalloping();
+                RunSoundTimer = RunSoundInterval;
+            }
+        }
+        else
+        {
+            RunSoundTimer = 0f;
+        }
+
+    }
+
+		private void FixedUpdate()
 	{
         //사슴 아이템으로 인해 활성화가 된 경우에 이동을 진행한다.
 		if (DeerActivated == false || deer == null) return;
@@ -57,6 +78,7 @@ public class DeerController : SingleTon<DeerController>
         if (collision.CompareTag("tree"))
         {
             Hit = true;
+            EffectAudioManager.Instance.PlayPunch();
             Debug.Log("collision");
         }
 	}

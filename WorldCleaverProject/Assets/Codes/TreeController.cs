@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TreeController : MonoBehaviour
 {
+	public readonly float Treehealth = 1000.0f;
     private float Health = 1000.0f;
 
     //먹물과 나무방패를 위한 게수 조정 플래그
