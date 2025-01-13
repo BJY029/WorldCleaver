@@ -8,6 +8,8 @@ using UnityEngine.UI;
 //싱글톤이기에 GameManager에 바로 접근 가능하다.
 public class UIManager : SingleTon<UIManager>
 {
+	public Button PauseButton;
+
 	public Slider treeSlider; //나무 체력을 나타내주는 슬라이더 UI
 	public Slider playerSlider; //플레이어 기력을 나타내주는 슬라이더 UI
 	public Slider EnemySlider; //적 기력을 나타내주는 슬라이더 UI

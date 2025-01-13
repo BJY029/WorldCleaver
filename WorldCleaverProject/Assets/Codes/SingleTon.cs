@@ -28,11 +28,11 @@ public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
 	{
         if (transform.parent != null && transform.root != null)
         {
-            DontDestroyOnLoad(this.transform.root.gameObject);
+            //DontDestroyOnLoad(this.transform.root.gameObject);
         }
         else
         {
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
 	}
