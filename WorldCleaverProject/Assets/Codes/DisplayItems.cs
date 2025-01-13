@@ -25,7 +25,7 @@ public class DisplayItems : SingleTon<DisplayItems>
     //해당 버튼의 부모의 부모(panel)의 크기를 0으로 만든다.
     public void OnItemSelected()
     {
-        ItemManager.Instance.AddItemToPlayerInventory(assignedItem);
+        GameManager.Instance.ItemManager.AddItemToPlayerInventory(assignedItem);
 
         ClosePanel();
 

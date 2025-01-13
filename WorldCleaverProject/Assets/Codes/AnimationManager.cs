@@ -110,7 +110,7 @@ public class AnimationManager : MonoBehaviour
 		Color color = new Color(1f, 1f, 1f);
 		if (Turn == 1)
 		{
-			EffectAudioManager.Instance.playPop();
+			GameManager.Instance.EffectAudioManager.playPop();
 			//해당 오징어 이미지를 보이게 만들어주고
 			SImage = ESquid.GetComponent<SpriteRenderer>();
 			color = SImage.color;
@@ -125,7 +125,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator Squid(int Turn, SpriteRenderer SImage, Color color)
 	{
 		yield return new WaitForSeconds(0.3f);
-		EffectAudioManager.Instance.playSqueeze();
+		GameManager.Instance.EffectAudioManager.playSqueeze();
 		//일정 시간 대기 후, 해당 이미지를 서서히 투명하게 변경시킨다.
 		yield return new WaitForSeconds(WaitSquidTime - 0.3f);
 		float elapsedTime = 0.0f;
@@ -165,7 +165,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator Sap(int Turn)
 	{
 		yield return new WaitForSeconds(WaitSapTime/2);
-		EffectAudioManager.Instance.PlayHeal();
+		GameManager.Instance.EffectAudioManager.PlayHeal();
 		yield return new WaitForSeconds(WaitSapTime / 2);
 		if (Turn == 0)
 		{
@@ -264,7 +264,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator ThrowSmoke(int Turn)
 	{
 		yield return new WaitForSeconds(WaitThrowTime);
-		EffectAudioManager.Instance.PlaySmoke();
+		GameManager.Instance.EffectAudioManager.PlaySmoke();
 		if (Turn == 0)
 		{
 			PlayerAnim.SetBool("ThrowSmoke", false);
@@ -278,7 +278,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator FireFlare(int Turn)
 	{
 		yield return new WaitForSeconds(WaitFireTime - 0.4f);
-		EffectAudioManager.Instance.PlayFlareGun();
+		GameManager.Instance.EffectAudioManager.PlayFlareGun();
 		yield return new WaitForSeconds(0.4f);
 		if (Turn == 0)
 		{
@@ -293,7 +293,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator EatDeer(int Turn)
 	{
 		yield return new WaitForSeconds(WaitDrinkTime/2);
-		EffectAudioManager.Instance.PlayCrunch();
+		GameManager.Instance.EffectAudioManager.PlayCrunch();
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
 		if (Turn == 0)
 		{
@@ -308,7 +308,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator EatGin(int Turn)
 	{
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
-		EffectAudioManager.Instance.PlayEat();
+		GameManager.Instance.EffectAudioManager.PlayEat();
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
 		if (Turn == 0)
 		{
@@ -323,7 +323,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator DrinkHoney(int Turn)
 	{
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
-		EffectAudioManager.Instance.PlayDrink();
+		GameManager.Instance.EffectAudioManager.PlayDrink();
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
 		if (Turn == 0)
 		{
@@ -338,7 +338,7 @@ public class AnimationManager : MonoBehaviour
 	IEnumerator DrinkRed(int Turn)
 	{
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
-		EffectAudioManager.Instance.PlayDrink();
+		GameManager.Instance.EffectAudioManager.PlayDrink();
 		yield return new WaitForSeconds(WaitDrinkTime / 2);
 		if (Turn == 0)
 		{
@@ -355,7 +355,7 @@ public class AnimationManager : MonoBehaviour
 		Debug.Log(GameManager.Instance.Turn);
 		isHitingTree = 1;
 		yield return new WaitForSeconds(WaitHitTime - 0.5f);
-		EffectAudioManager.Instance.PlayHit();
+		GameManager.Instance.EffectAudioManager.PlayHit();
 		yield return new WaitForSeconds(0.5f);
 		if (Turn == 0) //플레이어 턴이면, 플레이어의 애니메이션을 초기화한다.
 		{

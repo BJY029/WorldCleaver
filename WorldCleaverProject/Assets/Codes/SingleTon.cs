@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance = null;
+	private static T instance = null;
 
-    public static T Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                instance = (T)FindObjectOfType(typeof(T));
+	public static T Instance
+	{
+		get
+		{
+			if (instance == null)
+			{
+				instance = (T)FindObjectOfType(typeof(T));
 
-                if(instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name, typeof(T));
-                    instance = obj.GetComponent<T>();
-                }
-            }
-            return instance;
-        }
-    }
+				if (instance == null)
+				{
+					GameObject obj = new GameObject(typeof(T).Name, typeof(T));
+					instance = obj.GetComponent<T>();
+				}
+			}
+			return instance;
+		}
+	}
 
 	//private void Start()
 	//{
@@ -58,17 +58,38 @@ public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
 	//	}
 	//}
 
-	private void Awake()
+	private void OnEnable()
 	{
+
+		if (instance != null && instance != this)
+		{
+			Destroy(this.gameObject); // 중복 인스턴스 제거
+			return; // 이후 코드 실행 중지
+		}
+
 		//Debug.Log($"Single Tone : {gameObject.name}");
 		if (transform.parent != null && transform.root != null)
 		{
-			DontDestroyOnLoad(this.transform.root.gameObject);
+			if(gameObject.CompareTag("DDOL") || gameObject.CompareTag("BGM"))
+				DontDestroyOnLoad(this.transform.root.gameObject);
 		}
 		else
 		{
-			DontDestroyOnLoad(this.gameObject);
+			if (gameObject.CompareTag("DDOL") || gameObject.CompareTag("BGM"))
+				DontDestroyOnLoad(this.gameObject);
 		}
-
 	}
+	//}
+
+	//private void Awake()
+	//{
+	//	if (Instance != this)
+	//	{
+	//		Destroy(gameObject);
+	//		return;
+	//	}
+
+	//	DontDestroyOnLoad(gameObject);
+	//}
+
 }

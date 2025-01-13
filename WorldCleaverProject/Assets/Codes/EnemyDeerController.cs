@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDeerController : SingleTon<EnemyDeerController>
+public class EnemyDeerController : MonoBehaviour
 {
 	private Rigidbody2D deer;
 	private BoxCollider2D boxCollider;
@@ -38,7 +38,7 @@ public class EnemyDeerController : SingleTon<EnemyDeerController>
 			RunSoundTimer -= Time.deltaTime;
 			if (RunSoundTimer <= 0f)
 			{
-				EffectAudioManager.Instance.PlayDeerGalloping();
+				GameManager.Instance.EffectAudioManager.PlayDeerGalloping();
 				RunSoundTimer = RunSoundInterval;
 			}
 		}
@@ -77,7 +77,7 @@ public class EnemyDeerController : SingleTon<EnemyDeerController>
 		//tree와 충돌시, Hit 플래그를 활성화시킨다.
 		if (collision.CompareTag("tree"))
 		{
-			EffectAudioManager.Instance.PlayPunch();
+			GameManager.Instance.EffectAudioManager.PlayPunch();
 			Hit = true;
 			Debug.Log("collision");
 		}

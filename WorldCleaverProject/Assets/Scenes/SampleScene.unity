@@ -630,7 +630,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.343
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2573,7 +2573,7 @@ RectTransform:
   m_Father: {fileID: 1422122858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2590,7 +2590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.12641507, g: 0.5859791, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2866,7 +2866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &257715293
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2968,7 +2968,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 257715294}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 273790904}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: IsPauesButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &261607366
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,6 +3189,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseButton: {fileID: 257715296}
+  PausePanel: {fileID: 410321772}
+  BGMSlider: {fileID: 1566032197}
+  EffectSlider: {fileID: 31140668}
   treeSlider: {fileID: 14539101}
   playerSlider: {fileID: 1010953178}
   EnemySlider: {fileID: 377851912}
@@ -3192,6 +3207,7 @@ MonoBehaviour:
   ItemListPanel: {fileID: 1771305987}
   YouWinPanel: {fileID: 1192795014}
   YouLosePanel: {fileID: 110178720}
+  EffectAudioFlag: 0
 --- !u!1 &283074164
 GameObject:
   m_ObjectHideFlags: 0
@@ -4371,7 +4387,7 @@ RectTransform:
   m_Father: {fileID: 1899020060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5626,7 +5642,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &410321773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16044,7 +16060,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1203497969}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 273790904}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: BackToGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1203497969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18667,7 +18695,7 @@ RectTransform:
   m_Father: {fileID: 2059548177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -20320,7 +20348,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.24
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -20456,6 +20484,25 @@ MonoBehaviour:
   EnemeyController: {fileID: 1663286595}
   TreeController: {fileID: 475270316}
   AnimationManager: {fileID: 1483173651}
+  CameraManager: {fileID: 779535774}
+  DeerController: {fileID: 597159168}
+  DisplayEmptyMessage: {fileID: 407501980}
+  DisplayEnemyItems: {fileID: 325994768}
+  DisplayPlayerItems: {fileID: 876422734}
+  DisplayWarningMessage: {fileID: 2089540964}
+  EffectAudioManager: {fileID: 462125413}
+  EnemyAI: {fileID: 977985161}
+  EnemyDeerController: {fileID: 1293775882}
+  EnemyEagleController: {fileID: 893055378}
+  Horse1Controller: {fileID: 139406071}
+  Horse2Controller: {fileID: 673498252}
+  HorseManager: {fileID: 1306338296}
+  ItemManager: {fileID: 114946670}
+  VillageManager: {fileID: 120907674}
+  OppositeVillageManager: {fileID: 1388451746}
+  PlayerEagleController: {fileID: 361592853}
+  SmokeEffect: {fileID: 8523071091303378964}
+  UIManager: {fileID: 273790904}
   Turn: 0
   myTurn: 0
   WhoLose: 0
@@ -22741,7 +22788,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -626, y: 0}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1795982811
@@ -25958,7 +26005,7 @@ RectTransform:
   m_Father: {fileID: 875179613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -25975,7 +26022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24343893, g: 0.98490566, b: 0.9350922, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

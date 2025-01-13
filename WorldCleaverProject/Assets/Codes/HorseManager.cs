@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HorseManager : SingleTon<HorseManager>
+public class HorseManager : MonoBehaviour
 {
     //적 AI의 Hit 코루틴을 정지시키는 변수
     public bool EnemyAIStop;
@@ -244,8 +244,8 @@ public class HorseManager : SingleTon<HorseManager>
         //AI 정지 해제
         EnemyAIStop = false;
         //말의 위치 및 정보 초기화
-        Horse1Controller.Instance.initAll();
-        Horse2Controller.Instance.initAll();
+        GameManager.Instance.Horse1Controller.initAll();
+        GameManager.Instance.Horse2Controller.initAll();
 
         //게임 결과 적용
         GameManager.Instance.PlayerController.setMana(30);
@@ -287,8 +287,8 @@ public class HorseManager : SingleTon<HorseManager>
 		//AI 정지 해제
 		EnemyAIStop = false;
 		//말의 위치 및 정보 초기화
-		Horse1Controller.Instance.initAll();
-		Horse2Controller.Instance.initAll();
+		GameManager.Instance.Horse1Controller.initAll();
+		GameManager.Instance.Horse2Controller.initAll();
 
 		//게임 결과 적용
 		GameManager.Instance.PlayerController.setMana(-10);

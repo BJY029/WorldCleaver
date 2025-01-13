@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OppositeVillageManager : SingleTon<OppositeVillageManager>
+public class OppositeVillageManager : MonoBehaviour
 {
 	//체력을 상수로 설정해서 한번에 값을 설정한다.
 	//디버그 용이

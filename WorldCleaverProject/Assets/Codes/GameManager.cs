@@ -10,6 +10,28 @@ public class GameManager : SingleTon<GameManager>
     public EnemeyController EnemeyController;
     public TreeController TreeController;
     public AnimationManager AnimationManager;
+    public CameraManager CameraManager;
+    public DeerController DeerController;
+    public DisplayEmptyMessage DisplayEmptyMessage;
+    public DisplayEnemyItems DisplayEnemyItems;
+    //public DisplayItems DisplayItems;
+    public DisplayPlayerItems DisplayPlayerItems;
+    public DisplayWarningMessage DisplayWarningMessage;
+    public EffectAudioManager EffectAudioManager;
+    public EnemyAI EnemyAI;
+    public EnemyDeerController EnemyDeerController;
+    public EnemyEagleController EnemyEagleController;
+    public Horse1Controller Horse1Controller;
+    public Horse2Controller Horse2Controller;
+    public HorseManager HorseManager;
+    public ItemManager ItemManager;
+    public VillageManager VillageManager;
+    public OppositeVillageManager OppositeVillageManager;
+    public PlayerEagleController PlayerEagleController;
+    //public SelectHorse SelectHorse;
+    public SmokeEffect SmokeEffect;
+    //public ToolTipsManager ToolTipsManager;
+    public UIManager UIManager;
 
     public int Turn;
     public int myTurn;
@@ -39,10 +61,10 @@ public class GameManager : SingleTon<GameManager>
         OppositeDamageTotalCnt = 0;
 
         //사슴 아이템 비활성화
-        DeerController.Instance.DeerActivated = false;
-        DeerController.Instance.Deer.SetActive(false);
-        EnemyDeerController.Instance.DeerActivated = false;
-        EnemyDeerController.Instance.Deer.SetActive(false) ;
+        GameManager.Instance.DeerController.DeerActivated = false;
+        GameManager.Instance.DeerController.Deer.SetActive(false);
+        GameManager.Instance.EnemyDeerController.DeerActivated = false;
+        GameManager.Instance.EnemyDeerController.Deer.SetActive(false) ;
 	}
 
     //현재 Turn에 따라 실행하는 Hit의
@@ -51,16 +73,16 @@ public class GameManager : SingleTon<GameManager>
     public void Hit()
     {
         //마을 체력은 매 턴마다 깎이게 된다.
-        VillageManager.Instance.VilageHelath = -20f * MyVillageWeight;
-        OppositeVillageManager.Instance.OppositeVillageHealth = -20f * OppositeVillageWeight;
+        GameManager.Instance.VillageManager.VilageHelath = -20f * MyVillageWeight;
+        GameManager.Instance.OppositeVillageManager.OppositeVillageHealth = -20f * OppositeVillageWeight;
 
         //0이 아니면, 0이 될때까지 1씩 감소시킨다.
         //0이 아닌경우, 체력 바를 숨긴다. 즉, 연막탄 아이템의 시전 시간이다.
-        if (ItemManager.Instance.smokeFlag != 0) ItemManager.Instance.smokeFlag -= 1;
-        if (ItemManager.Instance.smokeFlag == 0)
+        if (GameManager.Instance.ItemManager.smokeFlag != 0) GameManager.Instance.ItemManager.smokeFlag -= 1;
+        if (GameManager.Instance.ItemManager.smokeFlag == 0)
         {
-            EffectAudioManager.Instance.StopSmoke();
-            SmokeEffect.Instance.StopSmoke();
+            GameManager.Instance.EffectAudioManager.StopSmoke();
+            GameManager.Instance.SmokeEffect.StopSmoke();
         }
 
         //현재 플레이어 턴이면
@@ -120,29 +142,29 @@ public class GameManager : SingleTon<GameManager>
         //만약 막타로 게임이 끝나버린 경우
         if (Turn != 44)
         {
-            CameraManager.Instance.changeCamera();
+            GameManager.Instance.CameraManager.changeCamera();
 
             //이전 턴이 내 차례였다면, 적으로 턴을 넘긴다.
             if (turn == 0)
             {
-                EnemyAI.Instance.EnemyTurnBehavior();
+                GameManager.Instance.EnemyAI.EnemyTurnBehavior();
             }
             else if (turn == 1)
             {
-                if (DisplayPlayerItems.Instance.isFull() == false)
+                if (GameManager.Instance.DisplayPlayerItems.isFull() == false)
                 {
-                    ItemManager.Instance.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
+                    GameManager.Instance.ItemManager.SetRandomItemsOnButtons(); //적 턴에서, Hit가 발생되면, 아이템 선택 창을 표시한다.
                 }
                 else //아이템이 꽉 찬 경우
                 {
-                    DisplayWarningMessage.Instance.itemIsFull(); //경고 메시지 출력
+                    GameManager.Instance.DisplayWarningMessage.itemIsFull(); //경고 메시지 출력
                 }
             }
         }
 		//Instance.AnimationManager.Hit();
 		//플래그 초기화
-		ItemManager.Instance.Flag = -1;
-        BGMManager.Instance.CheckState();
+		GameManager.Instance.ItemManager.Flag = -1;
+        //BGMManager.Instance.CheckState();
 	}
 
     //Turn을 교체하는 함수이다.
@@ -154,7 +176,7 @@ public class GameManager : SingleTon<GameManager>
         {
             //적으로 턴을 초기화한다.
             Turn = 1;
-            DisplayPlayerItems.Instance.disableButtons();
+            GameManager.Instance.DisplayPlayerItems.disableButtons();
             //적으로 턴을 변경 후, 함수를 호출한다.
             //EnemyAI.Instance.EnemyTurnBehavior();
         }
@@ -269,14 +291,14 @@ public class GameManager : SingleTon<GameManager>
         }
 
         //각 마을의 체력이 다 닳아서 게임이 끝난된 경우
-		if (VillageManager.Instance.VilageHelath == 0)
+		if (GameManager.Instance.VillageManager.VilageHelath == 0)
 		{
 			Debug.Log("나의 마을 체력이 모두 소진되어 게임을 졌습니다..");
 			ReasonFlag = 2;
 			WhoLose = 0;
 			return;
 		}
-        else if(OppositeVillageManager.Instance.OppositeVillageHealth == 0)
+        else if(GameManager.Instance.OppositeVillageManager.OppositeVillageHealth == 0)
         {
 			Debug.Log("적의 마을 체력이 모두 소진되어 게임을 졌습니다..");
 			ReasonFlag = 2;

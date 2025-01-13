@@ -13,7 +13,7 @@ public enum AIState
     Defensive
 }
 
-public class EnemyAI : SingleTon<EnemyAI>
+public class EnemyAI : MonoBehaviour
 {
     public List<Item> EnemyItems;
     public List<Item> chooseanItems;
@@ -68,7 +68,7 @@ public class EnemyAI : SingleTon<EnemyAI>
             {
                 EnemyItems[emptySlotIndex] = item;
             }
-            DisplayEnemyItems.Instance.insertItem(item);
+            GameManager.Instance.DisplayEnemyItems.insertItem(item);
             Debug.Log("Enemy choose " + item.itemName);
         }
 	}
@@ -87,7 +87,7 @@ public class EnemyAI : SingleTon<EnemyAI>
             Item randomItem;
             do
             {
-                randomItem = ItemManager.Instance.GiveRandomItem();
+                randomItem = GameManager.Instance.ItemManager.GiveRandomItem();
             } while (chooseanItems.Contains(randomItem));
 
 
@@ -340,9 +340,9 @@ public class EnemyAI : SingleTon<EnemyAI>
         //우선 적 아이템 리스트에서 해당 아이템을 null 처리 하고
         EnemyItems[EnemyItems.IndexOf(useItem)] = null;
         //UI 상에서의 버튼 리스트에서도 제거한다.
-		DisplayEnemyItems.Instance.removeItem(useItem.icon);
+		GameManager.Instance.DisplayEnemyItems.removeItem(useItem.icon);
         //그리고 해당 아이템의 효과를 ItemFunciton 함수를 통해 수행한다.
-        StartCoroutine(ItemManager.Instance.ItemFunction(useItem.id));
+        StartCoroutine(GameManager.Instance.ItemManager.ItemFunction(useItem.id));
     }
 
 
@@ -384,10 +384,10 @@ public class EnemyAI : SingleTon<EnemyAI>
 		//판단에 쓰일 값들 받아오기
 		CurrentTreeHealth = GameManager.Instance.TreeController.treeHealth;
 		CurrentEnemyMana = GameManager.Instance.EnemeyController.Mana;
-		CurrentEnemyVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
+		CurrentEnemyVillageHealth = GameManager.Instance.OppositeVillageManager.OppositeVillageHealth;
         
         //연막탄이 펼처진 경우, 실제 값 기준 -300 ~ 300 사이의 값을 랜덤으로 받도록 설정한다.
-        if(ItemManager.Instance.smokeFlag != 0)
+        if(GameManager.Instance.ItemManager.smokeFlag != 0)
         {
             float minValue = CurrentTreeHealth - 300f;
             if (minValue <= 0) minValue = 10f;
@@ -440,7 +440,7 @@ public class EnemyAI : SingleTon<EnemyAI>
 	public void StealPlayerItem()
     {
         //만약 플레이어가 가진 아이템이 없으면 아무것도 실행하지 않는다.
-        if (DisplayPlayerItems.Instance.isEmpty())
+        if (GameManager.Instance.DisplayPlayerItems.isEmpty())
         {
             //경고문 출력
             return;
@@ -449,13 +449,13 @@ public class EnemyAI : SingleTon<EnemyAI>
         //플레이어 아이템 리스트는 버튼 리스트로 되어있다.ㅜㅜ
         //플레이어가 가진 아이템들을 버튼으로 받아온다.
         List<Button> items = new List<Button>();
-        for (int i = 0; i < DisplayPlayerItems.Instance.playerItems.Count; i++)
+        for (int i = 0; i < GameManager.Instance.DisplayPlayerItems.playerItems.Count; i++)
         {
-            if (DisplayPlayerItems.Instance.playerItems[i].enabled == false || DisplayPlayerItems.Instance.playerItems[i] == null)
+            if (GameManager.Instance.DisplayPlayerItems.playerItems[i].enabled == false || GameManager.Instance.DisplayPlayerItems.playerItems[i] == null)
             {
                 continue;
             }
-            items.Add(DisplayPlayerItems.Instance.playerItems[i]);
+            items.Add(GameManager.Instance.DisplayPlayerItems.playerItems[i]);
         }
 
         //만약 가진 아이템이 없으면 아무것도 하지 않는다.(오류 방지 2차검증)
@@ -469,12 +469,12 @@ public class EnemyAI : SingleTon<EnemyAI>
         //선정된 아이템을 버튼으로 저장
         Button ChooseItem = items[randIdx];
         //해당 인덱스를 저장한다.
-        int idx = DisplayPlayerItems.Instance.playerItems.IndexOf(ChooseItem);
+        int idx = GameManager.Instance.DisplayPlayerItems.playerItems.IndexOf(ChooseItem);
 
         //item 형식으로 변환하기 위한 작업, 이미지 스프라이트를 통해서 item을 가져온다.
-        Sprite sprite = DisplayPlayerItems.Instance.playerItems[idx].GetComponent<Image>().sprite;
+        Sprite sprite = GameManager.Instance.DisplayPlayerItems.playerItems[idx].GetComponent<Image>().sprite;
 		//Linq를 사용한다.
-		var result = ItemManager.Instance.allItems
+		var result = GameManager.Instance.ItemManager.allItems
 	 .Where(item => item != null && item.icon != null) // null 값을 걸러냄
 	 .Select((item, index) => new { Item = item, Index = index })
 	 .FirstOrDefault(x => x.Item.icon == sprite);
@@ -486,21 +486,21 @@ public class EnemyAI : SingleTon<EnemyAI>
         }
 
         //아이템 삭제, 버튼 리스트에서 삭제를 하고
-        DisplayPlayerItems.Instance.playerItems[idx].GetComponentInChildren<Image>().sprite = null;
+        GameManager.Instance.DisplayPlayerItems.playerItems[idx].GetComponentInChildren<Image>().sprite = null;
         //따로 관리하는 아이템 리스트에서도 삭제한다.
-		if (!DisplayPlayerItems.Instance.PlayerItem.Contains(result.Item))
+		if (!GameManager.Instance.DisplayPlayerItems.PlayerItem.Contains(result.Item))
 		{
 			Debug.LogError("Item not found in PlayerItem list!");
 			return;
 		}
-		DisplayPlayerItems.Instance.PlayerItem.Remove(result.Item);
+		GameManager.Instance.DisplayPlayerItems.PlayerItem.Remove(result.Item);
         //또한 해당 버튼에 달린 설명 스크립트도 삭제한다.
-		ToolTipsManager script = DisplayPlayerItems.Instance.playerItems[idx].GetComponentInChildren<ToolTipsManager>();
+		ToolTipsManager script = GameManager.Instance.DisplayPlayerItems.playerItems[idx].GetComponentInChildren<ToolTipsManager>();
         script.itemDesc = null;
         script.itemName = null;
         //해당 버튼을 비활성화 시킨다.
-		DisplayPlayerItems.Instance.playerItems[idx].interactable = false;
-		DisplayPlayerItems.Instance.playerItems[idx].enabled = false;
+		GameManager.Instance.DisplayPlayerItems.playerItems[idx].interactable = false;
+		GameManager.Instance.DisplayPlayerItems.playerItems[idx].enabled = false;
 
 		//insert
 		insertItem(result.Item);
@@ -525,7 +525,7 @@ public class EnemyAI : SingleTon<EnemyAI>
 
     float CalcTreeHealthCoef()
     {
-		if (ItemManager.Instance.smokeFlag != 0)
+		if (GameManager.Instance.ItemManager.smokeFlag != 0)
 		{
 			float minValue = CurrentTreeHealth - 300f;
 			if (minValue <= 0) minValue = 10f;
@@ -559,7 +559,7 @@ public class EnemyAI : SingleTon<EnemyAI>
         float elapsed = 0f;
         while (elapsed < waitSecond)
         {
-            if (!HorseManager.Instance.EnemyAIStop)
+            if (!GameManager.Instance.HorseManager.EnemyAIStop)
             {
                 elapsed += Time.deltaTime;
             }

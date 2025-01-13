@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DeerController : SingleTon<DeerController>
+public class DeerController : MonoBehaviour
 {
     private Rigidbody2D deer;
     private BoxCollider2D boxCollider;
@@ -38,7 +38,7 @@ public class DeerController : SingleTon<DeerController>
             RunSoundTimer -= Time.deltaTime;
             if (RunSoundTimer <= 0f)
             {
-                EffectAudioManager.Instance.PlayDeerGalloping();
+                GameManager.Instance.EffectAudioManager.PlayDeerGalloping();
                 RunSoundTimer = RunSoundInterval;
             }
         }
@@ -78,7 +78,7 @@ public class DeerController : SingleTon<DeerController>
         if (collision.CompareTag("tree"))
         {
             Hit = true;
-            EffectAudioManager.Instance.PlayPunch();
+            GameManager.Instance.EffectAudioManager.PlayPunch();
             Debug.Log("collision");
         }
 	}

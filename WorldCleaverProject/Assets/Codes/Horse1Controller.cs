@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Horse1Controller : SingleTon<Horse1Controller>
+public class Horse1Controller : MonoBehaviour
 {
 	//입력받는 속도 값
 	public float speed;
@@ -23,30 +23,30 @@ public class Horse1Controller : SingleTon<Horse1Controller>
 	//말의 위치 및 속도 값 초기화
 	public void initAll()
 	{
-		HorseManager.Instance.Horse1_rbPrefab.transform.position = HorseManager.Instance.Horse1_InitPos;
+		GameManager.Instance.HorseManager.Horse1_rbPrefab.transform.position = GameManager.Instance.HorseManager.Horse1_InitPos;
 		Speed = speed;
-		HorseManager.Instance.Horse1_Run = false;
-		HorseManager.Instance.Horse1_End = false;
+		GameManager.Instance.HorseManager.Horse1_Run = false;
+		GameManager.Instance.HorseManager.Horse1_End = false;
 	}
 
 	//말이 달리기 상태일 때, 이동을 수행하는 함수
 	private void FixedUpdate()
 	{
-		if (!HorseManager.Instance.Horse1_Run) return;
+		if (!GameManager.Instance.HorseManager.Horse1_Run) return;
 		animator.SetFloat("Speed", Speed);
 
 		Vector3 nextVec = Speed * new Vector3(1f, 0f) * Time.fixedDeltaTime;
-		HorseManager.Instance.Horse1_rb.MovePosition(HorseManager.Instance.Horse1_rbPrefab.transform.position + nextVec);
+		GameManager.Instance.HorseManager.Horse1_rb.MovePosition(GameManager.Instance.HorseManager.Horse1_rbPrefab.transform.position + nextVec);
 	}
 
 	private void Update()
 	{
-		if (HorseManager.Instance.Horse1_Run)
+		if (GameManager.Instance.HorseManager.Horse1_Run)
 		{
 			RunSoundTimer -= Time.deltaTime;
 			if(RunSoundTimer <= 0f)
 			{
-				EffectAudioManager.Instance.PlayHorseGalloping1();
+				GameManager.Instance.EffectAudioManager.PlayHorseGalloping1();
 				RunSoundTimer = RunSoundInterval;
 			}
 		}
@@ -79,21 +79,21 @@ public class Horse1Controller : SingleTon<Horse1Controller>
 		//번호로 변경한다. 만약 0이 아닌 상태이면, 이미 다른 말이 도착한 상태이므로 아무것도 하지 않는다.
 		else if (collision.CompareTag("GoalLine"))
 		{
-			if(HorseManager.Instance.WinnerFlag == 0)
+			if(GameManager.Instance.HorseManager.WinnerFlag == 0)
 			{
-				HorseManager.Instance.WinnerFlag = 1;
+				GameManager.Instance.HorseManager.WinnerFlag = 1;
 			}
-			Debug.Log(HorseManager.Instance.WinnerFlag);
+			Debug.Log(GameManager.Instance.HorseManager.WinnerFlag);
 		}
 		//정지 라인에 도달하면, 말의 속도를 0으로 변경하고, 애니메이션 변경 및 승리 판정 연산을 수행한다.
 		else if (collision.CompareTag("StopLine"))
 		{
-			HorseManager.Instance.Horse1_Run = false;
+			GameManager.Instance.HorseManager.Horse1_Run = false;
 			Speed = 0f;
 			animator.SetFloat("Speed", Speed);
-			HorseManager.Instance.Horse1_End = true;
+			GameManager.Instance.HorseManager.Horse1_End = true;
 
-			HorseManager.Instance.EndGame();
+			GameManager.Instance.HorseManager.EndGame();
 		}
 	}
 }

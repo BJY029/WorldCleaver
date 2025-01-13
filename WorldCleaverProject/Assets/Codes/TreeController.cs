@@ -51,15 +51,15 @@ public class TreeController : MonoBehaviour
 	public void DamageHitPlayer()
     {
         //Debug.Log("Damage Player");
-        if(ItemManager.Instance.Flag == 7)
+        if(GameManager.Instance.ItemManager.Flag == 7)
         {
             HitDamage = RanHitDamageForOil(); //데미지 감소
         }
-        else if(ItemManager.Instance.Flag == 12)
+        else if(GameManager.Instance.ItemManager.Flag == 12)
         {
             HitDamage = RanHitDamageForVelvet();//데미지 증가
         }
-        else if(ItemManager.Instance.Flag == 1)//사슴 박치기인 경우
+        else if(GameManager.Instance.ItemManager.Flag == 1)//사슴 박치기인 경우
         {
             HitDamage = RanHitDamageForDeer(); 
             GameManager.Instance.MyDamageTotalCnt = 0; //마을 데미지 스택을 0으로 초기화 시켜준다.
@@ -84,7 +84,7 @@ public class TreeController : MonoBehaviour
             //만약 Tree의 체력이 다 떨어진 경우
 			//Debug.Log(GameManager.Instance.Turn + " Lose!");
             //사슴 박치기로 인해 체력이 다 떨어진 경우
-            if(ItemManager.Instance.Flag == 1)
+            if(GameManager.Instance.ItemManager.Flag == 1)
             {
                 //나의 패배
                 GameManager.Instance.DeerLastHit = 0;
@@ -97,35 +97,35 @@ public class TreeController : MonoBehaviour
 
 		//사슴아이템도 해당 함수를 사용하기 때문에, 잘못된 턴 계산을 막기위해, 사슴 아이템이 해당 함수를 사용하는 경우
 		//아래 로직을 수행하지 않는다.
-		if (ItemManager.Instance.Flag != 1)
+		if (GameManager.Instance.ItemManager.Flag != 1)
 		{
 			//만약 ShilFlag가 0이 아니면, 1씩 뺀다.
-			if (ItemManager.Instance.ShildFlag != 0)
+			if (GameManager.Instance.ItemManager.ShildFlag != 0)
 			{
-				ItemManager.Instance.ShildFlag--;
+				GameManager.Instance.ItemManager.ShildFlag--;
 			}
 			//만약 ShilfFlag가 0이면, Shild 애니메이션을 끈다.
-			if (ItemManager.Instance.ShildFlag == 0)
+			if (GameManager.Instance.ItemManager.ShildFlag == 0)
 			{
 				GameManager.Instance.AnimationManager.offShild();
 			}
 		}
 
-		ItemManager.Instance.Flag = -1;
+		GameManager.Instance.ItemManager.Flag = -1;
 	}
 
     public void DamageHitOppositePlayer()
     {
 		//Debug.Log("Damage Player");
-		if (ItemManager.Instance.Flag == 7)
+		if (GameManager.Instance.ItemManager.Flag == 7)
 		{
 			HitDamageFromOp = RanHitDamageForOil(); //데미지 감소
 		}
-		else if (ItemManager.Instance.Flag == 12)
+		else if (GameManager.Instance.ItemManager.Flag == 12)
 		{
 			HitDamageFromOp = RanHitDamageForVelvet();//데미지 증가
 		}
-		else if (ItemManager.Instance.Flag == 1)//사슴 박치기인 경우
+		else if (GameManager.Instance.ItemManager.Flag == 1)//사슴 박치기인 경우
 		{
 			HitDamageFromOp = RanHitDamageForDeer();
 			GameManager.Instance.OppositeDamageTotalCnt = 0; //마을 데미지 스택을 0으로 초기화 시켜준다.
@@ -152,7 +152,7 @@ public class TreeController : MonoBehaviour
 			//만약 Tree의 체력이 다 떨어진 경우
 			//Debug.Log(GameManager.Instance.Turn + " Win!");
 			//사슴 박치기로 인해 체력이 다 떨어진 경우
-			if (ItemManager.Instance.Flag == 1)
+			if (GameManager.Instance.ItemManager.Flag == 1)
 			{
                 //적의 패배
 				GameManager.Instance.DeerLastHit = 1;
@@ -165,19 +165,19 @@ public class TreeController : MonoBehaviour
 
 		//사슴아이템도 해당 함수를 사용하기 때문에, 잘못된 턴 계산을 막기위해, 사슴 아이템이 해당 함수를 사용하는 경우
 		//아래 로직을 수행하지 않는다.
-		if (ItemManager.Instance.Flag != 1)
+		if (GameManager.Instance.ItemManager.Flag != 1)
 		{
 			//만약 ShilFlag가 0이 아니면, 1씩 뺀다.
-			if (ItemManager.Instance.ShildFlag != 0)
-				ItemManager.Instance.ShildFlag--;
+			if (GameManager.Instance.ItemManager.ShildFlag != 0)
+				GameManager.Instance.ItemManager.ShildFlag--;
 			//만약 ShilfFlag가 0이면, Shild 애니메이션을 끈다.
-			if (ItemManager.Instance.ShildFlag == 0)
+			if (GameManager.Instance.ItemManager.ShildFlag == 0)
 			{
 				GameManager.Instance.AnimationManager.offShild();
 			}
 		}
 
-		ItemManager.Instance.Flag = -1;
+		GameManager.Instance.ItemManager.Flag = -1;
 	}
 
     private int RandHitDamage() //랜덤 데미지 생성

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
+public class DisplayWarningMessage : MonoBehaviour
 {
     public int WarningFlag;
     public float waitingTime = 2.0f;
@@ -34,6 +34,6 @@ public class DisplayWarningMessage : SingleTon<DisplayWarningMessage>
         yield return new WaitForSeconds(waitingTime);
 		transform.localScale = Vector3.zero;
         WarningFlag = 0;
-		DisplayPlayerItems.Instance.beableButtons();
+		GameManager.Instance.DisplayPlayerItems.beableButtons();
 	}
 }

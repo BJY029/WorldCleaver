@@ -28,7 +28,7 @@ public class Item
 	}
 }
 
-public class ItemManager : SingleTon<ItemManager>
+public class ItemManager : MonoBehaviour
 {
     //버튼 3개
     public List<Button> itemButtons;
@@ -63,8 +63,8 @@ public class ItemManager : SingleTon<ItemManager>
     void Start()
     {
         DisplayItems.Instance.ClosePanel();
-        DisplayWarningMessage.Instance.closeWarningPanel();
-        DisplayEmptyMessage.Instance.closeWarningPanel();
+        GameManager.Instance.DisplayWarningMessage.closeWarningPanel();
+        GameManager.Instance.DisplayEmptyMessage.closeWarningPanel();
 
         smokeFlag = 0;
         ShildFlag = 0;
@@ -132,7 +132,7 @@ public class ItemManager : SingleTon<ItemManager>
     {
         //playerItems.Add(item);
         //리스트에 저장하지 않고 해당 아이템 정보를 플레이어 아이템 관련 함수로 바로 옮긴다.
-        DisplayPlayerItems.Instance.insertItem(item);
+        GameManager.Instance.DisplayPlayerItems.insertItem(item);
         Debug.Log($"{item.itemName} 아이템을 인벤토리에 추가했습니다!");
     }
 
@@ -161,39 +161,39 @@ public class ItemManager : SingleTon<ItemManager>
             if(GameManager.Instance.Turn == 0)
             {
                 GameManager.Instance.PlayerController.setMana(-15);
-				DeerController.Instance.Deer.SetActive(true);
-				DeerController.Instance.DeerActivated = true;
+				GameManager.Instance.DeerController.Deer.SetActive(true);
+				GameManager.Instance.DeerController.DeerActivated = true;
 			}
             else if(GameManager.Instance.Turn == 1)
             {
                 GameManager.Instance.EnemeyController.setMana(-15);
-                EnemyDeerController.Instance.Deer.SetActive(true);
-                EnemyDeerController.Instance.DeerActivated = true;
+                GameManager.Instance.EnemyDeerController.Deer.SetActive(true);
+                GameManager.Instance.EnemyDeerController.DeerActivated = true;
             }
             
         }
         else if (flag == 2)
         {
-            EffectAudioManager.Instance.PlayEagle();
+            GameManager.Instance.EffectAudioManager.PlayEagle();
 			if (GameManager.Instance.Turn == 0)
 			{
-                PlayerEagleController.Instance.EagleActive = true;
+                GameManager.Instance.PlayerEagleController.EagleActive = true;
 				yield return new WaitForSeconds(3.0f);
 				GameManager.Instance.PlayerController.setMana(-8);
-                DisplayPlayerItems.Instance.StealEnemyItem();
+                GameManager.Instance.DisplayPlayerItems.StealEnemyItem();
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
-                EnemyEagleController.Instance.EagleActive = true;
+                GameManager.Instance.EnemyEagleController.EagleActive = true;
                 yield return new WaitForSeconds(3.0f);
 				GameManager.Instance.EnemeyController.setMana(-8);
-                EnemyAI.Instance.StealPlayerItem();
+                GameManager.Instance.EnemyAI.StealPlayerItem();
 			}
 
 		}
         else if (flag == 3)
         {
-            EffectAudioManager.Instance.PlayFight();
+            GameManager.Instance.EffectAudioManager.PlayFight();
             BGMManager.Instance.MoveToFight();
 			if (GameManager.Instance.Turn == 0)
 			{
@@ -204,7 +204,7 @@ public class ItemManager : SingleTon<ItemManager>
 				GameManager.Instance.EnemeyController.setMana(-10);
 
 			}
-            HorseManager.Instance.PrapareGame();
+            GameManager.Instance.HorseManager.PrapareGame();
 		}
         else if (flag == 4)//추가 아이템을 획득한다
 		{
@@ -218,7 +218,7 @@ public class ItemManager : SingleTon<ItemManager>
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-8);
-                EnemyAI.Instance.ChooseEnemyItem();
+                GameManager.Instance.EnemyAI.ChooseEnemyItem();
 			}
         }
         else if (flag == 5)//기력을 일정 부분 회복한다.(확정적으로 회복)
@@ -245,17 +245,17 @@ public class ItemManager : SingleTon<ItemManager>
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
-				VillageManager.Instance.VilageHelath = randomValue;
+				GameManager.Instance.VillageManager.VilageHelath = randomValue;
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-5);
-                OppositeVillageManager.Instance.OppositeVillageHealth = randomValue;
+                GameManager.Instance.OppositeVillageManager.OppositeVillageHealth = randomValue;
 			}
 		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.
 		{
-            EffectAudioManager.Instance.PlayOil();
+            GameManager.Instance.EffectAudioManager.PlayOil();
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
@@ -290,7 +290,7 @@ public class ItemManager : SingleTon<ItemManager>
         {
             GameManager.Instance.AnimationManager.ThrowSmoke();
 			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitThrowTime);
-            SmokeEffect.Instance.PlaySmoke();
+            GameManager.Instance.SmokeEffect.PlaySmoke();
 
 			//두 싸이클 동안 나무의 체력 바를 숨긴다.
 			smokeFlag += 4;
@@ -321,7 +321,7 @@ public class ItemManager : SingleTon<ItemManager>
         }
         else if (flag == 11) //나무 방패
         {
-            EffectAudioManager.Instance.PlayShild();
+            GameManager.Instance.EffectAudioManager.PlayShild();
             GameManager.Instance.AnimationManager.Shild();
 			if (GameManager.Instance.Turn == 0)
 			{
@@ -350,7 +350,7 @@ public class ItemManager : SingleTon<ItemManager>
 			//Do job at TreeController
 		}
         yield return null;
-        BGMManager.Instance.CheckState();
+        //BGMManager.Instance.CheckState();
         FuncFlag = false;
 	}
 }

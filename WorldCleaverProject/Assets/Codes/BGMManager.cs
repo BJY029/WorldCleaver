@@ -11,22 +11,28 @@ public class BGMManager : SingleTon<BGMManager>
     public AudioSource OpeningBGM;
 
     public float SetVolume = 1.0f;
+    public float SetEVolume = 1.0f;
 
     public float durationTime = 3.0f;
     public bool flag;
     public bool flag2;
 
+    public bool StallFlag;
+
     // Start is called before the first frame update
     void Awake()
     {
 		SetVolume = 1.0f;
+        StallFlag = false;
     }
 
     public void PlayOpeningBGM()
     {
         Debug.Log(SetVolume);
         OpeningBGM.volume = SetVolume;
-        OpeningBGM.Play();
+        SetEVolume = 1.0f;
+
+		OpeningBGM.Play();
     }
 
     public void ChangeBGM(string sceneName)
@@ -35,17 +41,30 @@ public class BGMManager : SingleTon<BGMManager>
         {
             if (OpeningBGM.isPlaying)
                 StartCoroutine(FadeOutBGM(OpeningBGM));
-            
-        }
+
+			MainBGM.volume = SetVolume;
+			HeartBeat.volume = SetVolume;
+			FightBGM.volume = SetVolume;
+			OpeningBGM.volume = SetVolume;
+		}
         else if(sceneName == "OpeningScene")
         {
             MainBGM.Stop();
-            OpeningBGM.volume = SetVolume;
-            OpeningBGM.Play();
-        }
+            MainBGM.pitch = 1.0f;
+			MainBGM.volume = SetVolume;
+			HeartBeat.volume = SetVolume;
+			FightBGM.volume = SetVolume;
+			OpeningBGM.volume = SetVolume;
+			OpeningBGM.Play();
+
+			OpeningSceneUIManager.Instance. BGMSlider.value = BGMManager.Instance.SetVolume;
+			OpeningSceneUIManager.Instance.EffectSlider.value = BGMManager.Instance.SetEVolume;
+		}
     }
 
     //플레이어의 상태를 확인해서, 가슴뛰는 효과음을 재생할지의 여부를 결정하는 함수
+    //GameManager의 DamageHitTree 마지막
+    //ItmeManager의 마지막
     public void CheckState()
     {
         int state = GameManager.Instance.PlayerController.ReturnCurrentDanger();
@@ -78,9 +97,16 @@ public class BGMManager : SingleTon<BGMManager>
     {
         HeartBeat.Stop();
         StartCoroutine(SlowDownBGM());
-		if (EffectAudioManager.Instance.LoopAudioSource.isPlaying)
-			StartCoroutine(FadeOutBGM(EffectAudioManager.Instance.LoopAudioSource));
+		if (GameManager.Instance.EffectAudioManager.LoopAudioSource.isPlaying)
+			StartCoroutine(FadeOutBGM(GameManager.Instance.EffectAudioManager.LoopAudioSource));
 	}
+
+    IEnumerator Stall()
+    {
+        StallFlag = true; 
+        yield return new WaitForSeconds(durationTime);
+        StallFlag = false;
+    }
 
     //재생되고 있는 브금의 속도를 0으로 천천히 줄인다.
     IEnumerator SlowDownBGM()
@@ -114,10 +140,10 @@ public class BGMManager : SingleTon<BGMManager>
         else flag = false;
 
         //효과음 오디오 소스에서, Loop용 오디오 소스가 재생되어있으면 이것도 같이 Fadeout
-        if (EffectAudioManager.Instance.LoopAudioSource.isPlaying)
+        if (GameManager.Instance.EffectAudioManager.LoopAudioSource.isPlaying)
         {
             flag2 = true;
-            StartCoroutine(FadeOutBGM(EffectAudioManager.Instance.LoopAudioSource));
+            StartCoroutine(FadeOutBGM(GameManager.Instance.EffectAudioManager.LoopAudioSource));
         }
         else flag2 = false;
 
@@ -132,7 +158,7 @@ public class BGMManager : SingleTon<BGMManager>
 		StartCoroutine(FadeOutBGM(FightBGM));
         StartCoroutine(FadeInBGM(MainBGM));
         if (flag) StartCoroutine(FadeInBGM(HeartBeat));
-        if (flag2) StartCoroutine(FadeInBGM(EffectAudioManager.Instance.LoopAudioSource));
+        if (flag2) StartCoroutine(FadeInBGM(GameManager.Instance.EffectAudioManager.LoopAudioSource));
     }
 
     //전달받은 소스를 FadeOut하는 코루틴

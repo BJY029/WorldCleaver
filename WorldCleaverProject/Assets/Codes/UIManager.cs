@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 //전반적인 UI를 관리하는 스크립트
 //싱글톤이기에 GameManager에 바로 접근 가능하다.
-public class UIManager : SingleTon<UIManager>
+public class UIManager : MonoBehaviour
 {
 	public Button PauseButton;
+	public GameObject PausePanel;
+	public Slider BGMSlider;
+	public Slider EffectSlider;
 
 	public Slider treeSlider; //나무 체력을 나타내주는 슬라이더 UI
 	public Slider playerSlider; //플레이어 기력을 나타내주는 슬라이더 UI
@@ -38,17 +41,23 @@ public class UIManager : SingleTon<UIManager>
 	//마지막 연산을 위한 플래그 설정
 	private int flag = 0;
 
+	public bool EffectAudioFlag;
+
 	private void Start()
 	{
 		YouLosePanel.SetActive(false);
 		YouWinPanel.SetActive(false);
+		PausePanel.transform.localScale = Vector3.zero;
+
+		BGMSlider.value = BGMManager.Instance.SetVolume;
+		EffectSlider.value = BGMManager.Instance.SetEVolume;
 
 		//초기화
 		InitHealth = GameManager.Instance.TreeController.treeHealth;
 		InitPlayerPower = GameManager.Instance.PlayerController.Mana;
 		InitEnemyPower = GameManager.Instance.EnemeyController.Mana;
-		InitVillageHealth = VillageManager.Instance.VilageHelath;
-		InitOppositeVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
+		InitVillageHealth = GameManager.Instance.VillageManager.VilageHelath;
+		InitOppositeVillageHealth = GameManager.Instance.OppositeVillageManager.OppositeVillageHealth;
 
 		VillageCanvas.enabled = false;
 		OppositeVillageCanvas.enabled = false;
@@ -61,10 +70,20 @@ public class UIManager : SingleTon<UIManager>
 		OppositeVillageSlider.value = InitOppositeVillageHealth;
 		MyVillageSliderInMain.value = InitVillageHealth;
 		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
+
 	}
 
 	private void Update()
 	{
+		if(BGMManager.Instance.StallFlag == true)
+		{
+			PauseButton.interactable = false;
+		}
+		else
+		{
+			PauseButton.interactable = true;
+		}
+
 		//중요! 만약 게임이 종료된 경우
 		if (GameManager.Instance.Turn == 44)
 		{
@@ -96,7 +115,7 @@ public class UIManager : SingleTon<UIManager>
 		}
 
 		//만약 현재 연막탄 아이템이 실행중이면
-		if(ItemManager.Instance.smokeFlag != 0)
+		if(GameManager.Instance.ItemManager.smokeFlag != 0)
 		{
 			//게임이 끝난 경우
 			if (GameManager.Instance.Turn == 44)
@@ -134,11 +153,11 @@ public class UIManager : SingleTon<UIManager>
 		EnemySlider.value = curPower_e / InitEnemyPower;
 
 		//마을 체력 슬라이더 설정
-		float VillageHealth = VillageManager.Instance.VilageHelath;
+		float VillageHealth = GameManager.Instance.VillageManager.VilageHelath;
 		VillageSlider.value = VillageHealth / InitVillageHealth;
 		MyVillageSliderInMain.value = VillageSlider.value;
 
-		float OppositeVillageHealth = OppositeVillageManager.Instance.OppositeVillageHealth;
+		float OppositeVillageHealth = GameManager.Instance.OppositeVillageManager.OppositeVillageHealth;
 		OppositeVillageSlider.value = OppositeVillageHealth / InitOppositeVillageHealth;
 		OppositeVillageSliderInMain.value = OppositeVillageSlider.value;
 
@@ -162,7 +181,7 @@ public class UIManager : SingleTon<UIManager>
 		else if(GameManager.Instance.Turn == 0) //만약 내 턴이면
 		{
 			//만약 현재 아이템 Full 경고문 혹은 Empty 경고문이 뜨고 있는 상태면
-			if(DisplayWarningMessage.Instance.WarningFlag == 1 || DisplayEmptyMessage.Instance.WarningFlag == 1)
+			if(GameManager.Instance.DisplayWarningMessage.WarningFlag == 1 || GameManager.Instance.DisplayEmptyMessage.WarningFlag == 1)
 			{
 				//비활성화
 				ToVillageButton.interactable = false;
@@ -204,7 +223,7 @@ public class UIManager : SingleTon<UIManager>
 		{
 			HitButton.interactable = false;
 		}
-		else if(ItemManager.Instance.FuncFlag == true)
+		else if(GameManager.Instance.ItemManager.FuncFlag == true)
 		{
 			HitButton.interactable = false;
 		}
@@ -212,5 +231,40 @@ public class UIManager : SingleTon<UIManager>
 		{
 			HitButton.interactable= true;
 		}
+	}
+
+	public void IsPauesButtonClicked()
+	{
+		Time.timeScale = 0;
+		BGMManager.Instance.MainBGM.Pause();
+		if (GameManager.Instance.EffectAudioManager.LoopAudioSource.isPlaying)
+		{
+			GameManager.Instance.EffectAudioManager.LoopAudioSource.Pause();
+			EffectAudioFlag = true;
+		}
+		else EffectAudioFlag = false;
+		PausePanel.transform.localScale = Vector3.one;
+	}
+
+	public void BackToGame()
+	{
+		float volum = BGMSlider.value;
+		float Evolum = EffectSlider.value;
+		BGMManager.Instance.SetVolume = volum;
+		BGMManager.Instance.SetEVolume = Evolum;
+
+		PausePanel.transform.localScale = Vector3.zero;
+		Time.timeScale = 1;
+		BGMManager.Instance.MainBGM.volume = volum;
+		BGMManager.Instance.HeartBeat.volume = volum;
+		BGMManager.Instance.FightBGM.volume = volum;
+		BGMManager.Instance.OpeningBGM.volume = volum;
+		BGMManager.Instance.MainBGM.Play();
+
+		GameManager.Instance.EffectAudioManager.audioSource.volume = Evolum;
+		GameManager.Instance.EffectAudioManager.LoopAudioSource.volume = Evolum;
+		GameManager.Instance.EffectAudioManager.AudioSourceForWalk_0.volume = Evolum;
+		GameManager.Instance.EffectAudioManager.AudioSourceForWalk_1.volume = Evolum;
+		if (EffectAudioFlag) GameManager.Instance.EffectAudioManager.LoopAudioSource.Play();
 	}
 }

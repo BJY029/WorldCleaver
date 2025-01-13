@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class SceneManagment :SingleTon<SceneManagment>
 {
-
     public GameObject loadingScene;
     public Slider progressBar;
+    public GameObject OpeningPanel;
 
 	private void Awake()
 	{
@@ -40,10 +40,11 @@ public class SceneManagment :SingleTon<SceneManagment>
         if (sceneName == "SampleScene")
         {
 			StartCoroutine(LoadScene(sceneName));
-        }
-        else { 
+		}
+        else if(sceneName == "OpeningScene"){ 
             SceneManager.LoadScene(sceneName);
-			loadingScene.SetActive(false);
+            if (Time.timeScale == 0) Time.timeScale = 1;
+			OpeningPanel.SetActive(true);
 			BGMManager.Instance.ChangeBGM(sceneName);
         }
     }
@@ -62,9 +63,11 @@ public class SceneManagment :SingleTon<SceneManagment>
             yield return null;
         }
 
-		//loadingScene.SetActive(false);
+		loadingScene.SetActive(false);
+		OpeningPanel.SetActive(false);
 		BGMManager.Instance.OpeningBGM.Stop();
 		BGMManager.Instance.MainBGM.volume = BGMManager.Instance.SetVolume;
+        BGMManager.Instance.MainBGM.pitch = 1.0f;
 		BGMManager.Instance.MainBGM.Play();
 	}
 

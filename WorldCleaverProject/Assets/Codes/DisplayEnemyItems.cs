@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DisplayEnemyItems : SingleTon<DisplayEnemyItems>
+public class DisplayEnemyItems : MonoBehaviour
 {
     public List<Button> enemyItems = new List<Button>();
 

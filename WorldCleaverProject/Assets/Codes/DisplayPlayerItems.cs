@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 using static UnityEditor.Progress;
 
-public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
+public class DisplayPlayerItems :MonoBehaviour
 {
 	//버튼 리스트 할당
     public List<Button> playerItems = new List<Button>();
@@ -150,12 +150,12 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		//플래그 초기화
 		int flag = -1;
 		Item item = null;
-		for(int i = 0; i < ItemManager.Instance.allItems.Count;i++)
+		for(int i = 0; i < GameManager.Instance.ItemManager.allItems.Count;i++)
 		{
 			//같은 이미지가 나오면 해당 인덱스를 플래그에 저장
-			if (ItemManager.Instance.allItems[i].icon == sprite)
+			if (GameManager.Instance.ItemManager.allItems[i].icon == sprite)
 			{
-				item = ItemManager.Instance.allItems[i];
+				item = GameManager.Instance.ItemManager.allItems[i];
 				flag = i;
 				break;
 			}
@@ -168,7 +168,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		disableButtons();
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
-		StartCoroutine(ItemManager.Instance.ItemFunction(flag));
+		StartCoroutine(GameManager.Instance.ItemManager.ItemFunction(flag));
 		
 	}
 
@@ -176,10 +176,10 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 	//적으로부터 아이템을 빼앗아온다.
 	public void StealEnemyItem()
 	{
-		if (EnemyAI.Instance.isEnemyItemisEmpty())
+		if (GameManager.Instance.EnemyAI.isEnemyItemisEmpty())
 		{
 			//경고문 출력
-			DisplayEmptyMessage.Instance.ItemIsEmpty();
+			GameManager.Instance.DisplayEmptyMessage.ItemIsEmpty();
 			return;
 		}
 
@@ -188,7 +188,7 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 
 		//LINQ를 이용한 필터링
 		//null이 아닌 아이템만 필터링한다.
-		idxArr = EnemyAI.Instance.EnemyItems.Where(item => item != null).ToList();
+		idxArr = GameManager.Instance.EnemyAI.EnemyItems.Where(item => item != null).ToList();
 
 		//유효한 아이템이 없으면 경고 출력
 		if(idxArr.Count == 0)
@@ -204,8 +204,8 @@ public class DisplayPlayerItems : SingleTon<DisplayPlayerItems>
 		Item ChooseItem = idxArr[randIdx];
 
 		//적 아이템 리스트에서 해당 아이템을 제거한다.
-		EnemyAI.Instance.EnemyItems[EnemyAI.Instance.EnemyItems.IndexOf(ChooseItem)] = null;
-		DisplayEnemyItems.Instance.removeItem(ChooseItem.icon);
+		GameManager.Instance.EnemyAI.EnemyItems[GameManager.Instance.EnemyAI.EnemyItems.IndexOf(ChooseItem)] = null;
+		GameManager.Instance.DisplayEnemyItems.removeItem(ChooseItem.icon);
 		//선택된 아이템을 플레이어 아이템 리스트에 배치한다.
 		insertItem(ChooseItem);
 	}

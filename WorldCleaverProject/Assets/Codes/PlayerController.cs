@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour
         float MaxTreeHealth = GameManager.Instance.TreeController.Treehealth;
 		float CurrentTreeHealth = GameManager.Instance.TreeController.treeHealth;
         float CurrentPlayerMana = Mana;
-        float MaxVillageHealth = VillageManager.Instance.H;
-        float CurrentPlayerVillageHealth = VillageManager.Instance.VilageHelath;
+        float MaxVillageHealth = GameManager.Instance.VillageManager.H;
+        float CurrentPlayerVillageHealth = GameManager.Instance.VillageManager.VilageHelath;
 
         float TreeHealthW = CurrentTreeHealth / MaxTreeHealth;
         float PlayerManaW = CurrentPlayerMana / PlayerMana;

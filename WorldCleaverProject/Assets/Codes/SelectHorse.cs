@@ -9,14 +9,14 @@ public class SelectHorse : SingleTon<SelectHorse>
 
     public void OnItemSelected(int horseNum)
     {
-        HorseManager.Instance.MyHorseImg = HorseImg;
-        HorseManager.Instance.MyHorseName = HorseName;
-		HorseManager.Instance.MyHorseNum = horseNum;
+        GameManager.Instance.HorseManager.MyHorseImg = HorseImg;
+        GameManager.Instance.HorseManager.MyHorseName = HorseName;
+		GameManager.Instance.HorseManager.MyHorseNum = horseNum;
 		ClosePanel();
 
-		HorseManager.Instance.InsertInfoInDecisionPanel();
+		GameManager.Instance.HorseManager.InsertInfoInDecisionPanel();
 		//아이템이 선택된 후, 최종 말을 확인
-		StartCoroutine(HorseManager.Instance.DisplayDecisionHorse());
+		StartCoroutine(GameManager.Instance.HorseManager.DisplayDecisionHorse());
     }
 
 	public void DisplayPanel()

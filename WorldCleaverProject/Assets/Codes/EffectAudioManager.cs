@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectAudioManager : SingleTon<EffectAudioManager>
+public class EffectAudioManager : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioSource LoopAudioSource;
@@ -31,7 +31,11 @@ public class EffectAudioManager : SingleTon<EffectAudioManager>
 
     void Start()
     {
-        
+        float v = BGMManager.Instance.SetEVolume;
+        audioSource.volume = v;
+        LoopAudioSource.volume = v;
+        AudioSourceForWalk_0.volume = v;
+        AudioSourceForWalk_1.volume = v;
     }
 
 	public void PlayDeerGalloping()

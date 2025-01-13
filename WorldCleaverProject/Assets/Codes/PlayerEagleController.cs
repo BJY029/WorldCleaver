@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerEagleController : SingleTon<PlayerEagleController>
+public class PlayerEagleController : MonoBehaviour
 {
 	public Transform target1;
 	public Transform target2;
@@ -33,7 +33,7 @@ public class PlayerEagleController : SingleTon<PlayerEagleController>
 			EagleTimer -= Time.deltaTime;
 			if(EagleTimer <= 0f)
 			{
-				EffectAudioManager.Instance.PlayEagleWing();
+				GameManager.Instance.EffectAudioManager.PlayEagleWing();
 				EagleTimer = EagIeInterval;
 			}
 		}

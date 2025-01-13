@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayEmptyMessage : SingleTon<DisplayEmptyMessage>
+public class DisplayEmptyMessage : MonoBehaviour
 {
     public int WarningFlag;
     public float waitingTime = 1.5f;
