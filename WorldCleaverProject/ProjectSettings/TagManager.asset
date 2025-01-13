@@ -12,6 +12,8 @@ TagManager:
   - StopLine
   - Enemy
   - Target
+  - DDOL
+  - BGM
   layers:
   - Default
   - TransparentFX

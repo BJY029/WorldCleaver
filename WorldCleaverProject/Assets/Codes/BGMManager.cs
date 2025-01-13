@@ -1,21 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BGMManager : SingleTon<BGMManager>
 {
     public AudioSource MainBGM;
     public AudioSource HeartBeat;
     public AudioSource FightBGM;
+    public AudioSource OpeningBGM;
+
+    public float SetVolume = 1.0f;
 
     public float durationTime = 3.0f;
     public bool flag;
     public bool flag2;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+		SetVolume = 1.0f;
+    }
+
+    public void PlayOpeningBGM()
+    {
+        Debug.Log(SetVolume);
+        OpeningBGM.volume = SetVolume;
+        OpeningBGM.Play();
+    }
+
+    public void ChangeBGM(string sceneName)
+    {
+        if(sceneName == "SampleScene")
+        {
+            if (OpeningBGM.isPlaying)
+                StartCoroutine(FadeOutBGM(OpeningBGM));
+            
+        }
+        else if(sceneName == "OpeningScene")
+        {
+            MainBGM.Stop();
+            OpeningBGM.volume = SetVolume;
+            OpeningBGM.Play();
+        }
     }
 
     //플레이어의 상태를 확인해서, 가슴뛰는 효과음을 재생할지의 여부를 결정하는 함수
@@ -63,7 +90,7 @@ public class BGMManager : SingleTon<BGMManager>
         {
             elapsedTime += Time.deltaTime;
 
-            float newPitch = Mathf.Lerp(1f, 0f, elapsedTime/ durationTime);
+            float newPitch = Mathf.Lerp(SetVolume, 0f, elapsedTime/ durationTime);
             MainBGM.pitch = newPitch;
 
             yield return null;
@@ -116,7 +143,7 @@ public class BGMManager : SingleTon<BGMManager>
 		{
 			elapsedTime += Time.deltaTime;
 
-			float newVolume = Mathf.Lerp(1f, 0f, elapsedTime / durationTime);
+			float newVolume = Mathf.Lerp(SetVolume, 0f, elapsedTime / durationTime);
 			source.volume = newVolume;
 
 			yield return null;
@@ -138,7 +165,7 @@ public class BGMManager : SingleTon<BGMManager>
 		{
 			elapsedTime += Time.deltaTime;
 
-			float newVolume = Mathf.Lerp(0f, 1f, elapsedTime / durationTime);
+			float newVolume = Mathf.Lerp(0f, SetVolume, elapsedTime / durationTime);
 			source.volume = newVolume;
 
 			yield return null;
