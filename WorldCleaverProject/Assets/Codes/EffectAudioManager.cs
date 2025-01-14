@@ -167,6 +167,7 @@ public class EffectAudioManager : MonoBehaviour
 
     public void PlayFight()
     {
+        if (GameManager.Instance.Turn == 44) return;
         audioSource.clip = Fight;
         audioSource.Play();
     }

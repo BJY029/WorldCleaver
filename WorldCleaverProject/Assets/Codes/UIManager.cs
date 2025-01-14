@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
 
 	public GameObject YouWinPanel;
 	public GameObject YouLosePanel;
+	public GameObject HintPanel;
+	public Text HintText;
+	public Button BackToOpening;
+	private bool hasExecuted;
 
 	private float InitHealth; //나무 체력의 초기 값을 저장하기 위한 변수 
 	private float InitPlayerPower; //플레이어 체력의 초깃값을 저장하기 위한 변수
@@ -41,13 +45,25 @@ public class UIManager : MonoBehaviour
 	//마지막 연산을 위한 플래그 설정
 	private int flag = 0;
 
+	public bool MainBGMFlag;
+	public bool FightBGMFlag;
 	public bool EffectAudioFlag;
+
+	private string[] TreeHint;
+	private string[] ManaHint;
+	private string[] VillageHint;
 
 	private void Start()
 	{
 		YouLosePanel.SetActive(false);
 		YouWinPanel.SetActive(false);
+		HintPanel.SetActive(false);
 		PausePanel.transform.localScale = Vector3.zero;
+		BackToOpening.transform.localScale = Vector3.zero;
+		hasExecuted = false;
+
+		////멈춤 버튼 활성화
+		PauseButton.interactable = true;
 
 		BGMSlider.value = BGMManager.Instance.SetVolume;
 		EffectSlider.value = BGMManager.Instance.SetEVolume;
@@ -71,18 +87,34 @@ public class UIManager : MonoBehaviour
 		MyVillageSliderInMain.value = InitVillageHealth;
 		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
 
+
+		TreeHint = new string[] {
+			"아이템을 적절히 활용해서 상대방의 막타를 유도해 보세요",
+			"기름 아이템을 적절한 타이밍에 사용해 보세요",
+			"미리미리 나무의 체력을 회복시켜보세요"
+		};
+		ManaHint = new string[] {
+			"기력 회복 아이템의 기력 사용량은 0이랍니다",
+			"특정 아이템의 기력 사용량은 매우 높아 사용에 유의해야 해요",
+			"당신의 운을 결투 신청 아이템을 통해 시험해 보세요"
+		};
+		VillageHint = new string[] {
+			"나무의 체력이 많을 때 많이 때려두세요",
+			"특정 아이템을 적절히 활용하여 상대방이 나무를 충분히 때리지 못하게 막아보세요",
+			"마을 체력 회복 아이템은 단 하나라는 사실을 잊지 마세요"
+		};
 	}
 
 	private void Update()
 	{
-		if(BGMManager.Instance.StallFlag == true)
-		{
-			PauseButton.interactable = false;
-		}
-		else
-		{
-			PauseButton.interactable = true;
-		}
+		//if(BGMManager.Instance.StallFlag == true)
+		//{
+		//	PauseButton.interactable = false;
+		//}
+		//else
+		//{
+		//	PauseButton.interactable = true;
+		//}
 
 		//중요! 만약 게임이 종료된 경우
 		if (GameManager.Instance.Turn == 44)
@@ -95,15 +127,42 @@ public class UIManager : MonoBehaviour
 			//마을 전용 Canvas 비활성화
 			ToVillageButton.interactable = false;
 			ToOppositeVillageButton.interactable = false;
+			//멈춤 버튼 비활성화
+			PauseButton.interactable = false;
 
-			//게임 승리자를 띄우는 UI를 활성화한다.
-			if(GameManager.Instance.WhoLose == 0)
+			if (!hasExecuted)
 			{
-				YouLosePanel.SetActive(true);
-			}
-			else
-			{
-				YouWinPanel.SetActive(true);
+				//게임 승리자를 띄우는 UI를 활성화한다.
+				if (GameManager.Instance.WhoLose == 0)
+				{
+					YouLosePanel.SetActive(true);
+
+
+					int RandomIdx = Random.Range(0, 3);
+					int reason = GameManager.Instance.ReasonFlag;
+					if (reason == 0)
+					{
+						HintText.text = "Hint\n" + TreeHint[RandomIdx];
+					}
+					else if (reason == 1)
+					{
+						HintText.text = "Hint\n" + ManaHint[RandomIdx];
+					}
+					else if (reason == 2)
+					{
+						HintText.text = "Hint\n" + VillageHint[RandomIdx];
+					}
+					HintPanel.SetActive(true);
+
+
+				}
+				else
+				{
+					YouWinPanel.SetActive(true);
+				}
+
+				StartCoroutine(WaitAndActiveButton());
+				hasExecuted = true;
 			}
 
 			//그리고 현재 플래그가 1이면 이미 기력 바가 초기화된 상태이므로 그대로 return한다.
@@ -266,5 +325,11 @@ public class UIManager : MonoBehaviour
 		GameManager.Instance.EffectAudioManager.AudioSourceForWalk_0.volume = Evolum;
 		GameManager.Instance.EffectAudioManager.AudioSourceForWalk_1.volume = Evolum;
 		if (EffectAudioFlag) GameManager.Instance.EffectAudioManager.LoopAudioSource.Play();
+	}
+
+	IEnumerator WaitAndActiveButton()
+	{
+		yield return new WaitForSeconds(6f);
+		BackToOpening.transform.localScale = Vector3.one;
 	}
 }

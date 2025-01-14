@@ -76,6 +76,9 @@ public class HorseManager : MonoBehaviour
         //해당 맵으로 이동하지 않는다.
         if (GameManager.Instance.Turn == 44) return;
 
+        //pause 버튼 삭제
+        GameManager.Instance.UIManager.PauseButton.transform.localScale = Vector3.zero;
+
         //적 AI의 HIT 수행 코루틴 잠시 멈춤
         EnemyAIStop = true;
 
@@ -250,6 +253,9 @@ public class HorseManager : MonoBehaviour
         //게임 결과 적용
         GameManager.Instance.PlayerController.setMana(30);
         GameManager.Instance.EnemeyController.setMana(-10);
+
+		yield return new WaitForSeconds(BGMManager.Instance.durationTime);
+		GameManager.Instance.UIManager.PauseButton.transform.localScale = Vector3.one;
 	}
 
     //플레이어가 패배한 경우 수행되는 코루틴
@@ -293,6 +299,9 @@ public class HorseManager : MonoBehaviour
 		//게임 결과 적용
 		GameManager.Instance.PlayerController.setMana(-10);
 		GameManager.Instance.EnemeyController.setMana(30);
+
+		yield return new WaitForSeconds(BGMManager.Instance.durationTime);
+        GameManager.Instance.UIManager.PauseButton.transform.localScale = Vector3.one;
 	}
 
     //모든 패널을 닫는 함수

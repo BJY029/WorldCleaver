@@ -193,8 +193,6 @@ public class ItemManager : MonoBehaviour
 		}
         else if (flag == 3)
         {
-            GameManager.Instance.EffectAudioManager.PlayFight();
-            BGMManager.Instance.MoveToFight();
 			if (GameManager.Instance.Turn == 0)
 			{
 				GameManager.Instance.PlayerController.setMana(-10);
@@ -204,7 +202,9 @@ public class ItemManager : MonoBehaviour
 				GameManager.Instance.EnemeyController.setMana(-10);
 
 			}
-            GameManager.Instance.HorseManager.PrapareGame();
+			GameManager.Instance.EffectAudioManager.PlayFight();
+			BGMManager.Instance.MoveToFight();
+			GameManager.Instance.HorseManager.PrapareGame();
 		}
         else if (flag == 4)//√ﬂ∞° æ∆¿Ã≈€¿ª »πµÊ«—¥Ÿ
 		{

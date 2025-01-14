@@ -124,11 +124,13 @@ public class BGMManager : SingleTon<BGMManager>
 
         MainBGM.pitch = 0f;
         MainBGM.Stop();
-    }
+		MainBGM.pitch = 1f;
+	}
 
     //결투신청 아이템을 사용했을 때 호출되는 함수
     public void MoveToFight()
     {
+        if (GameManager.Instance.Turn == 44) return;
         //메인 브금을 Fadeout하고
         StartCoroutine(FadeOutBGM(MainBGM));
         //만약 현재 두근두근 ㅋ bgm이  재생되고 있으면, 플레그를 체크하고, 같이 Fadeout
