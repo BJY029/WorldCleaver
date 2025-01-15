@@ -39,11 +39,21 @@ public class DisplayItems : SingleTon<DisplayItems>
         //게임이 종료된 경우, 아이템 선택 창을 띄우지 않는다.
         if (GameManager.Instance.Turn == 44) return;
 
+        StartCoroutine(DisplayDelay());
+	}
+
+    IEnumerator DisplayDelay()
+    {
+        GameManager.Instance.UIManager.ItemSelecting = true;
+        yield return new WaitForSeconds(1f);
 		if (transform.parent != null && transform.parent.parent != null)
 		{
 			transform.parent.parent.localScale = Vector3.one;
 		}
+        GameManager.Instance.UIManager.ItemSelecting = false;
 	}
+
+    
 
     //아이템 선택 창을 끄는 함수
     public void ClosePanel()

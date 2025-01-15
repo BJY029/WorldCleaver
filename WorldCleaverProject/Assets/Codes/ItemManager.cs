@@ -240,7 +240,7 @@ public class ItemManager : MonoBehaviour
         {
             GameManager.Instance.AnimationManager.DrinkHoney();
 			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitDrinkTime);
-			int randomValue = Random.Range(50, 100);
+			int randomValue = Random.Range(200, 300);
 			Debug.Log("Random Village charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
 			{
@@ -350,7 +350,7 @@ public class ItemManager : MonoBehaviour
 			//Do job at TreeController
 		}
         yield return null;
-        //BGMManager.Instance.CheckState();
+        BGMManager.Instance.CheckState();
         FuncFlag = false;
 	}
 }

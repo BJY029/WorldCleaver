@@ -50,6 +50,7 @@ public class BGMManager : SingleTon<BGMManager>
         else if(sceneName == "OpeningScene")
         {
             MainBGM.Stop();
+            HeartBeat.Stop();
             MainBGM.pitch = 1.0f;
 			MainBGM.volume = SetVolume;
 			HeartBeat.volume = SetVolume;

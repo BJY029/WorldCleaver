@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,15 @@ public class UIManager : MonoBehaviour
 	public Slider OppositeVillageSlider;
 	public Slider MyVillageSliderInMain;
 	public Slider OppositeVillageSliderInMain;
+	public SpriteRenderer VillageSky;
+	public SpriteRenderer VillageCloud;
+	public SpriteRenderer OppositeVillageSky;
+	public SpriteRenderer OppositeVillageCloud;
+	Color dangerSky1;
+	Color dangerSky2;
+	Color dangerCloud1;
+	Color dangerCloud2;
+
 	public GameObject ItemListPanel;
 
 	public GameObject YouWinPanel;
@@ -48,10 +58,16 @@ public class UIManager : MonoBehaviour
 	public bool MainBGMFlag;
 	public bool FightBGMFlag;
 	public bool EffectAudioFlag;
+	public bool ItemSelecting;
 
 	private string[] TreeHint;
 	private string[] ManaHint;
 	private string[] VillageHint;
+
+	private void Awake()
+	{
+		HitButton.interactable = false;
+	}
 
 	private void Start()
 	{
@@ -75,6 +91,7 @@ public class UIManager : MonoBehaviour
 		InitVillageHealth = GameManager.Instance.VillageManager.VilageHelath;
 		InitOppositeVillageHealth = GameManager.Instance.OppositeVillageManager.OppositeVillageHealth;
 
+		ItemSelecting = true;
 		VillageCanvas.enabled = false;
 		OppositeVillageCanvas.enabled = false;
 		SliderGroup = treeSlider.GetComponent<CanvasGroup>();
@@ -86,6 +103,10 @@ public class UIManager : MonoBehaviour
 		OppositeVillageSlider.value = InitOppositeVillageHealth;
 		MyVillageSliderInMain.value = InitVillageHealth;
 		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
+		dangerSky1 = new Color(255f, 126f, 126f, 255f);
+		dangerSky2 = new Color(255f, 69f, 69f, 255f);
+		dangerCloud1 = new Color(255f, 190f, 179f, 255f);
+		dangerCloud2 = new Color(188f, 80f, 65f, 255f);
 
 
 		TreeHint = new string[] {
@@ -197,6 +218,7 @@ public class UIManager : MonoBehaviour
 		float curHealth = GameManager.Instance.TreeController.treeHealth;
 		//나무 체력 슬라이더 업데이트
 		treeSlider.value = curHealth / InitHealth;
+		treeSlider.GetComponentInChildren<Text>().text = curHealth.ToString() + "/" + InitHealth.ToString();
 
 		//그냥 Turn 값을 불러오면, 이미 Turn이 교체된 상태에서 변경이 진행되므로 버그 발생
 		//따라서, 기존 Turn을 저장한 myTurn 값을 불러와서 해당 값을 통해 현재 플레이어를 판단한다.
@@ -207,18 +229,57 @@ public class UIManager : MonoBehaviour
 		float curPower_p = GameManager.Instance.PlayerController.Mana;
 		//플레이어 기력 슬리이더 업데이트
 		playerSlider.value = curPower_p / InitPlayerPower;
+		playerSlider.GetComponentInChildren<Text>().text = curPower_p.ToString() + "/" + InitPlayerPower.ToString();
 
 		float curPower_e = GameManager.Instance.EnemeyController.Mana;
 		EnemySlider.value = curPower_e / InitEnemyPower;
+		EnemySlider.GetComponentInChildren<Text>().text = curPower_e.ToString() + "/" + InitEnemyPower.ToString();
 
 		//마을 체력 슬라이더 설정
 		float VillageHealth = GameManager.Instance.VillageManager.VilageHelath;
 		VillageSlider.value = VillageHealth / InitVillageHealth;
+		VillageSlider.GetComponentInChildren<Text>().text = VillageHealth.ToString() + "/" + InitVillageHealth.ToString();
 		MyVillageSliderInMain.value = VillageSlider.value;
 
+		if(VillageHealth >= 500.0f)
+		{
+			VillageSky.color = Color.white;
+			VillageCloud.color = Color.white;
+		}
+		else if(VillageHealth >= 200f)
+		{
+			VillageSky.color = dangerSky1;
+			VillageCloud.color = dangerCloud1;
+		}
+		else
+		{
+			VillageSky.color = dangerSky2;
+			VillageCloud.color = dangerCloud2;
+		}
+
+		//색상이 적용되지 않는다. 
+		//아마도 해당 SpriteRender에 스프라이트가 이미 적용되어 있어서 그런듯 하다.
+		//따라서 이미지 자체를 색상이 변경된 것으로 구해야 할 듯 하다.
 		float OppositeVillageHealth = GameManager.Instance.OppositeVillageManager.OppositeVillageHealth;
 		OppositeVillageSlider.value = OppositeVillageHealth / InitOppositeVillageHealth;
+		OppositeVillageSlider.GetComponentInChildren<Text>().text = OppositeVillageHealth.ToString() + "/" + InitOppositeVillageHealth.ToString();
 		OppositeVillageSliderInMain.value = OppositeVillageSlider.value;
+		if(OppositeVillageHealth >= 500.0f)
+		{
+			OppositeVillageSky.color = Color.white;
+			OppositeVillageCloud.color = Color.white;
+		}
+		else if(OppositeVillageHealth >= 200f)
+		{
+			OppositeVillageSky.color = dangerSky1;
+			OppositeVillageCloud.color = dangerCloud1;
+		}
+		else
+		{
+			OppositeVillageSky.color = dangerSky2;
+			OppositeVillageCloud.color = dangerCloud2;
+		}
+
 
 
 		////플레이어 턴이면
@@ -236,7 +297,7 @@ public class UIManager : MonoBehaviour
 		//}
 
 		//만약 적 턴이면 버튼을 비활성화 시킨다.
-		if(GameManager.Instance.Turn == 1) ToVillageButton.interactable = false;
+		if (GameManager.Instance.Turn == 1) ToVillageButton.interactable = false;
 		else if(GameManager.Instance.Turn == 0) //만약 내 턴이면
 		{
 			//만약 현재 아이템 Full 경고문 혹은 Empty 경고문이 뜨고 있는 상태면
@@ -246,14 +307,13 @@ public class UIManager : MonoBehaviour
 				ToVillageButton.interactable = false;
 				ToOppositeVillageButton.interactable = false;
 			}
-			else
-			{
-				ToVillageButton.interactable = true;
-				ToOppositeVillageButton.interactable = true;
-			}
-
+			//else
+			//{
+			//	ToVillageButton.interactable = true;
+			//	ToOppositeVillageButton.interactable = true;
+			//}
 			//만약 현재 아이템 선택 창이 떠 있는 경우
-			if (ItemListPanel.transform.localScale == Vector3.one)
+			else if (ItemListPanel.transform.localScale == Vector3.one)
 			{
 				//버튼 비활성화
 				ToVillageButton.interactable = false;
@@ -261,9 +321,12 @@ public class UIManager : MonoBehaviour
 			}
 			else
 			{
-				//아니면 다시 활성화
-				ToVillageButton.interactable = true;
-				ToOppositeVillageButton.interactable = true;
+				if (!ItemSelecting)
+				{
+					//아니면 다시 활성화
+					ToVillageButton.interactable = true;
+					ToOppositeVillageButton.interactable = true;
+				}
 			}
 		}
 
@@ -288,7 +351,11 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			HitButton.interactable= true;
+			//악간의 딜레이를 주기위해 코루틴에서 플래그를 설정해서 해당 플래그를 false로 처리
+			//근데 게임을 시작할 때, itemSelecting이 false로 되어있으면, 아이템 선택창이 뜨지도 않았는데 Hit버튼이 상호작용 가능해서
+			//버그 발생 가능, 따라서 일단 itemSelecting을 처음에 true로 설정
+			if(!ItemSelecting)
+				HitButton.interactable= true;
 		}
 	}
 

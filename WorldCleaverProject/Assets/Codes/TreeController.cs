@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,12 @@ public class TreeController : MonoBehaviour
     //먹물과 나무방패를 위한 게수 조정 플래그
     public float MyDamageCoef;
     public float OppositeDamageCoef;
+
+	public GameObject PlayerPopPrefab;
+	public GameObject EnemyPopPrefab;
+
+	public GameObject SpawnP;
+	public GameObject SpawnE;
 
     //나무의 체력을 반환해주는 함수
     public float treeHealth
@@ -71,7 +78,30 @@ public class TreeController : MonoBehaviour
 
         //아이템 여부에 따른 데미지 계수 조정
         HitDamage = (int)(HitDamage * MyDamageCoef);
-        //Debug.Log("데미지 계수 : " + MyDamageCoef);
+		//Debug.Log("데미지 계수 : " + MyDamageCoef);
+
+		Color color = Color.white;
+		if (HitDamage <= 50)
+		{
+			color = Color.white;
+		}
+        else if(HitDamage <= 150)
+        {
+			color = Color.yellow;
+        }
+		else if(HitDamage <= 300)
+		{
+			color = Color.red;
+		}
+		else
+		{
+			color = Color.blue;
+		}
+
+        GameObject popUp = Instantiate(PlayerPopPrefab, SpawnP.transform.position, Quaternion.identity);
+		popUp.GetComponentInChildren<TMP_Text>().color = color;
+		popUp.GetComponentInChildren<TMP_Text>().text = HitDamage.ToString();
+
 
         if (HitDamage < Health)
         {
@@ -140,6 +170,28 @@ public class TreeController : MonoBehaviour
         //아이템 여부에 따른 데미지 계수 조정
         HitDamageFromOp = (int)(HitDamageFromOp * OppositeDamageCoef);
 		//Debug.Log("적 데미지 계수 : " + OppositeDamageCoef);
+
+		Color color = Color.white;
+		if (HitDamageFromOp <= 50)
+		{
+			color = Color.white;
+		}
+		else if (HitDamageFromOp <= 150)
+		{
+			color = Color.yellow;
+		}
+		else if (HitDamageFromOp <= 300)
+		{
+			color = Color.red;
+		}
+		else
+		{
+			color = Color.blue;
+		}
+
+		GameObject popUp = Instantiate(EnemyPopPrefab, SpawnE.transform.position, Quaternion.identity);
+		popUp.GetComponentInChildren<TMP_Text>().color = color;
+		popUp.GetComponentInChildren<TMP_Text>().text = HitDamageFromOp.ToString();
 
 		if (HitDamageFromOp < Health)
         {

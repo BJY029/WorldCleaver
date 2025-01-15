@@ -164,7 +164,7 @@ public class GameManager : SingleTon<GameManager>
 		//Instance.AnimationManager.Hit();
 		//플래그 초기화
 		GameManager.Instance.ItemManager.Flag = -1;
-        //BGMManager.Instance.CheckState();
+        BGMManager.Instance.CheckState();
 	}
 
     //Turn을 교체하는 함수이다.
