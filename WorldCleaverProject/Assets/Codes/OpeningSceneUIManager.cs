@@ -38,6 +38,7 @@ public class OpeningSceneUIManager : SingleTon<OpeningSceneUIManager>
 		BGMManager.Instance.HeartBeat.volume = volum;
 		BGMManager.Instance.FightBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.volume = volum;
+		BGMManager.Instance.LoadingBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.Play();
 	}
 }

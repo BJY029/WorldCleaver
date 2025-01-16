@@ -385,6 +385,7 @@ public class UIManager : MonoBehaviour
 		BGMManager.Instance.HeartBeat.volume = volum;
 		BGMManager.Instance.FightBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.volume = volum;
+		BGMManager.Instance.LoadingBGM.volume = volum;
 		BGMManager.Instance.MainBGM.Play();
 
 		GameManager.Instance.EffectAudioManager.audioSource.volume = Evolum;

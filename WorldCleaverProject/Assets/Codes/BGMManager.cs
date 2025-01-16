@@ -9,6 +9,7 @@ public class BGMManager : SingleTon<BGMManager>
     public AudioSource HeartBeat;
     public AudioSource FightBGM;
     public AudioSource OpeningBGM;
+    public AudioSource LoadingBGM;
 
     public float SetVolume = 1.0f;
     public float SetEVolume = 1.0f;
@@ -46,6 +47,7 @@ public class BGMManager : SingleTon<BGMManager>
 			HeartBeat.volume = SetVolume;
 			FightBGM.volume = SetVolume;
 			OpeningBGM.volume = SetVolume;
+            LoadingBGM.volume = SetVolume;
 		}
         else if(sceneName == "OpeningScene")
         {
@@ -56,6 +58,7 @@ public class BGMManager : SingleTon<BGMManager>
 			HeartBeat.volume = SetVolume;
 			FightBGM.volume = SetVolume;
 			OpeningBGM.volume = SetVolume;
+            LoadingBGM.volume = SetVolume;
 			OpeningBGM.Play();
 
 			OpeningSceneUIManager.Instance. BGMSlider.value = BGMManager.Instance.SetVolume;
