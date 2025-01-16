@@ -246,11 +246,13 @@ public class ItemManager : MonoBehaviour
 			{
 				GameManager.Instance.PlayerController.setMana(-5);
 				GameManager.Instance.VillageManager.VilageHelath = randomValue;
+                GameManager.Instance.VillageManager.ChangeBackGround();
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.EnemeyController.setMana(-5);
                 GameManager.Instance.OppositeVillageManager.OppositeVillageHealth = randomValue;
+                GameManager.Instance.OppositeVillageManager.ChangeBackGround();
 			}
 		}
         else if (flag == 7)//내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.

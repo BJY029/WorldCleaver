@@ -18,6 +18,16 @@ public class VillageManager : MonoBehaviour
 	public Animator Villager_OldWoman;
 	public Animator Villager_Woman;
 
+    public SpriteRenderer VillageSky;
+    public SpriteRenderer VillageCloud;
+
+    public Sprite normalSky;
+    public Sprite normalCloud;
+    public Sprite DangerSky1;
+    public Sprite DangerSky2;
+    public Sprite DangerCloud1;
+    public Sprite DangerCloud2;
+
     //마을 체력의 get,set
 	public float VilageHelath
     {
@@ -78,4 +88,23 @@ public class VillageManager : MonoBehaviour
 		Villager_OldWoman.SetFloat("VillageHealth", VillagerHealth);
 		Villager_Woman.SetFloat("VillageHealth", VillagerHealth);
 	}
+
+    public void ChangeBackGround()
+    {
+        if(VillagerHealth >= 500.0f)
+        {
+            VillageCloud.sprite = normalCloud;
+            VillageSky.sprite = normalSky;
+        }
+        else if(VillagerHealth >= 300.0f)
+        {
+            VillageCloud.sprite = DangerCloud1;
+            VillageSky.sprite = DangerSky1;
+        }
+        else
+        {
+			VillageCloud.sprite = DangerCloud2;
+			VillageSky.sprite = DangerSky2;
+		}
+    }
 }

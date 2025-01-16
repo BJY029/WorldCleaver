@@ -9,11 +9,14 @@ public class OpeningSceneUIManager : SingleTon<OpeningSceneUIManager>
 	public Slider BGMSlider;
 	public Slider EffectSlider;
 
+	public GameObject RulesPanel;
+
 
 	// Start is called before the first frame update
 	void Start()
     {
         SettingPanel.transform.localScale = Vector3.zero;
+		RulesPanel.transform.localScale = Vector3.zero;
 		BGMSlider.value = BGMManager.Instance.SetVolume;
 		EffectSlider.value = BGMManager.Instance.SetEVolume;
 	}
@@ -40,5 +43,15 @@ public class OpeningSceneUIManager : SingleTon<OpeningSceneUIManager>
 		BGMManager.Instance.OpeningBGM.volume = volum;
 		BGMManager.Instance.LoadingBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.Play();
+	}
+
+	public void RuleOpen()
+	{
+		RulesPanel.transform.localScale = Vector3.one;
+	}
+
+	public void RuleClose()
+	{
+		RulesPanel.transform.localScale = Vector3.zero;
 	}
 }

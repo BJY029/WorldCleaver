@@ -31,10 +31,6 @@ public class UIManager : MonoBehaviour
 	public SpriteRenderer VillageCloud;
 	public SpriteRenderer OppositeVillageSky;
 	public SpriteRenderer OppositeVillageCloud;
-	Color dangerSky1;
-	Color dangerSky2;
-	Color dangerCloud1;
-	Color dangerCloud2;
 
 	public GameObject ItemListPanel;
 
@@ -103,10 +99,6 @@ public class UIManager : MonoBehaviour
 		OppositeVillageSlider.value = InitOppositeVillageHealth;
 		MyVillageSliderInMain.value = InitVillageHealth;
 		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
-		dangerSky1 = new Color(255f, 126f, 126f, 255f);
-		dangerSky2 = new Color(255f, 69f, 69f, 255f);
-		dangerCloud1 = new Color(255f, 190f, 179f, 255f);
-		dangerCloud2 = new Color(188f, 80f, 65f, 255f);
 
 
 		TreeHint = new string[] {
@@ -241,21 +233,7 @@ public class UIManager : MonoBehaviour
 		VillageSlider.GetComponentInChildren<Text>().text = VillageHealth.ToString() + "/" + InitVillageHealth.ToString();
 		MyVillageSliderInMain.value = VillageSlider.value;
 
-		if(VillageHealth >= 500.0f)
-		{
-			VillageSky.color = Color.white;
-			VillageCloud.color = Color.white;
-		}
-		else if(VillageHealth >= 200f)
-		{
-			VillageSky.color = dangerSky1;
-			VillageCloud.color = dangerCloud1;
-		}
-		else
-		{
-			VillageSky.color = dangerSky2;
-			VillageCloud.color = dangerCloud2;
-		}
+
 
 		//색상이 적용되지 않는다. 
 		//아마도 해당 SpriteRender에 스프라이트가 이미 적용되어 있어서 그런듯 하다.
@@ -264,21 +242,7 @@ public class UIManager : MonoBehaviour
 		OppositeVillageSlider.value = OppositeVillageHealth / InitOppositeVillageHealth;
 		OppositeVillageSlider.GetComponentInChildren<Text>().text = OppositeVillageHealth.ToString() + "/" + InitOppositeVillageHealth.ToString();
 		OppositeVillageSliderInMain.value = OppositeVillageSlider.value;
-		if(OppositeVillageHealth >= 500.0f)
-		{
-			OppositeVillageSky.color = Color.white;
-			OppositeVillageCloud.color = Color.white;
-		}
-		else if(OppositeVillageHealth >= 200f)
-		{
-			OppositeVillageSky.color = dangerSky1;
-			OppositeVillageCloud.color = dangerCloud1;
-		}
-		else
-		{
-			OppositeVillageSky.color = dangerSky2;
-			OppositeVillageCloud.color = dangerCloud2;
-		}
+
 
 
 

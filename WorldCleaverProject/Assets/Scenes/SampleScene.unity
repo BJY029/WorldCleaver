@@ -1329,6 +1329,14 @@ MonoBehaviour:
   Villager_OldMan: {fileID: 451829885}
   Villager_OldWoman: {fileID: 307784768}
   Villager_Woman: {fileID: 52561636}
+  VillageSky: {fileID: 678620927}
+  VillageCloud: {fileID: 671816567}
+  normalSky: {fileID: 21300000, guid: 30a404c26fbb667449eafcc4eb08ae98, type: 3}
+  normalCloud: {fileID: 21300000, guid: e71838fc30cf46b42a7360f939d19b38, type: 3}
+  DangerSky1: {fileID: 21300000, guid: a26bb2c17beda164a891b62b2e4d9032, type: 3}
+  DangerSky2: {fileID: 21300000, guid: 494217021b3350d499a2b3b04b4f600b, type: 3}
+  DangerCloud1: {fileID: 21300000, guid: 5ec5a46f2c9f1f347969ec307c839c72, type: 3}
+  DangerCloud2: {fileID: 21300000, guid: d7f505b43acffb349bf689906cc49bf1, type: 3}
 --- !u!1 &123729803
 GameObject:
   m_ObjectHideFlags: 0
@@ -6405,12 +6413,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436143503}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.708, y: -4.146, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.7080002, y: -3.856, z: 0.011858964}
   m_LocalScale: {x: 0.6621, y: 0.7217, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 459737824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451829883
 GameObject:
@@ -6880,6 +6888,8 @@ Transform:
   - {fileID: 1882967532}
   - {fileID: 1096850544}
   - {fileID: 686474672}
+  - {fileID: 436143505}
+  - {fileID: 472247734}
   m_Father: {fileID: 974948096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &462125411
@@ -7606,12 +7616,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472247732}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.076, y: -4.138, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.0760002, y: -3.848, z: 0.011858964}
   m_LocalScale: {x: 0.6621, y: 0.7217, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 459737824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &472490861
 GameObject:
@@ -19828,6 +19838,14 @@ MonoBehaviour:
   Villager_OldMan: {fileID: 981001234}
   Villager_OldWoman: {fileID: 1758945604}
   Villager_Woman: {fileID: 157527127}
+  VillageSky: {fileID: 1981062463}
+  VillageCloud: {fileID: 27003172}
+  normalSky: {fileID: 21300000, guid: 30a404c26fbb667449eafcc4eb08ae98, type: 3}
+  normalCloud: {fileID: 21300000, guid: e71838fc30cf46b42a7360f939d19b38, type: 3}
+  DangerSky1: {fileID: 21300000, guid: a26bb2c17beda164a891b62b2e4d9032, type: 3}
+  DangerSky2: {fileID: 21300000, guid: 494217021b3350d499a2b3b04b4f600b, type: 3}
+  DangerCloud1: {fileID: 21300000, guid: 5ec5a46f2c9f1f347969ec307c839c72, type: 3}
+  DangerCloud2: {fileID: 21300000, guid: d7f505b43acffb349bf689906cc49bf1, type: 3}
 --- !u!1 &1402496615
 GameObject:
   m_ObjectHideFlags: 0
@@ -34263,5 +34281,3 @@ SceneRoots:
   - {fileID: 306668638}
   - {fileID: 1663286594}
   - {fileID: 8523071091303378963}
-  - {fileID: 436143505}
-  - {fileID: 472247734}

@@ -16,6 +16,16 @@ public class OppositeVillageManager : MonoBehaviour
 	public Animator Villager_OldWoman;
 	public Animator Villager_Woman;
 
+	public SpriteRenderer VillageSky;
+	public SpriteRenderer VillageCloud;
+
+	public Sprite normalSky;
+	public Sprite normalCloud;
+	public Sprite DangerSky1;
+	public Sprite DangerSky2;
+	public Sprite DangerCloud1;
+	public Sprite DangerCloud2;
+
 
 	public float OppositeVillageHealth
 	{
@@ -68,5 +78,24 @@ public class OppositeVillageManager : MonoBehaviour
 		Villager_OldMan.SetFloat("VillageHealth", OppositeVillagerHealth);
 		Villager_OldWoman.SetFloat("VillageHealth", OppositeVillagerHealth);
 		Villager_Woman.SetFloat("VillageHealth", OppositeVillagerHealth);
+	}
+
+	public void ChangeBackGround()
+	{
+		if (OppositeVillagerHealth >= 500.0f)
+		{
+			VillageCloud.sprite = normalCloud;
+			VillageSky.sprite = normalSky;
+		}
+		else if (OppositeVillagerHealth >= 300.0f)
+		{
+			VillageCloud.sprite = DangerCloud1;
+			VillageSky.sprite = DangerSky1;
+		}
+		else
+		{
+			VillageCloud.sprite = DangerCloud2;
+			VillageSky.sprite = DangerSky2;
+		}
 	}
 }
