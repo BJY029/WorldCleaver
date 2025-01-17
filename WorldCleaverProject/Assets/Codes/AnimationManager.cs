@@ -81,6 +81,8 @@ public class AnimationManager : MonoBehaviour
 		else
 			yield return new WaitForSeconds(WaitHitTime);
 
+		TreeAnim.SetBool("Shild", false);
+
 		if (Turn == 0)
 		{
 			PlayerAnim.SetBool("Dead", true);

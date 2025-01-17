@@ -48,6 +48,8 @@ public class GameManager : SingleTon<GameManager>
 
 	private void Awake()
 	{
+       
+
         //턴은 0, 1값을 지정해서 Hit이 눌리면 바뀐다.
         //0은 플레이어, 1은 적으로 하며, 일단 플레이어부터 턴을 시작하도록 한다.
         Turn = 0;
@@ -67,10 +69,20 @@ public class GameManager : SingleTon<GameManager>
         GameManager.Instance.EnemyDeerController.Deer.SetActive(false) ;
 	}
 
-    //현재 Turn에 따라 실행하는 Hit의
-    //함수가 다르다.
-    //이를 통제하는 게임 메니져 함수이다.
-    public void Hit()
+	private void Start()
+	{
+        //오류 방지
+        if (!BGMManager.Instance.MainBGM.isPlaying)
+        {
+            Debug.Log("MainBgm ERROR!");
+            BGMManager.Instance.MainBGM.Play();
+        }
+	}
+
+	//현재 Turn에 따라 실행하는 Hit의
+	//함수가 다르다.
+	//이를 통제하는 게임 메니져 함수이다.
+	public void Hit()
     {
         //마을 체력은 매 턴마다 깎이게 된다.
         GameManager.Instance.VillageManager.VilageHelath = -20f * MyVillageWeight;

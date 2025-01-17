@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 	public GameObject HintPanel;
 	public Text HintText;
 	public Button BackToOpening;
+	public Button GoToEnding;
 	private bool hasExecuted;
 
 	private float InitHealth; //나무 체력의 초기 값을 저장하기 위한 변수 
@@ -72,6 +73,7 @@ public class UIManager : MonoBehaviour
 		HintPanel.SetActive(false);
 		PausePanel.transform.localScale = Vector3.zero;
 		BackToOpening.transform.localScale = Vector3.zero;
+		GoToEnding.transform.localScale = Vector3.zero;
 		hasExecuted = false;
 
 		////멈춤 버튼 활성화
@@ -350,6 +352,7 @@ public class UIManager : MonoBehaviour
 		BGMManager.Instance.FightBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.volume = volum;
 		BGMManager.Instance.LoadingBGM.volume = volum;
+		BGMManager.Instance.EndingBGM.volume = volum;
 		BGMManager.Instance.MainBGM.Play();
 
 		GameManager.Instance.EffectAudioManager.audioSource.volume = Evolum;
@@ -363,5 +366,9 @@ public class UIManager : MonoBehaviour
 	{
 		yield return new WaitForSeconds(6f);
 		BackToOpening.transform.localScale = Vector3.one;
+		if(GameManager.Instance.WhoLose == 1)
+		{
+			GoToEnding.transform.localScale = Vector3.one;
+		}
 	}
 }

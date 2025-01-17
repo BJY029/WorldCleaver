@@ -10,6 +10,7 @@ public class BGMManager : SingleTon<BGMManager>
     public AudioSource FightBGM;
     public AudioSource OpeningBGM;
     public AudioSource LoadingBGM;
+    public AudioSource EndingBGM;
 
     public float SetVolume = 1.0f;
     public float SetEVolume = 1.0f;
@@ -48,22 +49,34 @@ public class BGMManager : SingleTon<BGMManager>
 			FightBGM.volume = SetVolume;
 			OpeningBGM.volume = SetVolume;
             LoadingBGM.volume = SetVolume;
+            EndingBGM.volume = SetVolume;
 		}
         else if(sceneName == "OpeningScene")
         {
             MainBGM.Stop();
             HeartBeat.Stop();
-            MainBGM.pitch = 1.0f;
+            EndingBGM.Stop();
+            //MainBGM.pitch = 1.0f;
 			MainBGM.volume = SetVolume;
 			HeartBeat.volume = SetVolume;
 			FightBGM.volume = SetVolume;
 			OpeningBGM.volume = SetVolume;
             LoadingBGM.volume = SetVolume;
+            EndingBGM.volume = SetVolume;
 			OpeningBGM.Play();
 
 			OpeningSceneUIManager.Instance. BGMSlider.value = BGMManager.Instance.SetVolume;
 			OpeningSceneUIManager.Instance.EffectSlider.value = BGMManager.Instance.SetEVolume;
 		}
+        else if(sceneName == "EndingScene")
+        {
+            MainBGM.Stop();
+            HeartBeat.Stop();
+			//MainBGM.pitch = 1.0f;
+
+			EndingBGM.volume = SetVolume;
+			EndingBGM.Play();
+        }
     }
 
     //플레이어의 상태를 확인해서, 가슴뛰는 효과음을 재생할지의 여부를 결정하는 함수

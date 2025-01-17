@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using static UnityEditor.Progress;
 
 public class DisplayPlayerItems :MonoBehaviour
 {

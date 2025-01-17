@@ -65,6 +65,11 @@ public class SceneManagment :SingleTon<SceneManagment>
 			OpeningPanel.SetActive(true);
 			BGMManager.Instance.ChangeBGM(sceneName);
         }
+		else if(sceneName == "EndingScene")
+		{
+			SceneManager.LoadScene(sceneName);
+			BGMManager.Instance.ChangeBGM(sceneName);
+		}
     }
 
 	//로딩씬 코루틴
@@ -117,8 +122,10 @@ public class SceneManagment :SingleTon<SceneManagment>
 		OpeningPanel.SetActive(false);
 		BGMManager.Instance.LoadingBGM.Stop();
 		BGMManager.Instance.MainBGM.volume = BGMManager.Instance.SetVolume;
-		BGMManager.Instance.MainBGM.pitch = 1.0f;
+		//BGMManager.Instance.MainBGM.pitch = 1.0f;
 		BGMManager.Instance.MainBGM.Play();
+		Debug.Log("MainBgm is Playing : " + BGMManager.Instance.MainBGM.isPlaying);
+		Debug.Log("Play MainBGM");
 	}
 
 	//크레딧을 스크롤 하는 코루틴
@@ -179,6 +186,7 @@ public class SceneManagment :SingleTon<SceneManagment>
 
 			//다음 씬으로 넘어가도록 허용
 			operation.allowSceneActivation = true;
+
 		}
 	}
 }

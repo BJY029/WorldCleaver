@@ -42,6 +42,7 @@ public class OpeningSceneUIManager : SingleTon<OpeningSceneUIManager>
 		BGMManager.Instance.FightBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.volume = volum;
 		BGMManager.Instance.LoadingBGM.volume = volum;
+		BGMManager.Instance.EndingBGM.volume = volum;
 		BGMManager.Instance.OpeningBGM.Play();
 	}
 
@@ -53,5 +54,11 @@ public class OpeningSceneUIManager : SingleTon<OpeningSceneUIManager>
 	public void RuleClose()
 	{
 		RulesPanel.transform.localScale = Vector3.zero;
+	}
+
+	public void QuitGame()
+	{
+		Debug.Log("Game Quit");
+		Application.Quit();
 	}
 }
