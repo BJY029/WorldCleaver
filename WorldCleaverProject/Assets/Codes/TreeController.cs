@@ -51,7 +51,7 @@ public class TreeController : MonoBehaviour
 
 	private void Awake()
 	{
-        Health = 100.0f;
+        Health = 1000.0f;
 
         MyDamageCoef = 1.0f;
         OppositeDamageCoef = 1.0f;
