@@ -58,7 +58,7 @@ public class EnemyDeerController : MonoBehaviour
 		if (Hit == true)
 		{
 			//나무에게 데미지를 가하고
-			GameManager.Instance.TreeController.DamageHitPlayer();
+			GameManager.Instance.TreeController.DamageHitOppositePlayer();
 			//사슴을 비활성화한다.
 			Deer.SetActive(false);
 			//사슴 설정을 초기화한다.

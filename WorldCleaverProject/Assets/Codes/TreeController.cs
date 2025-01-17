@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Cinemachine;
 
 public class TreeController : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class TreeController : MonoBehaviour
 
 	public GameObject SpawnP;
 	public GameObject SpawnE;
+
+	private CinemachineImpulseSource impulseSource;
+
 
     //나무의 체력을 반환해주는 함수
     public float treeHealth
@@ -52,6 +56,7 @@ public class TreeController : MonoBehaviour
         MyDamageCoef = 1.0f;
         OppositeDamageCoef = 1.0f;
 
+		impulseSource = GetComponent<CinemachineImpulseSource>();
 		//Debug.Log("TreeHealth :" + Health);
 	}
 
@@ -83,18 +88,22 @@ public class TreeController : MonoBehaviour
 		Color color = Color.white;
 		if (HitDamage <= 50)
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.2f);
 			color = Color.white;
 		}
         else if(HitDamage <= 150)
         {
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.4f);
 			color = Color.yellow;
         }
 		else if(HitDamage <= 300)
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.6f);
 			color = Color.red;
 		}
 		else
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 1f);
 			color = Color.blue;
 		}
 
@@ -174,18 +183,22 @@ public class TreeController : MonoBehaviour
 		Color color = Color.white;
 		if (HitDamageFromOp <= 50)
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.2f);
 			color = Color.white;
 		}
 		else if (HitDamageFromOp <= 150)
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.4f);
 			color = Color.yellow;
 		}
 		else if (HitDamageFromOp <= 300)
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 0.6f);
 			color = Color.red;
 		}
 		else
 		{
+			GameManager.Instance.CameraManager.CameraShake(impulseSource, 1f);
 			color = Color.blue;
 		}
 

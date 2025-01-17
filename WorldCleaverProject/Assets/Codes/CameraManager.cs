@@ -38,6 +38,12 @@ public class CameraManager : SingleTon<CameraManager>
 		originalBlend = brain.m_DefaultBlend;
 	}
 
+	public void CameraShake(CinemachineImpulseSource source, float shakeForce)
+	{
+		source.GenerateImpulseWithForce(shakeForce);
+	}
+
+
 	//카메라 우선순위를 바꾸는 함수
 	//해당 함수는 Hit 애니메이션 코루틴이 끝난 후 호출된다.
 	//따라서 해당 함수가 호출 된 시기에는 이미 Turn이 교체된 상태

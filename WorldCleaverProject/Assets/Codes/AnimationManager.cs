@@ -13,7 +13,7 @@ public class AnimationManager : MonoBehaviour
 
 	public GameObject ESquid;
 
-	public float WaitHitTime = 1.35f;
+	public float WaitHitTime = 1.1f;
 
 	public float WaitDrinkTime = 1.35f;
 	public float WaitFireTime = 1.7f;
@@ -354,9 +354,9 @@ public class AnimationManager : MonoBehaviour
 	{
 		Debug.Log(GameManager.Instance.Turn);
 		isHitingTree = 1;
-		yield return new WaitForSeconds(WaitHitTime - 0.5f);
+		yield return new WaitForSeconds(WaitHitTime);
 		GameManager.Instance.EffectAudioManager.PlayHit();
-		yield return new WaitForSeconds(0.5f);
+		//yield return new WaitForSeconds(0.5f);
 		if (Turn == 0) //플레이어 턴이면, 플레이어의 애니메이션을 초기화한다.
 		{
 			PlayerAnim.SetBool("isHit", false);
