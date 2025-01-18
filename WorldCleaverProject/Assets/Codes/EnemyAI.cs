@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -161,16 +162,19 @@ public class EnemyAI : MonoBehaviour
                 ManaCoef = CalcManaCoef(item.Mana);
                 item.priority = coef * ManaCoef * item.Coef;
 
+				//"Hit", "Charge", "Defense", "Heal", "Gimmick", "Village"
 				//Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
 				//마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
 				if (item.Type == "Charge")
-					item.priority *= CalcEnemyManaCoef();
-				//나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				else if (item.Type == "Heal")
-					item.priority *= CalcTreeHealthCoef();
-				//마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				else if (item.Type == "Village")
-					item.priority *= CalcVillageHealthCoef();
+                    item.priority *= CalcEnemyManaCoef();
+                //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+                else if (item.Type == "Heal" || item.Type == "Defense")
+                    item.priority *= CalcTreeHealthCoef();
+                //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+                else if (item.Type == "Village")
+                    item.priority *= CalcVillageHealthCoef();
+                else if (item.Type == "Hit")
+                    item.priority *= CalcHItCoef();
 
 				Debug.Log(item.itemName + " priority is " + item.priority);
 			}
@@ -193,6 +197,73 @@ public class EnemyAI : MonoBehaviour
 		//선택된 아이템을 아이템 리스트에 삽입한다.
 		insertItem(chooseItem);
     }
+    public void TrashEnemyItem()
+    {
+        if (!isEnemyItemisFull()) return;
+
+        Item TrashItem = null;
+        float minPriority = 100f;
+
+        checkState();
+
+		for (int i = 0; i < 5; i++)
+		{
+			Item item = EnemyItems[i];
+			//만약 저장된 아이템 리스트 중 아무것도 저장되지 않은 경우 그냥 넘어간다.
+			if (item == null) continue;
+
+			//딕셔너리 연산을 통해 우선순위 연산을 진행한다.
+			if (itemCoff.TryGetValue(item.Type, out var stateCoff))
+			{
+				//coef에 가져온 딕셔너리의 현재 상태 값을 키로 하여서, 해당 값에 연결된 계수 값을 가져온다.
+				float coef = stateCoff[CurrentState];
+				ManaCoef = CalcManaCoef(item.Mana);
+				item.priority = coef * ManaCoef * item.Coef;
+
+				//Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
+				//마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				if (item.Type == "Charge")
+					item.priority *= CalcEnemyManaCoef();
+				//나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Heal" || item.Type == "Defense")
+					item.priority *= CalcTreeHealthCoef();
+				//마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+				else if (item.Type == "Village")
+					item.priority *= CalcVillageHealthCoef();
+				else if (item.Type == "Hit")
+					item.priority *= CalcHItCoef();
+
+				Debug.Log(i + 1 + "'s item priority is " + item.priority);
+			}
+			//계산한 아이템의 우선순위가 가장 큰 경우, 해당 아이템을 저장한다.
+			if (minPriority > item.priority)
+			{
+				minPriority = item.priority;
+				TrashItem = item;
+			}
+		}
+
+		//"Hit", "Charge", "Defense", "Heal", "Gimmick", "Village"
+        //현재 상태가 공격적인 경우
+		if (CurrentState == AIState.Aggressive)
+        {
+            //공격형 아이템이면 삭제하지 않는다.
+            if (TrashItem.Type == "Hit" || TrashItem.Type == "Gimmick") return;
+        }
+        //현재 상태가 방어적인 경우
+        else if(CurrentState == AIState.Defensive)
+        {
+            //방어형 아이템이면 삭제하지 않는다.
+            if (TrashItem.Type == "Charge" || TrashItem.Type == "Defense" || TrashItem.Type == "Village" || TrashItem.Type == "Heal") return;
+        }
+
+
+		//우선 적 아이템 리스트에서 해당 아이템을 null 처리 하고
+		EnemyItems[EnemyItems.IndexOf(TrashItem)] = null;
+		//UI 상에서의 버튼 리스트에서도 제거한다.
+		GameManager.Instance.DisplayEnemyItems.removeItem(TrashItem.icon);
+		GameManager.Instance.EffectAudioManager.PlayTrash();
+	}
 
     public void UseEnemyItem()
     {
@@ -225,11 +296,13 @@ public class EnemyAI : MonoBehaviour
 				if (item.Type == "Charge")
 					item.priority *= CalcEnemyManaCoef();
                 //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				else if (item.Type == "Heal")
+				else if (item.Type == "Heal" || item.Type == "Defense")
 					item.priority *= CalcTreeHealthCoef();
                 //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
 				else if (item.Type == "Village")
 					item.priority *= CalcVillageHealthCoef();
+				else if (item.Type == "Hit")
+					item.priority *= CalcHItCoef();
 
 				Debug.Log(i+1 + "'s item priority is " + item.priority);
 			}
@@ -534,8 +607,16 @@ public class EnemyAI : MonoBehaviour
 			CurrentTreeHealth = Random.Range(minValue, maxValue);
 		}
 
-		return 1 + ((1000 - CurrentTreeHealth) / 1000);
+        float MaxTreeHealth = GameManager.Instance.TreeController.Treehealth;
+		return 1 + ((MaxTreeHealth - CurrentTreeHealth) / MaxTreeHealth);
     }
+
+    float CalcHItCoef()
+    {
+		float MaxTreeHealth = GameManager.Instance.TreeController.Treehealth;
+        Debug.Log(1 + (CurrentTreeHealth / MaxTreeHealth));
+		return 1 + (CurrentTreeHealth / MaxTreeHealth);
+	}
 
     float CalcVillageHealthCoef()
     {
@@ -549,9 +630,18 @@ public class EnemyAI : MonoBehaviour
 		StartCoroutine("EnemyTurn");
 	}
 
+
 	IEnumerator EnemyTurn()
 	{
+        //만약 적 아이템이 꽉 찬경우
+        if(isEnemyItemisFull())
+        {
+			yield return new WaitForSeconds(waitSecond - 1f);
+            //아이템 중 하나를 버린다.
+            TrashEnemyItem();
+		}
 		yield return new WaitForSeconds(waitSecond);
+        //아이템을 사용한다.
         UseEnemyItem();
 
         //결투 신청 아이템의 경우, 해당 작업 수행 중에, HIT을 수행하지 못하도록

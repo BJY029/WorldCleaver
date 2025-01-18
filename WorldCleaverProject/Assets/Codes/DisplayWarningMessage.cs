@@ -34,6 +34,7 @@ public class DisplayWarningMessage : MonoBehaviour
         yield return new WaitForSeconds(waitingTime);
 		transform.localScale = Vector3.zero;
         WarningFlag = 0;
+		GameManager.Instance.UIManager.ItemSelecting = false;
 		GameManager.Instance.DisplayPlayerItems.beableButtons();
 	}
 }

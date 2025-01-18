@@ -12,6 +12,9 @@ public class DisplayPlayerItems :MonoBehaviour
 	public List<Item> PlayerItem = new List<Item>();
 
 	public Item checkItem;
+
+	public bool BlockButton;
+
 	private void Start()
 	{
 		checkItem = null;
@@ -24,6 +27,7 @@ public class DisplayPlayerItems :MonoBehaviour
 			playerItems[i].enabled = false;
 			playerItems[i].interactable = false;
 		}
+		BlockButton = true;
 	}
 
 	//플레이어 아이템이 꽉 차게 되면, true를 반환하는 함수
@@ -61,6 +65,7 @@ public class DisplayPlayerItems :MonoBehaviour
 		{
 			playerItems[i].interactable = false;
 		}
+		GameManager.Instance.DisplayPlayerItems.BlockButton = true;
 	}
 
 	//해당 버튼의 이미지 오브젝트가 존재하는 경우에만 버튼을 활성화 시키는 함수
@@ -70,8 +75,13 @@ public class DisplayPlayerItems :MonoBehaviour
 		for (int i = 0; i < playerItems.Count; i++)
 		{
 			Sprite sprite = playerItems[i].GetComponent<Image>().sprite;
-			if (sprite != null) playerItems[i].interactable = true;
+			if (sprite != null)
+			{
+				Debug.Log("button true");
+				playerItems[i].interactable = true;
+			}
 		}
+		GameManager.Instance.DisplayPlayerItems.BlockButton = false;
 	}
 
 	//아이템이 선택되었을 때 호출되는 함수
@@ -119,7 +129,9 @@ public class DisplayPlayerItems :MonoBehaviour
 		//만약 플레어건 혹은 독수리 아이템이 선택되었었다면, 버튼을 비활성화 하고, 아이템 플래그를 null로 초기화
 		if (checkItem != null)
 		{
+			//Debug.Log(checkItem.itemName);
 			disableButtons();
+			GameManager.Instance.DisplayPlayerItems.BlockButton = true;
 			checkItem = null;
 		}
 		//아닌경우, 그냥 버튼들을 활성화 시킨다.
@@ -132,7 +144,7 @@ public class DisplayPlayerItems :MonoBehaviour
 	}
 
 	//아이템이 선택되었을 때, 삭제 및 기능 수행 함수
-	public void removeItem(int idx)
+	public void removeItem(int idx, bool isRightClick = false)
 	{
 		checkItem = null;
 		//해당 버튼의 아이콘을 따로 저장하고, 삭제한다.
@@ -161,9 +173,20 @@ public class DisplayPlayerItems :MonoBehaviour
 		}
 
 		PlayerItem.Remove(item);
+		//우클릭 시 단순히 아이템 삭제
+		if (isRightClick)
+		{
+			GameManager.Instance.EffectAudioManager.PlayTrash();
+			return;
+		}
+
+
 		//만약 사용 아이템이 독수리 아이템이거나, 플레어건 아이템이면 checkItem에 포함시킨다.
-		if(item.itemName == "독수리(8)" || item.itemName == "플레어 건(8)")
+		if (item.itemName == "독수리(8)" || item.itemName == "플레어 건(8)")
+		{
 			checkItem = item;
+			//Debug.Log(checkItem.itemName);
+		}
 		disableButtons();
 
 		//ItemManager에 플래그 값을 넘겨서 기능 수행
@@ -179,6 +202,7 @@ public class DisplayPlayerItems :MonoBehaviour
 		{
 			//경고문 출력
 			GameManager.Instance.DisplayEmptyMessage.ItemIsEmpty();
+			checkItem = null;
 			return;
 		}
 

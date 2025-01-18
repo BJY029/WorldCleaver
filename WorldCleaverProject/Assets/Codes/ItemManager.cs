@@ -73,18 +73,18 @@ public class ItemManager : MonoBehaviour
         {
             //해당 아이템 정보들을 생성
             new Item(0, "이상한 포션(0)", "내 기력을 일정 부분 회복시키거나 감소시킨다.", potionIcon, "Charge", 0, 1f),//완
-            new Item(1, "사슴(15)", "사슴이 박치기 공격을 하여 큰 데미지를 입힌다.", deerIcon, "Hit", 15, 2f), //완
+            new Item(1, "사슴(15)", "사슴이 박치기 공격을 하여 큰 데미지를 입힌다.", deerIcon, "Hit", 15, 1.25f), //완
             new Item(2, "독수리(8)", "독수리가 상대방으로부터 아이템을 무작위로 빼앗아 온다.", eagleIcon, "Gimmick", 8, 1.7f), //완
-            new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10, 1.7f),
+            new Item(3, "결투 신청(10)", "상대방과의 미니 게임을 통해 기력을 얻거나 잃는다.", fightIcon, "Gimmick", 10, 1.6f),
             new Item(4, "플레어 건(8)", "추가 아이템을 획득한다.", flareIcon, "Gimmick", 8, 1.7f),//완
             new Item(5, "홍삼(0)", "기력을 일정 부분 회복한다.", ginsengIcon, "Charge", 0, 1f), //완
-            new Item(6, "워그드라실 꿀(5)", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon, "Village", 5 ,1f), //완
-            new Item(7, "기름(5)", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon, "Defense", 5, 2),//완
+            new Item(6, "워그드라실 꿀(10)", "마을 주민의 체력을 일정 부분 회복시킨다.", honeyIcon, "Village", 10 ,1f), //완
+            new Item(7, "기름(12)", "내 도끼에 기름을 발라서 나무에게 주는 데미지를 대폭 감소시킨다.", OilIcon, "Defense", 12, 1.2f),//완
             new Item(8, "수액(10)", "나무에게 사용하여 나무의 체력을 회복시킨다.", sapIcon, "Heal", 10, 1f),//완
-            new Item(9, "연막탄(9)", "나무의 체력을 두 사이클 동안 보이지 않게 한다.", smokeIcon, "Gimmick", 9, 1.7f), //완
-            new Item(10, "오징어 먹물(12)", "상대방에게 던져서, 상대방이 다음 턴에 주는 모든 데미지를 대폭 하락시킨다.", squidIcon, "Hit", 12, 1.7f),//완
-            new Item(11, "나무 방패(10)", "나무에게 방패를 씌워, 한 사이클동안 나무에게 주는 데미지를 감소시킨다.", treeShildIcon, "Defense", 10, 1.5f),//완
-            new Item(12, "녹용(8)", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon, "Hit", 8, 1.5f)//완
+            new Item(9, "연막탄(8)", "나무의 체력을 두 사이클 동안 보이지 않게 한다.", smokeIcon, "Gimmick", 8, 1.5f), //완
+            new Item(10, "오징어 먹물(6)", "상대방에게 던져서, 상대방이 다음 턴에 주는 모든 데미지를 대폭 하락시킨다.", squidIcon, "Hit", 6, 1.1f),//완
+            new Item(11, "나무 방패(9)", "나무에게 방패를 씌워, 한 사이클동안 나무에게 주는 데미지를 감소시킨다.", treeShildIcon, "Defense", 9, 1.1f),//완
+            new Item(12, "녹용(8)", "나무에게 주는 대미지를 대폭 상승시킨다.", velvetIcon, "Hit", 8, 1.2f)//완
         };
 
 

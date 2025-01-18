@@ -22,6 +22,7 @@ public class EffectAudioManager : MonoBehaviour
     public AudioClip Smoke;
     public AudioClip Shild;
     public AudioClip Punch;
+    public AudioClip Trash;
 
     public AudioClip[] Wings;
     public AudioClip[] Horse;
@@ -211,6 +212,12 @@ public class EffectAudioManager : MonoBehaviour
     public void playSqueeze()
     {
         audioSource.clip = Squeeze;
+        audioSource.Play();
+    }
+
+    public void PlayTrash()
+    {
+        audioSource.clip = Trash;
         audioSource.Play();
     }
 

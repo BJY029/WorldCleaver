@@ -28,8 +28,13 @@ public class DisplayItems : SingleTon<DisplayItems>
         GameManager.Instance.ItemManager.AddItemToPlayerInventory(assignedItem);
 
         ClosePanel();
+		GameManager.Instance.UIManager.ItemSelecting = false;
 
-        //아이템이 선택된 후에 버튼을 활성화 한다.
+  //      if(GameManager.Instance.DisplayPlayerItems.checkItem != null)
+  //          GameManager.Instance.DisplayPlayerItems.BlockButton = true;
+		//else GameManager.Instance.DisplayPlayerItems.BlockButton = false;
+
+		//아이템이 선택된 후에 버튼을 활성화 한다.
 		//DisplayPlayerItems.Instance.beableButtons();
 	}
 
@@ -44,13 +49,13 @@ public class DisplayItems : SingleTon<DisplayItems>
 
     IEnumerator DisplayDelay()
     {
-        GameManager.Instance.UIManager.ItemSelecting = true;
+        //GameManager.Instance.UIManager.ItemSelecting = true;
         yield return new WaitForSeconds(1f);
 		if (transform.parent != null && transform.parent.parent != null)
 		{
 			transform.parent.parent.localScale = Vector3.one;
 		}
-        GameManager.Instance.UIManager.ItemSelecting = false;
+        //GameManager.Instance.UIManager.ItemSelecting = false;
 	}
 
     

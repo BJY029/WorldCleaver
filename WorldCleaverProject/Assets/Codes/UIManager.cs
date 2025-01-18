@@ -315,6 +315,10 @@ public class UIManager : MonoBehaviour
 		{
 			HitButton.interactable = false;
 		}
+		else if(GameManager.Instance.DeerController.DeerActivated == true || GameManager.Instance.EnemyDeerController.DeerActivated == true)
+		{
+			HitButton.interactable = false;
+		}
 		else
 		{
 			//악간의 딜레이를 주기위해 코루틴에서 플래그를 설정해서 해당 플래그를 false로 처리

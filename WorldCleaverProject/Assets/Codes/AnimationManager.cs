@@ -47,6 +47,7 @@ public class AnimationManager : MonoBehaviour
 		else if(Turn == 1) //적 턴이면, 적의 애니메이션을 실행한다.
 		{
 			EnemyAnim.SetBool("isHit", true);
+			GameManager.Instance.UIManager.ItemSelecting = true;
 			StartCoroutine(HitTree(Turn));
 		}
 		//else
