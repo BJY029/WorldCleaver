@@ -24,7 +24,9 @@ public class UIManager : MonoBehaviour
 	public Button ToVillageButton;
 	public Button ToOppositeVillageButton;
 	public Slider VillageSlider;
+	public Text VillageCoefText;
 	public Slider OppositeVillageSlider;
+	public Text OppositeVillageCoefText;
 	public Slider MyVillageSliderInMain;
 	public Slider OppositeVillageSliderInMain;
 	public SpriteRenderer VillageSky;
@@ -99,6 +101,8 @@ public class UIManager : MonoBehaviour
 		treeSlider.value = InitHealth;
 		VillageSlider.value = InitVillageHealth;
 		OppositeVillageSlider.value = InitOppositeVillageHealth;
+		VillageCoefText.text = "x" + GameManager.Instance.MyVillageWeight.ToString();
+		OppositeVillageCoefText.text = "x" + GameManager.Instance.OppositeVillageWeight.ToString();
 		MyVillageSliderInMain.value = InitVillageHealth;
 		OppositeVillageSliderInMain.value = InitOppositeVillageHealth;
 
@@ -207,6 +211,9 @@ public class UIManager : MonoBehaviour
 		{
 			SliderGroup.alpha = 1f;
 		}
+
+		VillageCoefText.text = "x" + GameManager.Instance.MyVillageWeight.ToString();
+		OppositeVillageCoefText.text = "x" + GameManager.Instance.OppositeVillageWeight.ToString();
 
 		//현재 나무 체력 받아오기
 		float curHealth = GameManager.Instance.TreeController.treeHealth;

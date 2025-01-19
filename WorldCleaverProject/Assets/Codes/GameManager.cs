@@ -72,11 +72,11 @@ public class GameManager : SingleTon<GameManager>
 	private void Start()
 	{
         //오류 방지
-        if (!BGMManager.Instance.MainBGM.isPlaying)
-        {
-            Debug.Log("MainBgm ERROR!");
-            BGMManager.Instance.MainBGM.Play();
-        }
+        //if (!BGMManager.Instance.MainBGM.isPlaying)
+        //{
+        //    Debug.Log("MainBgm ERROR!");
+        //    BGMManager.Instance.MainBGM.Play();
+        //}
 	}
 
 	//현재 Turn에 따라 실행하는 Hit의

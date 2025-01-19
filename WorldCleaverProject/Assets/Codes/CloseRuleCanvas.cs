@@ -9,5 +9,6 @@ public class CloseRuleCanvas : MonoBehaviour
     public void CloseCanvas()
     {
         RuleCanvas.gameObject.SetActive(false);
+        BGMManager.Instance.MainBGM.Play();
     }
 }

@@ -41,10 +41,9 @@ public class BGMManager : SingleTon<BGMManager>
     {
         if(sceneName == "SampleScene")
         {
-            if (OpeningBGM.isPlaying)
-                StartCoroutine(FadeOutBGM(OpeningBGM));
-
+            LoadingBGM.Stop();
 			MainBGM.volume = SetVolume;
+			//MainBGM.Play();
 			HeartBeat.volume = SetVolume;
 			FightBGM.volume = SetVolume;
 			OpeningBGM.volume = SetVolume;
@@ -139,9 +138,8 @@ public class BGMManager : SingleTon<BGMManager>
             yield return null;
         }
 
-        MainBGM.pitch = 0f;
+        MainBGM.pitch = 1f;
         MainBGM.Stop();
-		MainBGM.pitch = 1f;
 	}
 
     //결투신청 아이템을 사용했을 때 호출되는 함수

@@ -120,12 +120,12 @@ public class SceneManagment :SingleTon<SceneManagment>
 		
 		loadingScene.SetActive(false);
 		OpeningPanel.SetActive(false);
-		BGMManager.Instance.LoadingBGM.Stop();
-		BGMManager.Instance.MainBGM.volume = BGMManager.Instance.SetVolume;
-		//BGMManager.Instance.MainBGM.pitch = 1.0f;
-		BGMManager.Instance.MainBGM.Play();
-		Debug.Log("MainBgm is Playing : " + BGMManager.Instance.MainBGM.isPlaying);
-		Debug.Log("Play MainBGM");
+		//BGMManager.Instance.LoadingBGM.Stop();
+		//BGMManager.Instance.MainBGM.volume = BGMManager.Instance.SetVolume;
+		////BGMManager.Instance.MainBGM.pitch = 1.0f;
+		//BGMManager.Instance.MainBGM.Play();
+
+		BGMManager.Instance.ChangeBGM("SampleScene");
 	}
 
 	//农饭调阑 胶农费 窍绰 内风凭

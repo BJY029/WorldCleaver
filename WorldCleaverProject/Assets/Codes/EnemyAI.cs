@@ -588,7 +588,7 @@ public class EnemyAI : MonoBehaviour
 
     float CalcManaCoef(float mana)
     {
-        return (30 - mana) / 15;
+        return (25 - mana) / 15;
     }
 
     float CalcEnemyManaCoef()
