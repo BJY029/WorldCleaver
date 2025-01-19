@@ -7,8 +7,8 @@ using Cinemachine;
 
 public class TreeController : MonoBehaviour
 {
-	public readonly float Treehealth = 1000.0f;
-    private float Health = 1000.0f;
+	public readonly float Treehealth = 2000.0f;
+    private float Health = 2000.0f;
 
     //먹물과 나무방패를 위한 게수 조정 플래그
     public float MyDamageCoef;
@@ -34,8 +34,8 @@ public class TreeController : MonoBehaviour
 
     public void setTreeHealth(float health)
     {
-		//만약 입력받은 마나 값과의 합이 100을 넘으면, 그냥 100으로 초기화한다.
-		if (Health + health > 1000) Health = 1000;
+		//만약 입력받은 체력 값과의 합이 2000을 넘으면, 그냥 2000으로 초기화한다.
+		if (Health + health > 2000) Health = 2000;
 		//만약 0 혹은 음수가 되면, 그냥 1로 초기화한다.
 		else if (Health + health <= 0)
 		{
@@ -51,7 +51,7 @@ public class TreeController : MonoBehaviour
 
 	private void Awake()
 	{
-        Health = 1000.0f;
+        Health = 2000.0f;
 
         MyDamageCoef = 1.0f;
         OppositeDamageCoef = 1.0f;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public readonly float PlayerMana = 100.0f;
+    public readonly float PlayerMana = 150.0f;
     private float playerMana;
 
     //플레이어의 기력 값을 반환해주는 함수
@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
 
     public void setMana(float mana)
     {
-        //만약 입력받은 마나 값과의 합이 100을 넘으면, 그냥 100으로 초기화한다.
-        if (playerMana + mana > 100) playerMana = 100;
+        //만약 입력받은 마나 값과의 합이 150을 넘으면, 그냥 150으로 초기화한다.
+        if (playerMana + mana > 150) playerMana = 150;
         //만약 0 혹은 음수가 되면, 그냥 0로 초기화한다.
         else if (playerMana + mana <= 0)
         {
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Awake()
 	{
-		playerMana = 100.0f;
+		playerMana = 150.0f;
 	}
 
 

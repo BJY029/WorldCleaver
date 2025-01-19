@@ -424,19 +424,19 @@ public class EnemyAI : MonoBehaviour
     //예를 들어 101은 나무의 체력과 마을 체력이 현재 위기상황인것을 뜻한다.
     public string ReturnCurrentDanger()
     {
-        if (CurrentTreeHealth < 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth >= 300f)
+        if (CurrentTreeHealth < 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth >= 300f)
             return "100";
-        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
+        else if (CurrentTreeHealth >= 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
             return "010";
-        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+        else if (CurrentTreeHealth >= 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
             return "001";
-        else if (CurrentTreeHealth < 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
+        else if (CurrentTreeHealth < 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
             return "110";
-        else if (CurrentTreeHealth < 300f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+        else if (CurrentTreeHealth < 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
             return "101";
-        else if (CurrentTreeHealth >= 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
+        else if (CurrentTreeHealth >= 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
             return "011";
-        else if (CurrentTreeHealth < 300f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
+        else if (CurrentTreeHealth < 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
             return "111";
         return "000";
     }
@@ -462,19 +462,20 @@ public class EnemyAI : MonoBehaviour
         //연막탄이 펼처진 경우, 실제 값 기준 -300 ~ 300 사이의 값을 랜덤으로 받도록 설정한다.
         if(GameManager.Instance.ItemManager.smokeFlag != 0)
         {
+            float maxTreeHealth = GameManager.Instance.TreeController.Treehealth;
             float minValue = CurrentTreeHealth - 300f;
             if (minValue <= 0) minValue = 10f;
             float maxValue = CurrentTreeHealth + 300f;
-            if (maxValue >= 1000) maxValue = 1000f;
+            if (maxValue >= maxTreeHealth) maxValue = maxTreeHealth;
             CurrentTreeHealth = Random.Range(minValue, maxValue);
         }
 
 
-        if(CurrentTreeHealth < 300f || CurrentEnemyMana < 40f || CurrentEnemyVillageHealth < 300f)
+        if(CurrentTreeHealth < 600f || CurrentEnemyMana < 40f || CurrentEnemyVillageHealth < 300f)
         {
             CurrentState = AIState.Defensive;
         }
-        else if (CurrentTreeHealth >= 600f && CurrentEnemyMana >= 60f && CurrentEnemyVillageHealth >= 500f)
+        else if (CurrentTreeHealth >= 1200f && CurrentEnemyMana >= 60f && CurrentEnemyVillageHealth >= 500f)
         {
             CurrentState = AIState.Aggressive;
         }
@@ -593,17 +594,19 @@ public class EnemyAI : MonoBehaviour
 
     float CalcEnemyManaCoef()
     {
-        return 1 + ((100 - CurrentEnemyMana) / 100);
+        float MaxEnemyMana = GameManager.Instance.EnemeyController.EnemyMana;
+        return 1 + ((MaxEnemyMana - CurrentEnemyMana) / MaxEnemyMana);
     }
 
     float CalcTreeHealthCoef()
     {
 		if (GameManager.Instance.ItemManager.smokeFlag != 0)
 		{
+			float maxTreeHealth = GameManager.Instance.TreeController.Treehealth;
 			float minValue = CurrentTreeHealth - 300f;
 			if (minValue <= 0) minValue = 10f;
 			float maxValue = CurrentTreeHealth + 300f;
-			if (maxValue >= 1000) maxValue = 1000f;
+			if (maxValue >= maxTreeHealth) maxValue = maxTreeHealth;
 			CurrentTreeHealth = Random.Range(minValue, maxValue);
 		}
 

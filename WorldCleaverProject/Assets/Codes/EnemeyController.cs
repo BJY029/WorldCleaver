@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemeyController : MonoBehaviour
 {
+	public readonly float EnemyMana = 150f;
 	private float enemyMana;
 	private float HitMana = 5f;
 
@@ -17,8 +18,8 @@ public class EnemeyController : MonoBehaviour
 
 	public void setMana(float mana)
 	{
-		//만약 입력받은 마나 값과의 합이 100을 넘으면, 그냥 100으로 초기화한다.
-		if (enemyMana + mana > 100) enemyMana = 100;
+		//만약 입력받은 마나 값과의 합이 150을 넘으면, 그냥 150으로 초기화한다.
+		if (enemyMana + mana > 150) enemyMana = 150;
 		//만약 0 혹은 음수가 되면, 그냥 0로 초기화한다.
 		else if (enemyMana + mana <= 0)
 		{
@@ -31,7 +32,7 @@ public class EnemeyController : MonoBehaviour
 
 	private void Awake()
 	{
-		enemyMana = 100.0f;
+		enemyMana = 150.0f;
 	}
 
 	private void Start()
