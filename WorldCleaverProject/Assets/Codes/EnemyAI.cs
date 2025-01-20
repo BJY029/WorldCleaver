@@ -276,14 +276,16 @@ public class EnemyAI : MonoBehaviour
 
         //현재 상태 체크
 		checkState();
+        //현재 위기 상태 여부 계산
+		string dangerFlag = ReturnCurrentDanger();
 
-		for(int i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
         {
             Item item = EnemyItems[i];
             //만약 저장된 아이템 리스트 중 아무것도 저장되지 않은 경우 그냥 넘어간다.
             if(item == null) continue;
 
-            //딕셔너리 연산을 통해 우선순위 연산을 진행한다.
+			//딕셔너리 연산을 통해 우선순위 연산을 진행한다.
 			if (itemCoff.TryGetValue(item.Type, out var stateCoff))
 			{
 				//coef에 가져온 딕셔너리의 현재 상태 값을 키로 하여서, 해당 값에 연결된 계수 값을 가져온다.
@@ -293,16 +295,30 @@ public class EnemyAI : MonoBehaviour
 
                 //Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
                 //마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				if (item.Type == "Charge")
-					item.priority *= CalcEnemyManaCoef();
+                if (item.Type == "Charge")
+                {
+                    item.priority *= CalcEnemyManaCoef();
+                    if (dangerFlag == "010" || dangerFlag == "110" || dangerFlag == "011" || dangerFlag == "111")
+                        item.priority *= 2;
+				}
                 //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				else if (item.Type == "Heal" || item.Type == "Defense")
-					item.priority *= CalcTreeHealthCoef();
+                else if (item.Type == "Heal" || item.Type == "Defense")
+                {
+                    item.priority *= CalcTreeHealthCoef();
+					if (dangerFlag == "100" || dangerFlag == "110" || dangerFlag == "101" || dangerFlag == "111")
+						item.priority *= 2;
+				}
                 //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				else if (item.Type == "Village")
-					item.priority *= CalcVillageHealthCoef();
-				else if (item.Type == "Hit")
-					item.priority *= CalcHItCoef();
+                else if (item.Type == "Village")
+                {
+                    item.priority *= CalcVillageHealthCoef();
+					if (dangerFlag == "001" || dangerFlag == "011" || dangerFlag == "101" || dangerFlag == "111")
+						item.priority *= 2;
+				}
+                else if (item.Type == "Hit")
+                {
+                    item.priority *= CalcHItCoef();
+                }
 
 				Debug.Log(i+1 + "'s item priority is " + item.priority);
 			}
@@ -325,7 +341,7 @@ public class EnemyAI : MonoBehaviour
         //만약 현재 상태가 Defenseive이면
         else if(CurrentState == AIState.Defensive)
         {
-			string dangerFlag = ReturnCurrentDanger();
+			
 			Debug.Log("DangerFlag is " + dangerFlag);
 
             //공격적, 기믹 아이템이 선정된 경우 사용하지 않는데
@@ -373,7 +389,7 @@ public class EnemyAI : MonoBehaviour
                 }
                 else if (dangerFlag == "011")
                 {
-                    if (useItem.Type == "Heal" && useItem.Type == "Defense") itemFlag = 1;
+                    if (useItem.Type == "Heal" || useItem.Type == "Defense") itemFlag = 1;
                 }
                 //만약 우선순위가 가장 높은 아이템이 현재 상황에 맞지 않은 아이템일 경우
                 if (itemFlag == 1)
@@ -589,7 +605,8 @@ public class EnemyAI : MonoBehaviour
 
     float CalcManaCoef(float mana)
     {
-        return (25 - mana) / 15;
+        //if (mana == 0) mana += 5;
+        return (20 - mana) / 15;
     }
 
     float CalcEnemyManaCoef()

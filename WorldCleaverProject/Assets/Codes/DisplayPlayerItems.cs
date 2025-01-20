@@ -15,6 +15,7 @@ public class DisplayPlayerItems :MonoBehaviour
 
 	public bool BlockButton;
 
+
 	private void Start()
 	{
 		checkItem = null;

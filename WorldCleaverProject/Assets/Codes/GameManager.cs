@@ -212,7 +212,7 @@ public class GameManager : SingleTon<GameManager>
 	}
     
     //마을에 가해지는 데미지의 지수를 조정하는 함수
-    //내가 가하는 데미지가 3턴 이내로 100이상을 넘지 않을 경우
+    //내가 가하는 데미지가 4턴 이내로 100이상을 넘지 않을 경우
     //마을에 가해지는 데미지가 증가하게 된다.(x2, x3, x4, ...)
     public void checkingMyTotalDamage()
     {
@@ -226,12 +226,12 @@ public class GameManager : SingleTon<GameManager>
             MyDamageTotalCnt++;
         }
 
-        MyVillageWeight = MyDamageTotalCnt / 3 + 1;
+        MyVillageWeight = MyDamageTotalCnt / 4 + 1;
     }
 
 
 	//적의 마을에 가해지는 데미지의 지수를 조정하는 함수
-	//적이 가하는 데미지가 3턴 이내로 100이상을 넘지 않을 경우
+	//적이 가하는 데미지가 4턴 이내로 100이상을 넘지 않을 경우
 	//적 마을에 가해지는 데미지가 증가하게 된다.(x2, x3, x4, ...)
 	public void checkingOppositeTotalDamage()
     {
@@ -244,7 +244,7 @@ public class GameManager : SingleTon<GameManager>
         {
             OppositeDamageTotalCnt++;
         }
-        OppositeVillageWeight = OppositeDamageTotalCnt / 3 + 1;
+        OppositeVillageWeight = OppositeDamageTotalCnt / 4 + 1;
     }
 
     //게임의 승자를 판별하는 함수

@@ -17,7 +17,7 @@ public class DisplayEnemyItems : MonoBehaviour
         {
             enemyItems[i].enabled = false;
             enemyItems[i].interactable = false;
-        }
+		}
     }
 
     public void insertItem(Item item)
@@ -63,6 +63,7 @@ public class DisplayEnemyItems : MonoBehaviour
             if(!enemyItems[i].enabled) continue;
             //해당 버튼 리스트로부터 이미지 스프라이트를 불러온다.
             Sprite sprite = enemyItems[i].GetComponentInChildren<Image>().sprite;
+            
             //만약 인자로 넘겨진 스프라이트와 같은 경우
             if(sprite == icon)
             {

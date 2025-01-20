@@ -244,13 +244,13 @@ public class ItemManager : MonoBehaviour
 			Debug.Log("Random Village charge value is " + randomValue);
 			if (GameManager.Instance.Turn == 0)
 			{
-				GameManager.Instance.PlayerController.setMana(-5);
+				GameManager.Instance.PlayerController.setMana(-10);
 				GameManager.Instance.VillageManager.VilageHelath = randomValue;
                 GameManager.Instance.VillageManager.ChangeBackGround();
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
-				GameManager.Instance.EnemeyController.setMana(-5);
+				GameManager.Instance.EnemeyController.setMana(-10);
                 GameManager.Instance.OppositeVillageManager.OppositeVillageHealth = randomValue;
                 GameManager.Instance.OppositeVillageManager.ChangeBackGround();
 			}
@@ -260,12 +260,12 @@ public class ItemManager : MonoBehaviour
             GameManager.Instance.EffectAudioManager.PlayOil();
 			if (GameManager.Instance.Turn == 0)
 			{
-				GameManager.Instance.PlayerController.setMana(-5);
+				GameManager.Instance.PlayerController.setMana(-12);
                 GameManager.Instance.AnimationManager.PlayerAnim.SetBool("Oil", true);
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
-				GameManager.Instance.EnemeyController.setMana(-5);
+				GameManager.Instance.EnemeyController.setMana(-12);
                 GameManager.Instance.AnimationManager.EnemyAnim.SetBool("Oil", true);
 			}
 			//Do job at TreeController
@@ -298,11 +298,11 @@ public class ItemManager : MonoBehaviour
 			smokeFlag += 4;
 			if (GameManager.Instance.Turn == 0)
 			{
-				GameManager.Instance.PlayerController.setMana(-9);
+				GameManager.Instance.PlayerController.setMana(-8);
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
-				GameManager.Instance.EnemeyController.setMana(-9);
+				GameManager.Instance.EnemeyController.setMana(-8);
 			}
 		}
         //아래 두 아이템은 최종 데미지 계산에서 가하는 계수를 조정한다.
@@ -310,14 +310,14 @@ public class ItemManager : MonoBehaviour
         {
 			if (GameManager.Instance.Turn == 0)
 			{
-				GameManager.Instance.PlayerController.setMana(-12);
+				GameManager.Instance.PlayerController.setMana(-6);
 				GameManager.Instance.TreeController.OppositeDamageCoef = 0.3f;
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
 				GameManager.Instance.AnimationManager.Squid();
 				yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitSquidTime);
-				GameManager.Instance.EnemeyController.setMana(-12);
+				GameManager.Instance.EnemeyController.setMana(-6);
                 GameManager.Instance.TreeController.MyDamageCoef = 0.3f;
 			}
         }
@@ -327,11 +327,11 @@ public class ItemManager : MonoBehaviour
             GameManager.Instance.AnimationManager.Shild();
 			if (GameManager.Instance.Turn == 0)
 			{
-				GameManager.Instance.PlayerController.setMana(-10);
+				GameManager.Instance.PlayerController.setMana(-9);
 			}
 			else if (GameManager.Instance.Turn == 1)
 			{
-				GameManager.Instance.EnemeyController.setMana(-10);
+				GameManager.Instance.EnemeyController.setMana(-9);
 			}
             ShildFlag += 2;
 			GameManager.Instance.TreeController.MyDamageCoef = 0.6f;
