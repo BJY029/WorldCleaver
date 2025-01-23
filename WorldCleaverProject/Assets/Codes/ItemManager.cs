@@ -43,6 +43,7 @@ public class ItemManager : MonoBehaviour
     public int smokeFlag;
     public int ShildFlag;
     public bool FuncFlag;
+    public bool flareGunFlag;
 
     //적용할 스프라이트 아이콘들
     public Sprite potionIcon;
@@ -68,6 +69,7 @@ public class ItemManager : MonoBehaviour
 
         smokeFlag = 0;
         ShildFlag = 0;
+        flareGunFlag = false;
 
         allItems = new List<Item>
         {
@@ -208,6 +210,7 @@ public class ItemManager : MonoBehaviour
 		}
         else if (flag == 4)//추가 아이템을 획득한다
 		{
+            flareGunFlag = true;
             GameManager.Instance.AnimationManager.FireFlare();
 			yield return new WaitForSeconds(GameManager.Instance.AnimationManager.WaitFireTime);
 			if (GameManager.Instance.Turn == 0)

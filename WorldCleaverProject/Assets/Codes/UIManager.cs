@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
 	public GameObject YouLosePanel;
 	public GameObject HintPanel;
 	public Text HintText;
+	public Text ReasonText;
 	public Button BackToOpening;
 	public Button GoToEnding;
 	private bool hasExecuted;
@@ -161,14 +162,17 @@ public class UIManager : MonoBehaviour
 					int reason = GameManager.Instance.ReasonFlag;
 					if (reason == 0)
 					{
+						ReasonText.text = "패배 요인 : 나무 체력";
 						HintText.text = "Hint\n" + TreeHint[RandomIdx];
 					}
 					else if (reason == 1)
 					{
+						ReasonText.text = "패배 요인 : 나의 기력";
 						HintText.text = "Hint\n" + ManaHint[RandomIdx];
 					}
 					else if (reason == 2)
 					{
+						ReasonText.text = "패배 요인 : 마을 체력";
 						HintText.text = "Hint\n" + VillageHint[RandomIdx];
 					}
 					HintPanel.SetActive(true);
@@ -323,6 +327,10 @@ public class UIManager : MonoBehaviour
 			HitButton.interactable = false;
 		}
 		else if(GameManager.Instance.DeerController.DeerActivated == true || GameManager.Instance.EnemyDeerController.DeerActivated == true)
+		{
+			HitButton.interactable = false;
+		}
+		else if(GameManager.Instance.ItemManager.flareGunFlag == true)
 		{
 			HitButton.interactable = false;
 		}

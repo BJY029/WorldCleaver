@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -100,9 +100,9 @@ public class EnemyAI : MonoBehaviour
         //우선 현재 AI가 취할 상태를 결정한다.
         //Aggressive , Netural, Defensive 세 가지 상태가 존재한다.
         checkState();
-       
-        //각 아이템의 우선순위 계수를 부여한다.
-        /*
+
+		//각 아이템의 우선순위 계수를 부여한다.
+		/*
         foreach (Item item in chooseanItems)
         {
             if(item.Type == "Hit")
@@ -150,7 +150,8 @@ public class EnemyAI : MonoBehaviour
 		}
         */
 
-        foreach(Item item in chooseanItems)
+		string dangerFlag = ReturnCurrentDanger();
+		foreach (Item item in chooseanItems)
         {
             //딕셔너리를 활용하여 최적화 진행
             //TryGetValue 함수는 itemCoff 딕셔너리에서 item.Type을 키로하여 내부 딕셔너리를 가져온다.
@@ -162,17 +163,45 @@ public class EnemyAI : MonoBehaviour
                 ManaCoef = CalcManaCoef(item.Mana);
                 item.priority = coef * ManaCoef * item.Coef;
 
-				//"Hit", "Charge", "Defense", "Heal", "Gimmick", "Village"
-				//Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
-				//마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
-				if (item.Type == "Charge")
+                //"Hit", "Charge", "Defense", "Heal", "Gimmick", "Village"
+                //Charge, Heal, Village의 경우 고유 계수 값이 1인 대신, 각 상태에 따른 계수를 추가로 곱해줘야 한다.
+                //마나 충전 아이템의 경우, 현재 마나 보유량이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
+                if (item.Type == "Charge")
+                {
                     item.priority *= CalcEnemyManaCoef();
+                    if (dangerFlag == "020" || dangerFlag == "120" || dangerFlag == "021" || dangerFlag == "121" ||
+                        dangerFlag == "220" || dangerFlag == "221" || dangerFlag == "022" || dangerFlag == "122" || dangerFlag == "222")
+                    {
+                        item.priority *= 10;
+                    }
+                    else if (dangerFlag == "010" || dangerFlag == "110" || dangerFlag == "011" || dangerFlag == "111")
+                        item.priority *= 2;
+                }
                 //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
                 else if (item.Type == "Heal" || item.Type == "Defense")
+                {
                     item.priority *= CalcTreeHealthCoef();
+                    item.priority *= CalcTreeHealthCoef();
+                    if (dangerFlag == "200" || dangerFlag == "210" || dangerFlag == "201" || dangerFlag == "211" ||
+                        dangerFlag == "220" || dangerFlag == "221" || dangerFlag == "202" || dangerFlag == "212" || dangerFlag == "222")
+                    {
+                        item.priority *= 10;
+                    }
+                    else if (dangerFlag == "100" || dangerFlag == "110" || dangerFlag == "101" || dangerFlag == "111")
+                        item.priority *= 2;
+                }
                 //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
                 else if (item.Type == "Village")
+                {
                     item.priority *= CalcVillageHealthCoef();
+					if (dangerFlag == "002" || dangerFlag == "102" || dangerFlag == "012" || dangerFlag == "112" ||
+						dangerFlag == "022" || dangerFlag == "122" || dangerFlag == "202" || dangerFlag == "212" || dangerFlag == "222")
+					{
+						item.priority *= 10;
+					}
+					else if (dangerFlag == "001" || dangerFlag == "011" || dangerFlag == "101" || dangerFlag == "111")
+						item.priority *= 2;
+				}
                 else if (item.Type == "Hit")
                     item.priority *= CalcHItCoef();
 
@@ -278,6 +307,7 @@ public class EnemyAI : MonoBehaviour
 		checkState();
         //현재 위기 상태 여부 계산
 		string dangerFlag = ReturnCurrentDanger();
+        bool mayday = false;
 
 		for (int i = 0; i < 5; i++)
         {
@@ -298,21 +328,39 @@ public class EnemyAI : MonoBehaviour
                 if (item.Type == "Charge")
                 {
                     item.priority *= CalcEnemyManaCoef();
-                    if (dangerFlag == "010" || dangerFlag == "110" || dangerFlag == "011" || dangerFlag == "111")
+                    if(dangerFlag == "020" || dangerFlag == "120" || dangerFlag == "021" || dangerFlag == "121" || 
+                        dangerFlag == "220" || dangerFlag == "221" || dangerFlag == "022" || dangerFlag == "122" || dangerFlag == "222")
+                    {
+                        mayday = true;
+                        item.priority *= 10;
+                    }
+                    else if (dangerFlag == "010" || dangerFlag == "110" || dangerFlag == "011" || dangerFlag == "111")
                         item.priority *= 2;
 				}
                 //나무 체력 충전의 아이템인 경우, 현재 나무 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
                 else if (item.Type == "Heal" || item.Type == "Defense")
                 {
                     item.priority *= CalcTreeHealthCoef();
-					if (dangerFlag == "100" || dangerFlag == "110" || dangerFlag == "101" || dangerFlag == "111")
+                    if(dangerFlag == "200" || dangerFlag == "210" || dangerFlag == "201" || dangerFlag == "211" ||
+						dangerFlag == "220" || dangerFlag == "221" || dangerFlag == "202" || dangerFlag == "212" || dangerFlag == "222")
+                    {
+                        mayday= true;
+                        item.priority *= 10;
+                    }
+					else if (dangerFlag == "100" || dangerFlag == "110" || dangerFlag == "101" || dangerFlag == "111")
 						item.priority *= 2;
 				}
                 //마을 체력 충전의 아이템인 경우, 현재 마을 체력이 낮을수록 2에 가까운 계수 값이 곱해지게 된다.
                 else if (item.Type == "Village")
                 {
                     item.priority *= CalcVillageHealthCoef();
-					if (dangerFlag == "001" || dangerFlag == "011" || dangerFlag == "101" || dangerFlag == "111")
+                    if(dangerFlag == "002" || dangerFlag == "102" || dangerFlag == "012" || dangerFlag == "112" ||
+						dangerFlag == "022" || dangerFlag == "122" || dangerFlag == "202" || dangerFlag == "212" || dangerFlag == "222")
+                    {
+                        mayday= true;
+                        item.priority *= 10;
+                    }
+					else if (dangerFlag == "001" || dangerFlag == "011" || dangerFlag == "101" || dangerFlag == "111")
 						item.priority *= 2;
 				}
                 else if (item.Type == "Hit")
@@ -341,14 +389,24 @@ public class EnemyAI : MonoBehaviour
         //만약 현재 상태가 Defenseive이면
         else if(CurrentState == AIState.Defensive)
         {
-			
+            bool hitItemFlag = false;
 			Debug.Log("DangerFlag is " + dangerFlag);
 
             //공격적, 기믹 아이템이 선정된 경우 사용하지 않는데
             if (useItem.Type == "Hit" || useItem.Type == "Gimmick")
             {
+                int dangerVCnt = Int32.Parse(dangerFlag) % 100 % 10;
+                if(dangerVCnt != 0 && CurrentTreeHealth >= 300f)
+                {
+                    Item HitItem = ReturnHitItem();
+                    if (HitItem != null)
+                    {
+                        hitItemFlag = true;
+                        useItem = HitItem;
+                    }
+                }
                 //만약 모든 아이템이 꽉 찬 경우
-                if (isEnemyItemisFull())
+                if (isEnemyItemisFull() && !hitItemFlag)
                 {
                     //보유 아이템 중 플레어 건 아이템이 있는지 확인한다.
                     Item fgItem = ReturnFlareItem();
@@ -365,59 +423,70 @@ public class EnemyAI : MonoBehaviour
             //현재 위기 상황이 어떤 것인지를 파악하는 함수
             else
             {
-                int itemFlag = 0;
-                //각 위기상황에 따라서 사용할 아이템을 선정
-                if (dangerFlag == "100")
+                if(mayday == true)
                 {
-                    if (useItem.Type != "Heal" && useItem.Type != "Defense") itemFlag = 1;
+                    mayday = false;
                 }
-                else if (dangerFlag == "010")
+                else if (!IsDangerFlagMatched(dangerFlag, useItem))
                 {
-                    if (useItem.Type != "Charge") itemFlag = 1;
+                    Item SpecialItem = ReturnSpecialItem();
+                    if(SpecialItem == null) return;
+                    useItem = SpecialItem;
                 }
-                else if (dangerFlag == "001")
-                {
-                    if (useItem.Type != "Village") itemFlag = 1;
-                }
-                else if (dangerFlag == "110")
-                {
-                    if (useItem.Type == "Village") itemFlag = 1;
-                }
-                else if (dangerFlag == "101")
-                {
-                    if (useItem.Type == "Charge") itemFlag = 1;
-                }
-                else if (dangerFlag == "011")
-                {
-                    if (useItem.Type == "Heal" || useItem.Type == "Defense") itemFlag = 1;
-                }
-                //만약 우선순위가 가장 높은 아이템이 현재 상황에 맞지 않은 아이템일 경우
-                if (itemFlag == 1)
-                {
-					//보유 아이템 중 플레어 건 아이템, 혹은 독수리 아이템이 있는지 확인한다.
-					Item fgItem = ReturnFlareItem();
-                    Item egItem = ReturnEagleItem();
-                    //있으면 사용한다.
-                    if (fgItem != null || egItem != null)
-                    {
-                        if (fgItem != null && egItem != null)
-                        {
-							int RanIdx = Random.Range(0, 1);
-							if (RanIdx == 0) useItem = fgItem;
-							else if (RanIdx == 1) useItem = egItem;
-                        }
-                        else if(egItem != null)
-                        {
-                            useItem = egItem;
-                        }
-                        else
-                        {
-							useItem = fgItem;
-						}
-                    }
-                    //없으면 그냥 사용하지 않는다.
-                    else return;
-				}
+
+    //            int itemFlag = 0;
+    //            //각 위기상황에 따라서 사용할 아이템을 선정
+    //            if (dangerFlag == "100")
+    //            {
+    //                if (useItem.Type != "Heal" && useItem.Type != "Defense") itemFlag = 1;
+    //            }
+    //            else if (dangerFlag == "010")
+    //            {
+    //                if (useItem.Type != "Charge") itemFlag = 1;
+    //            }
+    //            else if (dangerFlag == "001")
+    //            {
+    //                if (useItem.Type != "Village") itemFlag = 1;
+    //            }
+    //            else if (dangerFlag == "110")
+    //            {
+    //                if (useItem.Type == "Village") itemFlag = 1;
+    //            }
+    //            else if (dangerFlag == "101")
+    //            {
+    //                if (useItem.Type == "Charge") itemFlag = 1;
+    //            }
+    //            else if (dangerFlag == "011")
+    //            {
+    //                if (useItem.Type == "Heal" || useItem.Type == "Defense") itemFlag = 1;
+    //            }
+    //            //만약 우선순위가 가장 높은 아이템이 현재 상황에 맞지 않은 아이템일 경우
+    //            if (itemFlag == 1)
+    //            {
+				//	//보유 아이템 중 플레어 건 아이템, 혹은 독수리 아이템이 있는지 확인한다.
+				//	Item fgItem = ReturnFlareItem();
+    //                Item egItem = ReturnEagleItem();
+    //                //있으면 사용한다.
+    //                if (fgItem != null || egItem != null)
+    //                {
+    //                    if (fgItem != null && egItem != null)
+    //                    {
+				//			int RanIdx = Random.Range(0, 1);
+				//			if (RanIdx == 0) useItem = fgItem;
+				//			else if (RanIdx == 1) useItem = egItem;
+    //                    }
+    //                    else if(egItem != null)
+    //                    {
+    //                        useItem = egItem;
+    //                    }
+    //                    else
+    //                    {
+				//			useItem = fgItem;
+				//		}
+    //                }
+    //                //없으면 그냥 사용하지 않는다.
+    //                else return;
+				//}
 			}
 		}
 
@@ -441,21 +510,110 @@ public class EnemyAI : MonoBehaviour
     public string ReturnCurrentDanger()
     {
         if (CurrentTreeHealth < 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth >= 300f)
+        {
+            if (CurrentTreeHealth <= 100f)
+                return "200";
             return "100";
+        }
         else if (CurrentTreeHealth >= 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
+        {
+            if (CurrentEnemyMana <= 15f)
+                return "020";
             return "010";
+        }
         else if (CurrentTreeHealth >= 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+        {
+            if (CurrentEnemyVillageHealth <= 100f)
+                return "002";
             return "001";
+        }
         else if (CurrentTreeHealth < 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth >= 300f)
-            return "110";
+        {
+            if (CurrentTreeHealth <= 100f && CurrentEnemyMana > 15f) return "210";
+            else if (CurrentTreeHealth > 100f && CurrentEnemyMana <= 15f) return "120";
+            else if (CurrentTreeHealth <= 100f && CurrentEnemyMana <= 15f) return "220";
+			else return "110";
+        }
         else if (CurrentTreeHealth < 400f && CurrentEnemyMana >= 40f && CurrentEnemyVillageHealth < 300f)
+        {
+            if (CurrentTreeHealth <= 100f && CurrentEnemyVillageHealth > 100f) return "201";
+            else if (CurrentTreeHealth > 100f && CurrentEnemyVillageHealth <= 100f) return "102";
+            else if (CurrentTreeHealth <= 100f && CurrentEnemyVillageHealth <= 100f) return "202";
             return "101";
+        }
         else if (CurrentTreeHealth >= 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
-            return "011";
+        {
+            if (CurrentEnemyMana <= 15f && CurrentEnemyVillageHealth > 100f) return "021";
+            else if (CurrentEnemyMana > 15f && CurrentEnemyVillageHealth <= 100f) return "012";
+            else if(CurrentEnemyMana <= 15f && CurrentEnemyVillageHealth <= 100f) return "022";
+			return "011";
+        }
         else if (CurrentTreeHealth < 400f && CurrentEnemyMana < 40f && CurrentEnemyVillageHealth < 300f)
-            return "111";
+        {
+            return ReturnDangerString();
+        }
         return "000";
     }
+
+    private string ReturnDangerString()
+    {
+        int dangerCnt = 111;
+        if (CurrentTreeHealth <= 100f) dangerCnt += 100;
+        if (CurrentEnemyMana <= 15f) dangerCnt += 10;
+        if (CurrentEnemyVillageHealth <= 100f) dangerCnt += 1;
+
+        return dangerCnt.ToString();
+    }
+
+    private bool IsDangerFlagMatched(string dangerFlag, Item useItem)
+    {
+        switch (dangerFlag)
+        {
+            case "100":
+                return useItem.Type == "Heal" || useItem.Type == "Defense";
+            case "010":
+                return useItem.Type == "Charge";
+            case "001":
+                return useItem.Type == "Village";
+            case "110":
+                return useItem.Type != "Village";
+            case "101":
+                return useItem.Type != "Charge";
+            case "011":
+                return useItem.Type != "Heal" && useItem.Type != "Defense";
+            case "111":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private Item ReturnSpecialItem()
+    {
+		//보유 아이템 중 플레어 건 아이템, 혹은 독수리 아이템이 있는지 확인한다.
+		Item fgItem = ReturnFlareItem();
+		Item egItem = ReturnEagleItem();
+		//있으면 사용한다.
+		if (fgItem != null || egItem != null)
+		{
+			if (fgItem != null && egItem != null)
+			{
+				int RanIdx = UnityEngine.Random.Range(0, 1);
+				if (RanIdx == 0) return fgItem;
+				else if (RanIdx == 1) return egItem;
+			}
+			else if (egItem != null)
+			{
+				return egItem;
+			}
+			else
+			{
+				return fgItem;
+			}
+		}
+
+        return null;
+	}
 
 	public bool isEnemyItemisFull()
 	{
@@ -483,7 +641,7 @@ public class EnemyAI : MonoBehaviour
             if (minValue <= 0) minValue = 10f;
             float maxValue = CurrentTreeHealth + 300f;
             if (maxValue >= maxTreeHealth) maxValue = maxTreeHealth;
-            CurrentTreeHealth = Random.Range(minValue, maxValue);
+            CurrentTreeHealth = UnityEngine.Random.Range(minValue, maxValue);
         }
 
 
@@ -527,6 +685,19 @@ public class EnemyAI : MonoBehaviour
 		return null;
 	}
 
+    public Item ReturnHitItem()
+    {
+		foreach (Item item in EnemyItems)
+		{
+			if (item == null) continue;
+			if (item.itemName == "녹용(8)")
+			{
+				return item;
+			}
+		}
+		return null;
+	}
+
 	public void StealPlayerItem()
     {
         //만약 플레이어가 가진 아이템이 없으면 아무것도 실행하지 않는다.
@@ -554,7 +725,7 @@ public class EnemyAI : MonoBehaviour
         //가진 아이템 중 무작위 선출을 위한 설정 
         int maxRange = items.Count;
         Debug.Log("내 아이템 수 : " + maxRange);
-        int randIdx = Random.Range(0, maxRange);
+        int randIdx = UnityEngine.Random.Range(0, maxRange);
 
         //선정된 아이템을 버튼으로 저장
         Button ChooseItem = items[randIdx];
@@ -624,7 +795,7 @@ public class EnemyAI : MonoBehaviour
 			if (minValue <= 0) minValue = 10f;
 			float maxValue = CurrentTreeHealth + 300f;
 			if (maxValue >= maxTreeHealth) maxValue = maxTreeHealth;
-			CurrentTreeHealth = Random.Range(minValue, maxValue);
+			CurrentTreeHealth = UnityEngine.Random.Range(minValue, maxValue);
 		}
 
         float MaxTreeHealth = GameManager.Instance.TreeController.Treehealth;

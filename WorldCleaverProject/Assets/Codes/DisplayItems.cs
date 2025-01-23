@@ -29,6 +29,7 @@ public class DisplayItems : SingleTon<DisplayItems>
 
         ClosePanel();
 		GameManager.Instance.UIManager.ItemSelecting = false;
+        GameManager.Instance.ItemManager.flareGunFlag = false;
 
   //      if(GameManager.Instance.DisplayPlayerItems.checkItem != null)
   //          GameManager.Instance.DisplayPlayerItems.BlockButton = true;
