@@ -214,7 +214,7 @@ public class BGMManager : SingleTon<BGMManager>
 			yield return null;
 		}
 
-		source.volume = 1f;
+		//source.volume = 1f;
 	}
 
     // Update is called once per frame

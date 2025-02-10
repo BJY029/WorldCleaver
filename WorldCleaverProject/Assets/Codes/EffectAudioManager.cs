@@ -124,22 +124,22 @@ public class EffectAudioManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
 
-            float newVolume = Mathf.Lerp(0f, 1f, elapsedTime / DurationTime);
+            float newVolume = Mathf.Lerp(0f, BGMManager.Instance.SetEVolume, elapsedTime / DurationTime);
             LoopAudioSource.volume = newVolume;
 
             yield return null;
         }
-        LoopAudioSource.volume = 1.0f;
-    }
+        LoopAudioSource.volume = BGMManager.Instance.SetEVolume;
+	}
 
-    IEnumerator StopSmokes()
+	IEnumerator StopSmokes()
     {
 		float elapsedTime = 0.0f;
 		while (elapsedTime < DurationTime)
 		{
 			elapsedTime += Time.deltaTime;
 
-			float newVolume = Mathf.Lerp(1f, 0f, elapsedTime / DurationTime);
+			float newVolume = Mathf.Lerp(BGMManager.Instance.SetEVolume, 0f, elapsedTime / DurationTime);
 			LoopAudioSource.volume = newVolume;
 
 			yield return null;
